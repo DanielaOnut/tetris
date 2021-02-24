@@ -8,12 +8,22 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QLayout>
+#include <QSpacerItem>
 
+/**
+ * todo : inbox section for lower part
+ *        friends
+ *        exit civilizat
+ *        shop
+ *
+ *        designs : settings, statistics, friends ( in page ), profile ( in page ), inbox ( in page )
+ */
 class Menu : public QWidget {
     Q_OBJECT
 
 private:
     QLayout         * generalLayout         = nullptr;
+    QSpacerItem     * layoutSpacer          = nullptr;
 
     /// Central Buttons
     QLayout         * centralButtonsLayout  = nullptr;

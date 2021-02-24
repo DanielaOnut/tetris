@@ -10,6 +10,7 @@ void Menu::init () noexcept {
     this->adjustComponents();
 }
 
+#include <iostream>
 void Menu::createComponents () noexcept {
     this->centralButtonsLayout = new QVBoxLayout ( nullptr );
     this->generalLayout = new QVBoxLayout ( nullptr );
@@ -41,7 +42,8 @@ void Menu::alignComponents() noexcept {
     this->rightButtonsLayout->addWidget( this->settingsButton );
 
     this->generalLayout->setAlignment(this->rightButtonsLayout, Qt::AlignTop | Qt::AlignRight);
-    this->generalLayout->setAlignment(this->centralButtonsLayout, Qt::AlignCenter);
+    this->generalLayout->setAlignment(this->centralButtonsLayout, Qt::AlignHCenter | Qt::AlignTop);
+//    this->generalLayout->setAlignment(this->centralButtonsLayout, Qt::AlignHCenter | Qt::AlignCenter); todo : place back when inbox section is added
 }
 
 void Menu::adjustComponents () noexcept {

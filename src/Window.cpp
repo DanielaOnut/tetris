@@ -6,6 +6,7 @@
 #include <Menu.h>
 
 void Window::init () noexcept {
+    this->resize(1280, 720);
     // Vertical Box Layout
     this->mainLayout = new QVBoxLayout(this);
 
