@@ -14,6 +14,8 @@ class Menu : public QWidget {
 
 private:
     QLayout         * generalLayout         = nullptr;
+
+    /// Central Buttons
     QLayout         * centralButtonsLayout  = nullptr;
 
     QPushButton     * playButton            = nullptr;
