@@ -15,6 +15,7 @@ class Window : public QWidget {
 private:
     QWidget         * activePanel           = nullptr;
     QLayout         * mainLayout            = nullptr;
+    /** se pozitioneaza pe mijloc, toata fereastra */
 
 public:
     Window () noexcept : QWidget( nullptr ) { }

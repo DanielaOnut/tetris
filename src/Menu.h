@@ -26,6 +26,15 @@ private:
     const char      * statisticsButtonText  = "Statistics";
     const char      * tutorialButtonText    = "How to Play";
 
+    /// Upper Right Buttons
+    QLayout         * rightButtonsLayout     = nullptr;
+
+    QPushButton     * profileButton         = nullptr;
+    QPushButton     * settingsButton        = nullptr;
+
+    const char      * profileButtonText     = "PH_P";
+    const char      * settingsButtonText    = "PH_S";
+
 public:
     explicit Menu ( QWidget * parent ) noexcept : QWidget(parent) { }
 

@@ -6,8 +6,9 @@
 #include <Menu.h>
 
 void Window::init () noexcept {
-    this->mainLayout = new QVBoxLayout(this);
     // Vertical Box Layout
+    this->mainLayout = new QVBoxLayout(this);
+
     this->setLayout( this->mainLayout );
 
     this->activePanel = new Menu(this);
