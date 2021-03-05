@@ -20,7 +20,7 @@ add_executable(
         src/Menu.h
         src/Window.cpp
         src/Window.h
-        src/Util.cpp src/Util.h)
+        src/Util.cpp src/Util.h src/Tutorial.cpp src/Tutorial.h)
 
 
 if (NOT CMAKE_PREFIX_PATH)

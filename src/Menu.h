@@ -17,6 +17,16 @@
  *        shop
  *
  *        designs : settings, statistics, friends ( in page ), profile ( in page ), inbox ( in page )
+ *
+ *
+ * todo 2 : Look over code, prepare questions
+ *
+ *          Populate Tutorial, separate init into createComponents ... (same as in Menu)
+ *          Same thing that was done for Tutorial, but for Settings.
+ *                 Implement panel switching for settings
+ *                 Populate Settings ( same as window => init = createComponents, alignComponents etc. )
+ *
+ *          Draw Designs for friends, profile, inbox
  */
 class Menu : public QWidget {
     Q_OBJECT
@@ -48,13 +58,22 @@ public:
     explicit Menu ( QWidget * parent ) noexcept : QWidget(parent) { }
 
     void init () noexcept;
+//    auto init () noexcept -> void;
 
     void createComponents () noexcept;
     void alignComponents () noexcept;
     void adjustComponents() noexcept;
     void styleComponents () noexcept;
+    void connectComponents () noexcept;
 
     ~Menu () noexcept;
+
+signals:
+    void howToPlay(); // functia semnal
+    // NU se defineste - numai in QT
+
+public slots:
+//    void onPlayClick () noexcept;
 };
 
 

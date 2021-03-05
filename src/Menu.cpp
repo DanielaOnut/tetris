@@ -10,6 +10,7 @@ void Menu::init () noexcept {
     this->alignComponents();
     this->adjustComponents();
     this->styleComponents();
+    this->connectComponents();
 }
 
 #include <iostream>
@@ -98,6 +99,49 @@ void Menu::styleComponents() noexcept {
     this->playButton->setStyleSheet(buttonStyle.c_str());
     this->statisticsButton->setStyleSheet(buttonStyle.c_str());
 }
+
+void Menu::connectComponents() noexcept {
+    // []           ()              {}
+    // inline func  func params     func def
+    // [] <- capture block, iau variabile din context
+
+    // connect emitator + eveniment -> program
+    // cand un emitator triggeruieste un eveniment, se apeleaza functia in program
+    //
+    // daca in functia apelata, capturam obiectul curent, se transforma in functie de tip
+
+    // emitator + eveniment -> obiect + receiver
+    // sender event object receiver
+    // sender SIGNAL reicever SLOT
+
+//    auto callback = [this] () {
+//        this->statisticsButton->hide();
+//        static int pressCount = 0; // variabila locala, dar se comporta ca o globala
+//        if ( pressCount % 2 == 0)
+//            std::cout << "Hello World\n";
+//        else
+//            std::cout << "Buna Siua\n";
+//
+//        pressCount ++;
+//    };
+//
+//    connect ( this->playButton, & QPushButton::clicked, callback );
+//
+//    // varianta 2 -> sender SIGNAL receiver SLOT
+//
+//    connect ( this->playButton, SIGNAL(clicked()), this, SLOT(onPlayClick()) );
+
+
+    auto howToPlayCallback = [this] () noexcept -> void {
+        emit this->howToPlay();
+    };
+
+    connect ( this->tutorialButton, & QPushButton::clicked, howToPlayCallback );
+}
+
+//void Menu::onPlayClick() noexcept {
+//    this->tutorialButton->hide();
+//}
 
 Menu::~Menu () noexcept {
     // undo what has been done in align

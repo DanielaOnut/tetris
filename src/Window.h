@@ -21,6 +21,9 @@ public:
     Window () noexcept : QWidget( nullptr ) { }
     void init () noexcept;
 
+    void switchToTutorial () noexcept;
+    void switchToMenu () noexcept;
+
     ~Window () noexcept;
 };
 
