@@ -3,11 +3,13 @@
 //
 
 #include "Menu.h"
+#include "Util.h"
 
 void Menu::init () noexcept {
     this->createComponents();
     this->alignComponents();
     this->adjustComponents();
+    this->styleComponents();
 }
 
 #include <iostream>
@@ -48,6 +50,53 @@ void Menu::alignComponents() noexcept {
 
 void Menu::adjustComponents () noexcept {
 
+}
+
+void Menu::styleComponents() noexcept {
+//    this->playButton->setStyleSheet(
+//        "QPushButton {"
+//        "   border-style: outset;"
+//        "   border-width: 5px;"
+//        "   border-color: red;"
+//        "   border-radius: 5px;"
+//        "   height: 200px;"
+//        "   width: 200px;"
+//        "}"
+//        ""
+//        "QPushButton:hover {"
+//        "   border-style: solid;"
+//        "}"
+//        ""
+//        "QPushButton:pressed {"
+//        "   border-style: inset;"
+//        "}"
+//    );
+
+    auto buttonStyle = Util::getStyle("GeneralButton.css"); // se construieste un string din Util::getStyle, se copiaza intr-ul alt string, se distruge string-ul initial
+//    auto buttonStyle = Util::getStyle("GeneralButton.css").c_str(); // se construieste un string din Util::getStyle, se obtine c_str(), se distruge obiectul
+
+/**
+ *
+ * 1. auto buttonStyle = Util::getStyle("GeneralButton.css);
+ *          buttonStyle     |   Util::getStyle(...);
+ *  DataType std::string    |  std::string
+ *  Obj      s2             |  s1
+ *  Ptr      p2             |  p1
+ *
+ *  Distrugem string-ul din functie, distrugem p1.
+ *  p2 ramane in pace
+ *
+ * 2. auto buttonStyle = Util::getStyle("GeneralButton.css).c_str();
+ *          buttonStyle     |   Util::getStyle(...);
+ *  DataType const char *   | std::string
+ *  Obj      ?              | s1
+ *  Ptr      p1             | p1
+ *  Distrugem string-ul din functie, distrugem p1
+ *  buttonStyle avea valoarea p1, se distruge si el
+ */
+
+    this->playButton->setStyleSheet(buttonStyle.c_str());
+    this->statisticsButton->setStyleSheet(buttonStyle.c_str());
 }
 
 Menu::~Menu () noexcept {

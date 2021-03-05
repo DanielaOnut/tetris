@@ -23,7 +23,6 @@ class Menu : public QWidget {
 
 private:
     QLayout         * generalLayout         = nullptr;
-    QSpacerItem     * layoutSpacer          = nullptr;
 
     /// Central Buttons
     QLayout         * centralButtonsLayout  = nullptr;
@@ -53,6 +52,7 @@ public:
     void createComponents () noexcept;
     void alignComponents () noexcept;
     void adjustComponents() noexcept;
+    void styleComponents () noexcept;
 
     ~Menu () noexcept;
 };
