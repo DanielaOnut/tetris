@@ -11,10 +11,6 @@
 #include <QSpacerItem>
 
 /**
- * todo : inbox section for lower part
- *        friends
- *        exit civilizat
- *        shop
  *
  *        designs : settings, statistics, friends ( in page ), profile ( in page ), inbox ( in page )
  *
@@ -54,6 +50,24 @@ private:
     const char      * profileButtonText     = "PH_P";
     const char      * settingsButtonText    = "PH_S";
 
+    /// Lower Left Buttons
+    QLayout         * leftButtonsLayout     = nullptr;
+
+    QPushButton     * friendsButton         = nullptr;
+    QPushButton     * inboxButton           = nullptr;
+    QPushButton     * shopButton            = nullptr;
+
+    const char      * friendsButtonText     = "PH_F";
+    const char      * inboxButtonText       = "PH_I";
+    const char      * shopButtonText        = "PH_SH";
+
+    /// Exit Button
+    QLayout         * exitButtonLayout      = nullptr;
+
+    QPushButton     * exitButton            = nullptr;
+
+    const char      * exitButtonText        = "PH_E";
+
 public:
     explicit Menu ( QWidget * parent ) noexcept : QWidget(parent) { }
 
@@ -71,6 +85,7 @@ public:
 signals:
     void howToPlay(); // functia semnal
     // NU se defineste - numai in QT
+//    void settings ();
 
 public slots:
 //    void onPlayClick () noexcept;

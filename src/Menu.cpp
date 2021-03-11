@@ -15,8 +15,8 @@ void Menu::init () noexcept {
 
 #include <iostream>
 void Menu::createComponents () noexcept {
-    this->centralButtonsLayout = new QVBoxLayout ( nullptr );
     this->generalLayout = new QVBoxLayout ( nullptr );
+    this->centralButtonsLayout = new QVBoxLayout ( nullptr );
 
     this->playButton = new QPushButton (this->playButtonText, this);
     this->statisticsButton = new QPushButton (this->statisticsButtonText, this);
@@ -26,6 +26,16 @@ void Menu::createComponents () noexcept {
 
     this->profileButton = new QPushButton (this->profileButtonText, this);
     this->settingsButton = new QPushButton (this->settingsButtonText, this);
+
+    this->leftButtonsLayout = new QHBoxLayout (nullptr); ///?
+
+    this->friendsButton = new QPushButton (this->friendsButtonText, this);
+    this->inboxButton = new QPushButton (this->inboxButtonText, this);
+    this->shopButton = new QPushButton (this->shopButtonText, this);
+
+    this->exitButtonLayout = new QHBoxLayout (nullptr);
+
+    this->exitButton = new QPushButton (this->exitButtonText, this);
 }
 
 void Menu::alignComponents() noexcept {
@@ -35,6 +45,8 @@ void Menu::alignComponents() noexcept {
     //// primul e cel mai sus
     this->generalLayout->addItem( this->rightButtonsLayout );
     this->generalLayout->addItem( this->centralButtonsLayout );
+    this->generalLayout->addItem( this->leftButtonsLayout );
+    this->generalLayout->addItem( this->exitButtonLayout );
 
     //// add widget in layout
     this->centralButtonsLayout->addWidget( this->playButton );
@@ -44,9 +56,17 @@ void Menu::alignComponents() noexcept {
     this->rightButtonsLayout->addWidget( this->profileButton );
     this->rightButtonsLayout->addWidget( this->settingsButton );
 
+    this->leftButtonsLayout->addWidget( this->friendsButton );
+    this->leftButtonsLayout->addWidget( this->inboxButton );
+    this->leftButtonsLayout->addWidget( this->shopButton );
+
+    this->exitButtonLayout->addWidget( this->exitButton );
+
     this->generalLayout->setAlignment(this->rightButtonsLayout, Qt::AlignTop | Qt::AlignRight);
     this->generalLayout->setAlignment(this->centralButtonsLayout, Qt::AlignHCenter | Qt::AlignTop);
-//    this->generalLayout->setAlignment(this->centralButtonsLayout, Qt::AlignHCenter | Qt::AlignCenter); todo : place back when inbox section is added
+    this->generalLayout->setAlignment(this->leftButtonsLayout, Qt::AlignLeft | Qt::AlignBottom);
+    this->generalLayout->setAlignment(this->exitButtonLayout, Qt::AlignRight | Qt::AlignBottom);
+//    this->generalLayout->setAlignment(this->centralButtonsLayout, Qt::AlignHCenter | Qt::AlignCenter); //todo : place back when inbox section is added
 }
 
 void Menu::adjustComponents () noexcept {
@@ -74,8 +94,10 @@ void Menu::styleComponents() noexcept {
 //    );
 
     auto buttonStyle = Util::getStyle("GeneralButton.css"); // se construieste un string din Util::getStyle, se copiaza intr-ul alt string, se distruge string-ul initial
-//    auto buttonStyle = Util::getStyle("GeneralButton.css").c_str(); // se construieste un string din Util::getStyle, se obtine c_str(), se distruge obiectul
+    //    auto buttonStyle = Util::getStyle("GeneralButton.css").c_str(); // se construieste un string din Util::getStyle, se obtine c_str(), se distruge obiectul
 
+    auto exitButtonStyle = Util::getStyle("ExitButton.css");
+    auto optionsButtonStyle = Util::getStyle("OptionsButtons.css");
 /**
  *
  * 1. auto buttonStyle = Util::getStyle("GeneralButton.css);
@@ -98,6 +120,15 @@ void Menu::styleComponents() noexcept {
 
     this->playButton->setStyleSheet(buttonStyle.c_str());
     this->statisticsButton->setStyleSheet(buttonStyle.c_str());
+    this->tutorialButton->setStyleSheet(buttonStyle.c_str());
+
+    this->friendsButton->setStyleSheet(optionsButtonStyle.c_str());
+    this->shopButton->setStyleSheet(optionsButtonStyle.c_str());
+    this->inboxButton->setStyleSheet(optionsButtonStyle.c_str());
+    this->profileButton->setStyleSheet(optionsButtonStyle.c_str());
+    this->settingsButton->setStyleSheet(optionsButtonStyle.c_str());
+
+    this->exitButton->setStyleSheet(exitButtonStyle.c_str());
 }
 
 void Menu::connectComponents() noexcept {
