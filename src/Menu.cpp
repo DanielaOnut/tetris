@@ -103,6 +103,7 @@ void Menu::connectComponents() noexcept {
 
     connect ( this->tutorialButton, & QPushButton::clicked, howToPlayCallback );
     connect ( this->exitButton, & QPushButton::clicked, [](){QApplication::exit(0);} );
+    connect ( this->settingsButton, & QPushButton::clicked, [this]() {emit this->settings();} );
 }
 
 Menu::~Menu () noexcept {

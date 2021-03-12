@@ -23,6 +23,7 @@ public:
 
     void switchToTutorial () noexcept;
     void switchToMenu () noexcept;
+    void switchToSettings () noexcept;
 
     ~Window () noexcept;
 };

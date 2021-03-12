@@ -11,9 +11,13 @@ class Settings : public QWidget {
 private:
     QLayout * mainLayout { nullptr };
 
-    QPushButton * backButton { nullptr };
+    QPushButton * backButton  { nullptr };
+    QPushButton * okButton    { nullptr };
+    QPushButton * applyButton { nullptr };
 
-    const char * backButtonText = "Back";
+    const char * backButtonText     = "Back";
+    const char * okButtonText       = "OK";
+    const char * applyButtonText    = "Apply";
 
 public:
     explicit Settings (QWidget * parent) noexcept : QWidget(parent) {
