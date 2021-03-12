@@ -23,6 +23,11 @@
  *                 Populate Settings ( same as window => init = createComponents, alignComponents etc. )
  *
  *          Draw Designs for friends, profile, inbox
+ *
+ * todo 3 :
+ *      Settings Panel - populate  -> resolution , name , sound fx etc.
+ *      icons for buttons. without background. (paint.net is basic, can be done with Adobe Illustrator)
+ *      Look up ALL destructors for any mem. leak
  */
 class Menu : public QWidget {
     Q_OBJECT
