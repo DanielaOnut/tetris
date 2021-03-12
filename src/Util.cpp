@@ -33,3 +33,10 @@ std::string Util::getStyle(const std::string & relativePath) noexcept {
 //    return contents;
     return bridgedContents.str();
 }
+
+#include <QPixmap>
+#include <iostream>
+
+QIcon Util::getIcon(const std::string & iconPath, unsigned int width, unsigned int heigth) noexcept {
+    return QIcon ( QPixmap( ("./../resources/Images/" + iconPath).c_str() ).scaled(width, heigth) );
+}

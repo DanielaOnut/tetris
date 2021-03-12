@@ -75,7 +75,7 @@ void Menu::adjustComponents () noexcept {
     this->inboxButton->setMinimumWidth(100);
     this->shopButton->setMinimumWidth(100);
 }
-
+#include <QIcon>
 void Menu::styleComponents() noexcept {
     auto buttonStyle = Util::getStyle("GeneralButton.css"); // se construieste un string din Util::getStyle, se copiaza intr-ul alt string, se distruge string-ul initial
 
@@ -93,6 +93,10 @@ void Menu::styleComponents() noexcept {
     this->settingsButton->setStyleSheet(optionsButtonStyle.c_str());
 
     this->exitButton->setStyleSheet(exitButtonStyle.c_str());
+
+    this->settingsButton->setIcon(Util::getIcon("rotita.png", 150, 150));
+    this->settingsButton->setIconSize(QSize(150, 150)); /// scoatem background-ul ( alpha pe alb )
+    this->settingsButton->setText("");
 }
 
 #include <QApplication>

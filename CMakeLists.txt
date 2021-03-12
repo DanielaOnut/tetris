@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(Project)
 
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_PREFIX_PATH "D:/QT/5.15.2/mingw81_64")
+set(CMAKE_PREFIX_PATH "C:/Qt5/5.15.2/mingw81_64")
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)

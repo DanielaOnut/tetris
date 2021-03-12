@@ -6,6 +6,7 @@
 #define TETRIS_UTIL_H
 
 #include <string>
+#include <QIcon>
 
 class Util {
 public:
@@ -27,6 +28,7 @@ public:
      * @return
      */
     static std::string getStyle(std::string const &) noexcept;
+    static QIcon getIcon(std::string const &, unsigned int, unsigned int) noexcept;
 };
 
 
