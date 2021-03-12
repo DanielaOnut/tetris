@@ -50,23 +50,19 @@ private:
     const char      * profileButtonText     = "PH_P";
     const char      * settingsButtonText    = "PH_S";
 
-    /// Lower Left Buttons
+    /// Lower Buttons
     QLayout         * leftButtonsLayout     = nullptr;
 
     QPushButton     * friendsButton         = nullptr;
     QPushButton     * inboxButton           = nullptr;
     QPushButton     * shopButton            = nullptr;
+    QPushButton     * exitButton            = nullptr;
 
     const char      * friendsButtonText     = "PH_F";
     const char      * inboxButtonText       = "PH_I";
     const char      * shopButtonText        = "PH_SH";
-
-    /// Exit Button
-    QLayout         * exitButtonLayout      = nullptr;
-
-    QPushButton     * exitButton            = nullptr;
-
     const char      * exitButtonText        = "PH_E";
+
 
 public:
     explicit Menu ( QWidget * parent ) noexcept : QWidget(parent) { }
