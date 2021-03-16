@@ -9,7 +9,23 @@ class Settings : public QWidget {
     Q_OBJECT
 
 private:
-    QLayout * mainLayout { nullptr };
+    QLayout     * mainLayout { nullptr };
+
+    /// Up Settings Buttons
+    QLayout     * upSettingsButtons { nullptr };
+
+    QPushButton * generalButton  { nullptr };
+    QPushButton * soundButton    { nullptr };
+    QPushButton * videoButton    { nullptr };
+    QPushButton * controlsButton { nullptr };
+
+    const char  * generalButtonText  = "GENERAL";
+    const char  * soundButtonText    = "SOUND";
+    const char  * videoButtonText    = "VIDEO";
+    const char  * controlsButtonText = "CONTROLS";
+
+    /// Bottom Buttons
+    QLayout     * lowerButtonsLayout   { nullptr };
 
     QPushButton * backButton  { nullptr };
     QPushButton * okButton    { nullptr };
@@ -28,6 +44,7 @@ public:
 
     void createComponents () noexcept;
     void alignComponents () noexcept;
+    void adjustComponents () noexcept;
     void styleComponents () noexcept;
     void connectComponents () noexcept;
 

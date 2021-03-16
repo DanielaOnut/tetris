@@ -17,17 +17,14 @@
  *
  * todo 2 : Look over code, prepare questions
  *
- *          Populate Tutorial, separate init into createComponents ... (same as in Menu)
- *          Same thing that was done for Tutorial, but for Settings.
+ *          Populate Tutorial, separate init into createComponents ... (same as in Menu) -done-
+ *          Same thing that was done for Tutorial, but for Settings. -done-
  *                 Implement panel switching for settings
- *                 Populate Settings ( same as window => init = createComponents, alignComponents etc. )
- *
- *          Draw Designs for friends, profile, inbox
+ *                 Populate Settings ( same as window => init = createComponents, alignComponents etc.-done-
  *
  * todo 3 :
- *      Settings Panel - populate  -> resolution , name , sound fx etc.
- *      icons for buttons. without background. (paint.net is basic, can be done with Adobe Illustrator)
- *      Look up ALL destructors for any mem. leak
+ *      Settings Panel - populate  -> resolution , name , sound fx etc. - almost done-
+ *      Look up ALL destructors for any mem. leak -done-
  */
 class Menu : public QWidget {
     Q_OBJECT

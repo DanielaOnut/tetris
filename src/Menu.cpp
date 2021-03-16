@@ -94,9 +94,26 @@ void Menu::styleComponents() noexcept {
 
     this->exitButton->setStyleSheet(exitButtonStyle.c_str());
 
-    this->settingsButton->setIcon(Util::getIcon("rotita.png", 150, 150));
-    this->settingsButton->setIconSize(QSize(150, 150)); /// scoatem background-ul ( alpha pe alb )
+    this->settingsButton->setIcon(Util::getIcon("rotita.png", 50, 50));
+    this->settingsButton->setIconSize(QSize(50, 50)); /// scoatem background-ul ( alpha pe alb )
     this->settingsButton->setText("");
+    this->profileButton->setIcon(Util::getIcon("profile.png", 50, 50));
+    this->profileButton->setIconSize(QSize (50, 50));
+    this->profileButton->setText("");
+
+    this->friendsButton->setIcon(Util::getIcon("friends.png", 50, 50));
+    this->friendsButton->setIconSize(QSize (50, 50));
+    this->friendsButton->setText("");
+    this->shopButton->setIcon(Util::getIcon("cart.png", 80, 80));
+    this->shopButton->setIconSize(QSize (50, 50));
+    this->shopButton->setText("");
+    this->inboxButton->setIcon(Util::getIcon("envelope.png", 50, 50));
+    this->inboxButton->setIconSize(QSize (50, 50));
+    this->inboxButton->setText("");
+
+    this->exitButton->setIcon(Util::getIcon("exit.png", 100, 100));
+    this->exitButton->setIconSize(QSize (50, 50));
+    this->exitButton->setText("");
 }
 
 #include <QApplication>
@@ -132,17 +149,17 @@ Menu::~Menu () noexcept {
     delete this->centralButtonsLayout;
     delete this->leftButtonsLayout;
     delete this->generalLayout;
+    delete this->rightButtonsLayout;
 
     delete this->friendsButton;
     delete this->inboxButton;
-    delete this->settingsButton;
     delete this->exitButton;
+    delete this->shopButton;
 
     delete this->playButton;
     delete this->statisticsButton;
     delete this->tutorialButton;
 
-    delete this->rightButtonsLayout;
-
+    delete this->settingsButton;
     delete this->profileButton;
 }
