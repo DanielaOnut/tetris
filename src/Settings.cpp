@@ -12,10 +12,10 @@ void Settings::init() {
 }
 
 void Settings::createComponents () noexcept {
-    this->mainLayout = new QVBoxLayout ( this );
-    this->resetButtonLayout = new QHBoxLayout ( this );
-    this->upSettingsButtons = new QVBoxLayout ( this );
-    this->lowerButtonsLayout = new QHBoxLayout ( this );
+    this->mainLayout = new QVBoxLayout ( nullptr );
+    this->resetButtonLayout = new QHBoxLayout ( nullptr );
+    this->upSettingsButtons = new QVBoxLayout ( nullptr );
+    this->lowerButtonsLayout = new QHBoxLayout ( nullptr );
 
     this->resetButton = new QPushButton ( this->resetButtonText, this );
     this->generalButton = new QPushButton ( this->generalButtonText, this);

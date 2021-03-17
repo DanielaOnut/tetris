@@ -6,7 +6,7 @@ QPushButton {
     border-radius: 3px;
     border-style: outset;
     margin: 3px;
-    font-size: larger;
+    font-size: 20px;
 }
 
 /*QPushButton:hover {*/

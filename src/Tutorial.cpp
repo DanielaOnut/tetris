@@ -16,17 +16,17 @@ void Tutorial::init() {
 }
 
 void Tutorial::createComponents () noexcept {
-    this->mainLayout = new QVBoxLayout ( this );
-    this->textLayout = new QHBoxLayout ( this );
-    this->lowerButtonsLayout = new QHBoxLayout ( this );
+    this->mainLayout = new QVBoxLayout ( nullptr ); /// layout owned by nobody on creation
+    this->textLayout = new QHBoxLayout ( nullptr );
+    this->lowerButtonsLayout = new QHBoxLayout ( nullptr );
 
-    this->tutorialText = new QTextEdit ();
+    this->tutorialText = new QTextEdit (this); /// objects must be owned
     this->tutorialText->setText("The tutorial is HERE");
     this->backButton = new QPushButton ( this->backButtonText, this );
 }
 
 void Tutorial::alignComponents() noexcept {
-    this->setLayout( this->mainLayout );
+    this->setLayout( this->mainLayout ); /// assign layout to this Widget
 
     this->mainLayout->addItem (this->textLayout);
     this->mainLayout->addItem (this->lowerButtonsLayout);
