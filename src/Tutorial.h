@@ -19,12 +19,12 @@ private:
     QLayout     * mainLayout    { nullptr };
 
     QLayout     * textLayout    { nullptr };
-    QLabel      * tutorialText  { nullptr };
+    QTextEdit   * tutorialText  { nullptr };
 
     QLayout     * lowerButtonsLayout { nullptr };
     QPushButton * backButton         { nullptr };
 
-    const char * backButtonText = "Back";
+    const char  * backButtonText = "Back";
 
 public:
     explicit Tutorial (QWidget * parent) noexcept : QWidget(parent) {

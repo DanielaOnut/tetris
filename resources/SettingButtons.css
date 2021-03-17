@@ -6,12 +6,13 @@ QPushButton {
     border-radius: 3px;
     border-style: outset;
     margin: 3px;
+    font-size: larger;
 }
 
-QPushButton:hover {
-    border-style: solid;
-    background-color: #dbb3b3;
-}
+/*QPushButton:hover {*/
+/*    border-style: solid;*/
+/*    background-color: #dbb3b3;*/
+/*}*/
 
 QPushButton:pressed {
     border-style: inset;

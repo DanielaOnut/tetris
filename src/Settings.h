@@ -11,6 +11,13 @@ class Settings : public QWidget {
 private:
     QLayout     * mainLayout { nullptr };
 
+    /// Reset Button
+    QLayout     * resetButtonLayout { nullptr };
+
+    QPushButton * resetButton       { nullptr };
+
+    const char  * resetButtonText   = "Reset to Default";
+
     /// Up Settings Buttons
     QLayout     * upSettingsButtons { nullptr };
 

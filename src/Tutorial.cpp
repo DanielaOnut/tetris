@@ -4,6 +4,8 @@
 
 #include "Tutorial.h"
 #include "Util.h"
+#include <QTextEdit>
+#include <QLabel>
 
 void Tutorial::init() {
     this->createComponents();
@@ -18,8 +20,8 @@ void Tutorial::createComponents () noexcept {
     this->textLayout = new QHBoxLayout ( this );
     this->lowerButtonsLayout = new QHBoxLayout ( this );
 
-    this->tutorialText = new QLabel;
-    this->tutorialText->setText("The tutorial");
+    this->tutorialText = new QTextEdit ();
+    this->tutorialText->setText("The tutorial is HERE");
     this->backButton = new QPushButton ( this->backButtonText, this );
 }
 

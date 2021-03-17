@@ -68,6 +68,13 @@ void Menu::alignComponents() noexcept {
 }
 
 void Menu::adjustComponents () noexcept {
+    this->playButton->setFixedHeight(35);
+    this->statisticsButton->setFixedHeight(35);
+    this->tutorialButton->setFixedHeight(35);
+    this->playButton->setMinimumWidth(100);
+    this->statisticsButton->setMinimumWidth(100);
+    this->tutorialButton->setMinimumWidth(100);
+
     this->friendsButton->setMaximumWidth(100);
     this->inboxButton->setMaximumWidth(100);
     this->shopButton->setMaximumWidth(100);
