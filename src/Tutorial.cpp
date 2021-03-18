@@ -20,8 +20,8 @@ void Tutorial::createComponents () noexcept {
     this->textLayout = new QHBoxLayout ( nullptr );
     this->lowerButtonsLayout = new QHBoxLayout ( nullptr );
 
-    this->tutorialText = new QTextEdit (this); /// objects must be owned
-    this->tutorialText->setText("The tutorial is HERE");
+    this->tutorialText = new QLabel (this); /// objects must be owned
+//    this->tutorialText->setText("The tutorial is HERE");
     this->backButton = new QPushButton ( this->backButtonText, this );
 }
 
@@ -34,7 +34,7 @@ void Tutorial::alignComponents() noexcept {
     this->textLayout->addWidget(this->tutorialText);
     this->lowerButtonsLayout->addWidget(this->backButton);
 
-    this->textLayout->setAlignment(this->tutorialText, Qt::AlignCenter);
+    this->textLayout->setAlignment(Qt::AlignVCenter);
     this->lowerButtonsLayout->setAlignment(this->backButton, Qt::AlignBottom | Qt::AlignLeft);
 }
 
@@ -44,7 +44,12 @@ void Tutorial::adjustComponents() noexcept {
 
 void Tutorial::styleComponents() noexcept {
     auto buttonStyle = Util::getStyle("GeneralButton.css");
+    auto textStyle = Util::getStyle("TutorialText.css");
+
     this->backButton->setStyleSheet(buttonStyle.c_str());
+    this->tutorialText->setTextFormat(Qt::RichText);
+    this->tutorialText->setWordWrap(true);
+    this->tutorialText->setText(textStyle.c_str());
 }
 
 void Tutorial::connectComponents() noexcept {

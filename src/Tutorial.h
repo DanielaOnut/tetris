@@ -19,7 +19,7 @@ private:
     QLayout     * mainLayout    { nullptr };
 
     QLayout     * textLayout    { nullptr };
-    QTextEdit   * tutorialText  { nullptr };
+    QLabel      * tutorialText  { nullptr };
 
     QLayout     * lowerButtonsLayout { nullptr };
     QPushButton * backButton         { nullptr };
