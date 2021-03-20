@@ -13,7 +13,7 @@
 
 /**
  *
- *        designs : settings, statistics, friends ( in page ), profile ( in page ), inbox ( in page )
+ *  todo 4:    designs : settings, statistics, friends ( in page ), profile ( in page ), inbox ( in page )
  *
  *
  * todo 2 : Look over code, prepare questions
@@ -26,6 +26,8 @@
  * todo 3 :
  *      Settings Panel - populate  -> resolution , name , sound fx etc. - almost done-
  *      Look up ALL destructors for any mem. leak -done-
+ *
+ *
  */
 class Menu : public QWidget {
     Q_OBJECT

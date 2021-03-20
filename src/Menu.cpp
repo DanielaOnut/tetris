@@ -4,6 +4,7 @@
 
 #include "Menu.h"
 #include "Util.h"
+#include "Inbox.h"
 
 void Menu::init () noexcept {
     this->createComponents();
@@ -146,6 +147,20 @@ void Menu::connectComponents() noexcept {
         auto settings = new Settings(nullptr);
         settings->init();
         this->currentPopup->setContent(settings);
+    } );
+
+    connect ( this->inboxButton, & QPushButton::clicked, [this]() {
+        delete this->currentPopup;
+
+        this->currentPopup = new Popup(
+                this,
+                { 10, this->height() - 400 - (this->height() - this->friendsButton->y()) },
+                { 300, 400 }
+        );
+
+        auto inbox = new Inbox (nullptr);
+        inbox->init();
+        this->currentPopup->setContent(inbox);
     } );
 }
 
