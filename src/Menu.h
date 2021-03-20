@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QLayout>
 #include <QSpacerItem>
+#include <Popup.h>
 
 /**
  *
@@ -65,6 +66,7 @@ private:
     const char      * shopButtonText        = "PH_SH";
     const char      * exitButtonText        = "PH_E";
 
+    Popup           * currentPopup          = nullptr;
 
 public:
     explicit Menu ( QWidget * parent ) noexcept : QWidget(parent) { }
@@ -78,7 +80,7 @@ public:
     void styleComponents () noexcept;
     void connectComponents () noexcept;
 
-    ~Menu () noexcept;
+    ~Menu () noexcept override;
 
 signals:
     void howToPlay(); // functia semnal

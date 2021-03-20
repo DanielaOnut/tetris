@@ -55,6 +55,11 @@ public:
     void styleComponents () noexcept;
     void connectComponents () noexcept;
 
+    /// Settings * p = new Settings ();
+    /// QWidget * q = p;
+
+    /// delete q; -> ~QWidget
+    /// delete q; -> ~Settings -> ~QWidget
     ~Settings() noexcept override;
 
 signals:

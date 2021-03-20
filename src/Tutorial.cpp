@@ -44,7 +44,7 @@ void Tutorial::adjustComponents() noexcept {
 
 void Tutorial::styleComponents() noexcept {
     auto buttonStyle = Util::getStyle("GeneralButton.css");
-    auto textStyle = Util::getStyle("TutorialText.css");
+    auto textStyle = Util::getStyle("TutorialText.html");
 
     this->backButton->setStyleSheet(buttonStyle.c_str());
     this->tutorialText->setTextFormat(Qt::RichText);

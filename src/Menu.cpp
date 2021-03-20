@@ -124,6 +124,7 @@ void Menu::styleComponents() noexcept {
 }
 
 #include <QApplication>
+#include <Settings.h>
 void Menu::connectComponents() noexcept {
     auto howToPlayCallback = [this] () noexcept -> void {
         emit this->howToPlay();
@@ -132,6 +133,20 @@ void Menu::connectComponents() noexcept {
     connect ( this->tutorialButton, & QPushButton::clicked, howToPlayCallback );
     connect ( this->exitButton, & QPushButton::clicked, [](){QApplication::exit(0);} );
     connect ( this->settingsButton, & QPushButton::clicked, [this]() {emit this->settings();} );
+
+    connect ( this->friendsButton, & QPushButton::clicked, [this](){
+        delete this->currentPopup;
+
+        this->currentPopup = new Popup(
+                this,
+                { 10, this->height() - 400 - (this->height() - this->friendsButton->y()) },
+                { 300, 400 }
+        );
+
+        auto settings = new Settings(nullptr);
+        settings->init();
+        this->currentPopup->setContent(settings);
+    } );
 }
 
 Menu::~Menu () noexcept {
@@ -169,4 +184,6 @@ Menu::~Menu () noexcept {
 
     delete this->settingsButton;
     delete this->profileButton;
+
+    delete this->currentPopup;
 }
