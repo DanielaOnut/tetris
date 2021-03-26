@@ -47,6 +47,6 @@ void Inbox::alignComponents() noexcept {
 Inbox::~Inbox () noexcept {
     this->generalLayout->removeWidget(this->messageList);
 
-    delete this->messageList;
+    delete this->messageList; /// TODO : memory leak
     delete this->generalLayout;
 }
