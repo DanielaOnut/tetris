@@ -3,7 +3,7 @@
 //
 
 #include "Inbox.h"
-#include <QLayout>
+
 
 Inbox::Inbox (QWidget * parent) noexcept : QWidget(parent) {
 
@@ -15,7 +15,23 @@ void Inbox::init() noexcept {
 //    this->adjustComponents();
 //    this->styleComponents();
 //    this->connectComponents();
-    this->messageList->addItem("ana are mere");
+//    this->messageList->addItem("ana are mere");
+
+    this->addMessage( "Loghin", "Salut, merge lista" );
+}
+
+void Inbox::addMessage(const std::string & developer, const std::string & message) noexcept {
+    auto container = new QListWidgetItem(this->messageList);
+    this->messageList->addItem(container );
+
+    auto widget = new InboxListItem();
+    widget->init();
+    widget->setDeveloperName(developer);
+    widget->setMessage(message);
+
+    container->setSizeHint(widget->sizeHint() ); /// spunem cam cat de mare sa fie container-ul
+
+    this->messageList->setItemWidget ( container, widget );
 }
 
 void Inbox::createComponents() noexcept {
