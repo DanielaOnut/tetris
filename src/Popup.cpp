@@ -3,6 +3,7 @@
 //
 
 #include "Popup.h"
+#include "Util.h"
 
 Popup::Popup(QWidget *parent, QPoint p, QSize s) noexcept :
     QWidget(parent),
@@ -60,7 +61,16 @@ void Popup::adjustComponents() noexcept {
 
 void Popup::styleComponents() noexcept {
     this->setStyleSheet("QWidget{\n"
-                        "background-color: #f1f555;}");
+                        "background-color: #6692c4;}");
+    auto buttonStyle = Util::getStyle("GeneralButton.css");
+
+    this->closeButton->setStyleSheet(buttonStyle.c_str());
+    this->minimiseButton->setStyleSheet(buttonStyle.c_str());
+
+    this->closeButton->setIcon(Util::getIcon("close.png", 40, 40));
+    this->closeButton->setIconSize(QSize (20, 20));
+    this->minimiseButton->setIcon(Util::getIcon("minimize.png", 20, 20));
+    this->minimiseButton->setIconSize(QSize (20, 20));
 }
 
 void Popup::connectComponents() noexcept {

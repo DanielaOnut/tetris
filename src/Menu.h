@@ -14,14 +14,7 @@
 /**
  *
  *  todo 4:    designs : settings, statistics, friends ( in page ), profile ( in page ), inbox ( in page )
- *
- *
- * todo 2 : Look over code, prepare questions
- *
- *          Populate Tutorial, separate init into createComponents ... (same as in Menu) -done-
- *          Same thing that was done for Tutorial, but for Settings. -done-
- *                 Implement panel switching for settings
- *                 Populate Settings ( same as window => init = createComponents, alignComponents etc.-done-
+ *                       Implement panel switching for settings
  *
  * todo 3 :
  *      Settings Panel - populate  -> resolution , name , sound fx etc. - almost done-

@@ -5,6 +5,7 @@
 #include "Menu.h"
 #include "Util.h"
 #include "Inbox.h"
+#include "Shop.h"
 
 void Menu::init () noexcept {
     this->createComponents();
@@ -161,6 +162,19 @@ void Menu::connectComponents() noexcept {
         auto inbox = new Inbox (nullptr);
         inbox->init();
         this->currentPopup->setContent(inbox);
+    } );
+    connect ( this->shopButton, & QPushButton::clicked, [this]() {
+        delete this->currentPopup;
+
+        this->currentPopup = new Popup(
+                this,
+                { 10, this->height() - 400 - (this->height() - this->friendsButton->y()) },
+                { 300, 400 }
+        );
+
+//        auto shop = new Shop (nullptr);
+//        shop->init();
+//        this->currentPopup->setContent(shop);
     } );
 }
 
