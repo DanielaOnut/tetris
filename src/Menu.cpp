@@ -127,6 +127,7 @@ void Menu::styleComponents() noexcept {
 
 #include <QApplication>
 #include <Settings.h>
+#include <Shop.h>
 void Menu::connectComponents() noexcept {
     auto howToPlayCallback = [this] () noexcept -> void {
         emit this->howToPlay();
@@ -172,9 +173,9 @@ void Menu::connectComponents() noexcept {
                 { 300, 400 }
         );
 
-//        auto shop = new Shop (nullptr);
-//        shop->init();
-//        this->currentPopup->setContent(shop);
+        auto shop = new Shop (nullptr);
+        shop->init();
+        this->currentPopup->setContent(shop);
     } );
 }
 

@@ -9,6 +9,8 @@ void Settings::init() {
     this->adjustComponents();
     this->styleComponents();
     this->connectComponents();
+
+    this->setSoundSettingsVisibility( false );
 }
 
 void Settings::createComponents () noexcept {
@@ -19,7 +21,20 @@ void Settings::createComponents () noexcept {
 
     this->resetButton = new QPushButton ( this->resetButtonText, this );
     this->generalButton = new QPushButton ( this->generalButtonText, this);
+
     this->soundButton = new QPushButton ( this->soundButtonText, this );
+    this->soundSettingsLayout = new QHBoxLayout ( nullptr );
+    this->soundSettingsLabelsLayout = new QVBoxLayout( nullptr );
+    this->soundSettingsSlidersLayout = new QVBoxLayout ( nullptr );
+
+    this->soundMasterLabel = new QLabel ( this->soundMasterLabelText, this );
+    this->soundMusicLabel = new QLabel ( this->soundMusicLabelText, this );
+    this->soundFXLabel = new QLabel ( this->soundFXLabelText, this );
+
+    this->soundMasterSlider = new QSlider(Qt::Horizontal, this);
+    this->soundMusicSlider = new QSlider(Qt::Horizontal, this);
+    this->soundFXSlider = new QSlider(Qt::Horizontal, this);
+
     this->videoButton = new QPushButton ( this->videoButtonText, this );
     this->controlsButton = new QPushButton ( this->controlsButtonText, this );
 
@@ -37,6 +52,20 @@ void Settings::alignComponents() noexcept {
     this->resetButtonLayout->addWidget( this->resetButton );
     this->upSettingsButtons->addWidget( this->generalButton );
     this->upSettingsButtons->addWidget( this->soundButton );
+
+    this->upSettingsButtons->addItem( this->soundSettingsLayout );
+
+    this->soundSettingsLayout->addItem( this->soundSettingsLabelsLayout );
+    this->soundSettingsLayout->addItem( this->soundSettingsSlidersLayout );
+
+    this->soundSettingsLabelsLayout->addWidget( this->soundMasterLabel );
+    this->soundSettingsLabelsLayout->addWidget( this->soundMusicLabel );
+    this->soundSettingsLabelsLayout->addWidget( this->soundFXLabel );
+
+    this->soundSettingsSlidersLayout->addWidget( this->soundMasterSlider );
+    this->soundSettingsSlidersLayout->addWidget( this->soundMusicSlider );
+    this->soundSettingsSlidersLayout->addWidget( this->soundFXSlider );
+
     this->upSettingsButtons->addWidget( this->videoButton );
     this->upSettingsButtons->addWidget( this->controlsButton );
 
@@ -90,6 +119,26 @@ void Settings::styleComponents() noexcept {
 
 void Settings::connectComponents() noexcept {
     connect( this->backButton, & QPushButton::clicked, [this] () { emit this->back(); } );
+
+    connect( this->soundButton, & QPushButton::clicked, [this](){
+        this->setSoundSettingsVisibility(true);
+        this->setVideoSettingsVisibility(false);
+    } );
+
+    connect( this->videoButton, & QPushButton::clicked, [this](){
+        this->setSoundSettingsVisibility(false);
+        this->setVideoSettingsVisibility(true);
+    } );
+
+    connect( this->controlsButton, & QPushButton::clicked, [this](){
+        this->setSoundSettingsVisibility(false);
+        this->setVideoSettingsVisibility(false);
+    } );
+
+    connect( this->generalButton, & QPushButton::clicked, [this](){
+        this->setSoundSettingsVisibility(false);
+        this->setVideoSettingsVisibility(false);
+    } );
 }
 
 Settings::~Settings() noexcept {
@@ -100,6 +149,20 @@ Settings::~Settings() noexcept {
 
     this->upSettingsButtons->removeWidget(this->generalButton);
     this->upSettingsButtons->removeWidget(this->soundButton);
+
+    this->upSettingsButtons->removeItem( this->soundSettingsLayout );
+
+    this->soundSettingsLayout->removeItem( this->soundSettingsLabelsLayout );
+    this->soundSettingsLayout->removeItem( this->soundSettingsSlidersLayout );
+
+    this->soundSettingsLabelsLayout->removeWidget( this->soundMasterLabel );
+    this->soundSettingsLabelsLayout->removeWidget( this->soundMusicLabel );
+    this->soundSettingsLabelsLayout->removeWidget( this->soundFXLabel );
+
+    this->soundSettingsSlidersLayout->removeWidget( this->soundMasterSlider );
+    this->soundSettingsSlidersLayout->removeWidget( this->soundMusicSlider );
+    this->soundSettingsSlidersLayout->removeWidget( this->soundFXSlider );
+
     this->upSettingsButtons->removeWidget(this->videoButton);
     this->upSettingsButtons->removeWidget(this->controlsButton);
 
@@ -121,4 +184,18 @@ Settings::~Settings() noexcept {
     delete this->backButton;
     delete this->okButton;
     delete this->applyButton;
+
+
+    delete this->soundSettingsLayout;
+
+    delete this->soundSettingsLabelsLayout;
+    delete this->soundSettingsSlidersLayout;
+
+    delete this->soundMasterLabel;
+    delete this->soundMusicLabel;
+    delete this->soundFXLabel;
+
+    delete this->soundMasterSlider;
+    delete this->soundMusicSlider;
+    delete this->soundFXSlider;
 }

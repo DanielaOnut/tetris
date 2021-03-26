@@ -20,7 +20,19 @@ add_executable(
         src/Menu.h
         src/Window.cpp
         src/Window.h
-        src/Util.cpp src/Util.h src/Tutorial.cpp src/Tutorial.h src/Settings.cpp src/Settings.h src/Popup.cpp src/Popup.h src/Inbox.cpp src/Inbox.h)
+        src/Util.cpp
+        src/Util.h
+        src/Tutorial.cpp
+        src/Tutorial.h
+        src/Settings.cpp
+        src/Settings.h
+        src/Popup.cpp
+        src/Popup.h
+        src/Inbox.cpp
+        src/Inbox.h
+        src/Shop.cpp
+        src/Shop.h
+)
 
 
 if (NOT CMAKE_PREFIX_PATH)

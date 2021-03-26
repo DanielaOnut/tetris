@@ -40,6 +40,8 @@ void Popup::alignComponents() noexcept {
     this->buttonsLayout->addWidget(this->minimiseButton);
 
     this->buttonsLayout->setAlignment(this->minimiseButton, Qt::AlignLeft);
+    this->buttonsLayout->setSpacing(10);
+    
     this->generalLayout->setAlignment(this->buttonsLayout, Qt::AlignTop);
 }
 
@@ -53,10 +55,10 @@ void Popup::setContent ( QWidget * widget ) noexcept {
 void Popup::adjustComponents() noexcept {
     this->setGeometry( this->x, this->y, this->width, this->height );
 
-    this->closeButton->setMaximumWidth(50);
-    this->closeButton->setMaximumWidth(50);
-    this->minimiseButton->setMinimumWidth(50);
-    this->minimiseButton->setMinimumWidth(50);
+    this->closeButton->setMaximumWidth(20);
+    this->closeButton->setMinimumWidth(20);
+    this->minimiseButton->setMinimumWidth(20);
+    this->minimiseButton->setMaximumWidth(20);
 }
 
 void Popup::styleComponents() noexcept {
@@ -67,7 +69,7 @@ void Popup::styleComponents() noexcept {
     this->closeButton->setStyleSheet(buttonStyle.c_str());
     this->minimiseButton->setStyleSheet(buttonStyle.c_str());
 
-    this->closeButton->setIcon(Util::getIcon("close.png", 40, 40));
+    this->closeButton->setIcon(Util::getIcon("close.png", 20, 20));
     this->closeButton->setIconSize(QSize (20, 20));
     this->minimiseButton->setIcon(Util::getIcon("minimize.png", 20, 20));
     this->minimiseButton->setIconSize(QSize (20, 20));

@@ -2,8 +2,11 @@
 // Created by danie on 20.03.2021.
 //
 
-#ifndef PROIECT_INBOX_H
-#define PROIECT_INBOX_H
+#ifndef PROIECT_SHOP_H
+#define PROIECT_SHOP_H
+
+#include <Popup.h>
+#include <Menu.h>
 
 #include <QWidget>
 #include <QListWidget>
