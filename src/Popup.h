@@ -45,6 +45,8 @@ public:
     void paintEvent ( QPaintEvent * ) noexcept override;
 
     void setContent ( QWidget * ) noexcept;
+signals:
+    void close ();
 };
 
 #endif //TETRIS_POPUP_H

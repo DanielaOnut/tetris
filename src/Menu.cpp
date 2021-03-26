@@ -149,6 +149,12 @@ void Menu::connectComponents() noexcept {
         auto settings = new Settings(nullptr);
         settings->init();
         this->currentPopup->setContent(settings);
+
+        connect ( this->currentPopup, & Popup::close, [this]() {
+            delete this->currentPopup;
+
+            this->currentPopup = nullptr;
+        } );
     } );
 
     connect ( this->inboxButton, & QPushButton::clicked, [this]() {
@@ -163,6 +169,12 @@ void Menu::connectComponents() noexcept {
         auto inbox = new Inbox (nullptr);
         inbox->init();
         this->currentPopup->setContent(inbox);
+
+        connect ( this->currentPopup, & Popup::close, [this]() {
+            delete this->currentPopup;
+
+            this->currentPopup = nullptr;
+        } );
     } );
     connect ( this->shopButton, & QPushButton::clicked, [this]() {
         delete this->currentPopup;
@@ -176,7 +188,14 @@ void Menu::connectComponents() noexcept {
         auto shop = new Shop (nullptr);
         shop->init();
         this->currentPopup->setContent(shop);
+
+        connect ( this->currentPopup, & Popup::close, [this]() {
+            delete this->currentPopup;
+
+            this->currentPopup = nullptr;
+        } );
     } );
+
 }
 
 Menu::~Menu () noexcept {

@@ -76,7 +76,7 @@ void Popup::styleComponents() noexcept {
 }
 
 void Popup::connectComponents() noexcept {
-    connect ( this->closeButton, & QPushButton::clicked, [](){} );
+    connect ( this->closeButton, & QPushButton::clicked, [this](){emit this->close();} );
     connect ( this->minimiseButton, & QPushButton::clicked, [](){} );
 }
 
