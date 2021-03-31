@@ -13,11 +13,9 @@
 
 /**
  *
- *  todo 4:    designs : settings, statistics, friends ( in page ), profile ( in page ), inbox ( in page )
- *                       Implement panel switching for settings
+ *  todo 4:    designs : settings, statistics
  *
  * todo 3 :
- *      Settings Panel - populate  -> resolution , name , sound fx etc. - almost done-
  *      Look up ALL destructors for any mem. leak -done-
  *
  *

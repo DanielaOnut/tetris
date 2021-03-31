@@ -23,7 +23,6 @@ private:
     QLayout * buttonsLayout = nullptr;
 
     QPushButton * closeButton = nullptr;
-    QPushButton * minimiseButton = nullptr;
 
     QWidget * popupContent = nullptr;
 

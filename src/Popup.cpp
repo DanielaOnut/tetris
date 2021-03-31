@@ -29,7 +29,6 @@ void Popup::createComponents() noexcept {
     this->buttonsLayout = new QHBoxLayout(nullptr);
 
     this->closeButton = new QPushButton(this);
-    this->minimiseButton = new QPushButton(this);
 }
 
 void Popup::alignComponents() noexcept {
@@ -37,12 +36,9 @@ void Popup::alignComponents() noexcept {
     this->generalLayout->addItem(this->buttonsLayout);
 
     this->buttonsLayout->addWidget(this->closeButton);
-    this->buttonsLayout->addWidget(this->minimiseButton);
-
-    this->buttonsLayout->setAlignment(this->minimiseButton, Qt::AlignLeft);
-    this->buttonsLayout->setSpacing(10);
     
     this->generalLayout->setAlignment(this->buttonsLayout, Qt::AlignTop);
+    this->buttonsLayout->setAlignment(this->closeButton, Qt::AlignRight);
 }
 
 void Popup::setContent ( QWidget * widget ) noexcept {
@@ -57,8 +53,6 @@ void Popup::adjustComponents() noexcept {
 
     this->closeButton->setMaximumWidth(20);
     this->closeButton->setMinimumWidth(20);
-    this->minimiseButton->setMinimumWidth(20);
-    this->minimiseButton->setMaximumWidth(20);
 }
 
 void Popup::styleComponents() noexcept {
@@ -67,17 +61,13 @@ void Popup::styleComponents() noexcept {
     auto buttonStyle = Util::getStyle("GeneralButton.css");
 
     this->closeButton->setStyleSheet(buttonStyle.c_str());
-    this->minimiseButton->setStyleSheet(buttonStyle.c_str());
 
     this->closeButton->setIcon(Util::getIcon("close.png", 20, 20));
     this->closeButton->setIconSize(QSize (20, 20));
-    this->minimiseButton->setIcon(Util::getIcon("minimize.png", 20, 20));
-    this->minimiseButton->setIconSize(QSize (20, 20));
 }
 
 void Popup::connectComponents() noexcept {
     connect ( this->closeButton, & QPushButton::clicked, [this](){emit this->close();} );
-    connect ( this->minimiseButton, & QPushButton::clicked, [](){} );
 }
 
 Popup::~Popup() noexcept {
@@ -88,10 +78,8 @@ Popup::~Popup() noexcept {
     }
 
     this->buttonsLayout->removeWidget(this->closeButton);
-    this->buttonsLayout->removeWidget(this->minimiseButton);
 
     delete this->closeButton;
-    delete this->minimiseButton;
 
     delete this->generalLayout;
     delete this->buttonsLayout;

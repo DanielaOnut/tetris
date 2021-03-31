@@ -27,6 +27,25 @@ private:
 
     QLayout     * generalSettingsLayout { nullptr };
 
+    QLayout     * generalSettingsLabel { nullptr };
+    QLayout     * generalActionsLayout { nullptr };
+
+    QLabel      * difficultyLabel   { nullptr };
+    QLabel      * accountLabel   { nullptr };
+    QLabel      * notificationsLabel   { nullptr };
+
+    ///...actions
+
+    void inline setGeneralSettingsVisibility ( bool visibility ) noexcept {
+        this->difficultyLabel->setVisible(visibility);
+        this->accountLabel->setVisible(visibility);
+        this->notificationsLabel->setVisible(visibility);
+    }
+
+    const char  * difficultyLabelText = "Difficulty";
+    const char  * accountLabelText = "Account";
+    const char  * notificationsLabelText = "Notifications";
+
     QPushButton * soundButton    { nullptr };
 
     QLayout     * soundSettingsLayout { nullptr };
@@ -57,16 +76,54 @@ private:
 
     QPushButton * videoButton    { nullptr };
 
-    void inline setVideoSettingsVisibility ( bool visibility ) noexcept {
+    QLayout     * videoSettingsLayout { nullptr };
 
+    QLayout     * videoSettingsLabel { nullptr };
+    QLayout     * videoActionsLayout { nullptr };
+
+    QLabel      * resolutionLabel  { nullptr };
+    QLabel      * displayModeLabel { nullptr };
+    QLabel      * brightnessLabel  { nullptr };
+    QLabel      * shadowsLabel     { nullptr };
+
+    QSlider     * brightnessSlider  { nullptr };
+
+    void inline setVideoSettingsVisibility ( bool visibility ) noexcept {
+        this->resolutionLabel->setVisible(visibility);
+        this->displayModeLabel->setVisible(visibility);
+        this->brightnessLabel->setVisible(visibility);
+        this->shadowsLabel->setVisible(visibility);
+        this->brightnessSlider->setVisible(visibility);
     }
 
-    QLayout     * videoSettingsLayout { nullptr };
+    const char  * resolutionLabelText = "Resolution";
+    const char  * displayModeLabelText = "Display Mode";
+    const char  * brightnessLabelText = "Brightness";
+    const char  * shadowsLabelText = "Shadows";
 
     QPushButton * controlsButton { nullptr };
 
     QLayout     * controlsSettingsLayout { nullptr };
 
+    QLayout     * controlsSettingsLabel { nullptr };
+    QLayout     * controlsActionsLayout { nullptr };
+
+    QLabel      * moveRightLabel  { nullptr };
+    QLabel      * moveLeftLabel   { nullptr };
+    QLabel      * rotateLabel     { nullptr };
+    QLabel      * dropLabel       { nullptr };
+
+    void inline setControlsSettingsVisibility ( bool visibility ) noexcept {
+        this->moveRightLabel->setVisible(visibility);
+        this->moveLeftLabel->setVisible(visibility);
+        this->rotateLabel->setVisible(visibility);
+        this->dropLabel->setVisible(visibility);
+    }
+
+    const char * moveRightLabelText = "MOVE RIGHT";
+    const char * moveLeftLabelText = "MOVE LEFT";
+    const char * rotateLabelText = "ROTATE";
+    const char * dropLabelText = "DROP";
 
     const char  * generalButtonText  = "GENERAL";
     const char  * soundButtonText    = "SOUND";
