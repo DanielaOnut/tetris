@@ -12,7 +12,20 @@ void Shop::init() noexcept {
 //    this->adjustComponents();
 //    this->styleComponents();
 //    this->connectComponents();
-    this->itemsList->addItem("The shop is here");
+    this->addItem("Rainbow Cube", "  100");
+}
+
+void Shop::addItem(const std::string & item, const std::string & price) noexcept {
+    auto container = new QListWidgetItem (this->itemsList);
+    this->itemsList->addItem(container);
+
+    auto widget = new ShopListItem();
+    widget->init();
+    widget->setItemName(item);
+    widget->setPrice(price);
+
+    container->setSizeHint(widget->sizeHint());
+    this->itemsList->setItemWidget(container, widget);
 }
 
 void Shop::createComponents() noexcept {

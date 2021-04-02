@@ -27,10 +27,17 @@ void Settings::createComponents () noexcept {
     this->generalSettingsLayout = new QHBoxLayout ( nullptr );
     this->generalSettingsLabel = new QVBoxLayout ( nullptr );
     this->generalActionsLayout = new QVBoxLayout ( nullptr );
+    this->difficultyLabelButtons = new QHBoxLayout ( nullptr );
 
     this->difficultyLabel = new QLabel (this->difficultyLabelText, this);
     this->accountLabel = new QLabel (this->accountLabelText, this);
     this->notificationsLabel = new QLabel (this->notificationsLabelText, this);
+
+    this->easyButton = new QPushButton (this->easyButtonText, this);
+    this->normalButton = new QPushButton (this->normalButtonText, this);
+    this->hardButton = new QPushButton (this->hardButtonText, this);
+    this->accountButton = new QPushButton (this);
+    this->notificationsBox = new QCheckBox (this);
 
     this->soundButton = new QPushButton ( this->soundButtonText, this );
     this->soundSettingsLayout = new QHBoxLayout ( nullptr );
@@ -49,13 +56,17 @@ void Settings::createComponents () noexcept {
     this->videoSettingsLayout = new QHBoxLayout ( nullptr );
     this->videoSettingsLabel = new QVBoxLayout ( nullptr );
     this->videoActionsLayout = new QVBoxLayout ( nullptr );
+    this->displayModeButtons = new QHBoxLayout ( nullptr );
 
     this->resolutionLabel = new QLabel (this->resolutionLabelText, this);
     this->displayModeLabel = new QLabel (this->displayModeLabelText, this);
     this->brightnessLabel = new QLabel (this->brightnessLabelText, this);
     this->shadowsLabel = new QLabel (this->shadowsLabelText, this);
 
+    this->windowModeButton = new QPushButton (this->windowModeButtonText, this);
+    this->fullscreenButton = new QPushButton (this->fullscreenButtonText, this);
     this->brightnessSlider = new QSlider (Qt::Horizontal, this);
+    this->shadowsBox = new QCheckBox (this);
 
     this->controlsButton = new QPushButton ( this->controlsButtonText, this );
     this->controlsSettingsLayout = new QHBoxLayout (nullptr);
@@ -66,6 +77,11 @@ void Settings::createComponents () noexcept {
     this->moveLeftLabel = new QLabel (this->moveLeftLabelText, this);
     this->rotateLabel = new QLabel (this->rotateLabelText, this);
     this->dropLabel = new QLabel (this->dropLabelText, this);
+
+    this->moveRightButton = new QPushButton (this->moveRightButtonText, this);
+    this->moveLeftButton = new QPushButton (this->moveLeftButtonText, this);
+    this->rotateButton = new QPushButton (this->rotateButtonText, this);
+    this->dropButton = new QPushButton (this->dropButtonText, this);
 
     this->backButton = new QPushButton ( this->backButtonText, this );
     this->okButton = new QPushButton ( this->okButtonText, this );
@@ -85,10 +101,17 @@ void Settings::alignComponents() noexcept {
 
     this->generalSettingsLayout->addItem( this->generalSettingsLabel );
     this->generalSettingsLayout->addItem( this->generalActionsLayout );
+    this->generalActionsLayout->addItem( this->difficultyLabelButtons );
 
     this->generalSettingsLabel->addWidget( this->difficultyLabel );
     this->generalSettingsLabel->addWidget( this->accountLabel );
     this->generalSettingsLabel->addWidget( this->notificationsLabel );
+
+    this->difficultyLabelButtons->addWidget( this->easyButton );
+    this->difficultyLabelButtons->addWidget( this->normalButton );
+    this->difficultyLabelButtons->addWidget( this->hardButton );
+    this->generalActionsLayout->addWidget( this->accountButton );
+    this->generalActionsLayout->addWidget( this->notificationsBox );
 
     this->upSettingsButtons->addWidget( this->soundButton );
 
@@ -110,13 +133,17 @@ void Settings::alignComponents() noexcept {
 
     this->videoSettingsLayout->addItem( this->videoSettingsLabel );
     this->videoSettingsLayout->addItem( this->videoActionsLayout );
+    this->videoActionsLayout->addItem( this->displayModeButtons );
 
     this->videoSettingsLabel->addWidget( this->resolutionLabel );
     this->videoSettingsLabel->addWidget( this->displayModeLabel );
     this->videoSettingsLabel->addWidget( this->brightnessLabel );
     this->videoSettingsLabel->addWidget( this->shadowsLabel );
 
+    this->displayModeButtons->addWidget( this->windowModeButton );
+    this->displayModeButtons->addWidget( this->fullscreenButton );
     this->videoActionsLayout->addWidget( this->brightnessSlider );
+    this->videoActionsLayout->addWidget( this->shadowsBox );
 
     this->upSettingsButtons->addWidget( this->controlsButton );
     this->upSettingsButtons->addItem( this->controlsSettingsLayout );
@@ -129,6 +156,11 @@ void Settings::alignComponents() noexcept {
     this->controlsSettingsLabel->addWidget( this->rotateLabel );
     this->controlsSettingsLabel->addWidget( this->dropLabel );
 
+    this->controlsActionsLayout->addWidget( this->moveRightButton );
+    this->controlsActionsLayout->addWidget( this->moveLeftButton );
+    this->controlsActionsLayout->addWidget( this->rotateButton );
+    this->controlsActionsLayout->addWidget( this->dropButton );
+
     this->lowerButtonsLayout->addWidget( this->backButton );
     this->lowerButtonsLayout->addWidget( this->okButton );
     this->lowerButtonsLayout->addWidget( this->applyButton );
@@ -139,7 +171,15 @@ void Settings::alignComponents() noexcept {
     this->upSettingsButtons->setAlignment(this->videoButton, Qt::AlignHCenter);
     this->upSettingsButtons->setAlignment(this->controlsButton, Qt::AlignHCenter);
 
-    this->generalSettingsLabel->setAlignment(Qt::AlignHCenter);
+    this->difficultyLabel->setAlignment(Qt::AlignRight);
+    this->accountLabel->setAlignment(Qt::AlignRight);
+    this->notificationsLabel->setAlignment(Qt::AlignRight);
+    this->generalActionsLayout->setAlignment(this->notificationsBox, Qt::AlignLeft);
+    this->difficultyLabelButtons->setAlignment(Qt::AlignLeft);
+    this->generalSettingsLabel->setSpacing(5);
+    this->generalActionsLayout->setSpacing(5);
+    this->difficultyLabelButtons->setSpacing(15);
+    this->generalSettingsLayout->setSpacing(35);
 
     this->soundSettingsLabelsLayout->setAlignment(this->soundMasterLabel, Qt::AlignRight);
     this->soundSettingsLabelsLayout->setAlignment(this->soundMusicLabel, Qt::AlignRight);
@@ -154,11 +194,18 @@ void Settings::alignComponents() noexcept {
     this->brightnessLabel->setAlignment(Qt::AlignRight);
     this->shadowsLabel->setAlignment(Qt::AlignRight);
     this->videoActionsLayout->setAlignment(this->brightnessSlider, Qt::AlignLeft);
+    this->videoActionsLayout->setAlignment(this->shadowsBox, Qt::AlignLeft);
+    this->displayModeButtons->setAlignment(Qt::AlignLeft);
+    this->videoSettingsLayout->setSpacing(35);
+    this->displayModeButtons->setSpacing(15);
 
-    this->moveRightLabel->setAlignment(Qt::AlignHCenter);
-    this->moveLeftLabel->setAlignment(Qt::AlignHCenter);
-    this->rotateLabel->setAlignment(Qt::AlignHCenter);
-    this->dropLabel->setAlignment(Qt::AlignHCenter);
+    this->moveRightLabel->setAlignment(Qt::AlignRight);
+    this->moveLeftLabel->setAlignment(Qt::AlignRight);
+    this->rotateLabel->setAlignment(Qt::AlignRight);
+    this->dropLabel->setAlignment(Qt::AlignRight);
+
+    this->controlsSettingsLayout->setSpacing(35);
+    this->controlsActionsLayout->setAlignment(Qt::AlignLeft);
 
     this->lowerButtonsLayout->setAlignment(this->okButton, Qt::AlignBottom);
     this->lowerButtonsLayout->setAlignment(this->applyButton, Qt::AlignBottom);
@@ -180,6 +227,22 @@ void Settings::adjustComponents() noexcept {
     this->videoButton->setMinimumWidth(200);
     this->controlsButton->setMinimumWidth(200);
 
+    this->easyButton->setMaximumWidth(110);
+    this->normalButton->setMaximumWidth(110);
+    this->hardButton->setMaximumWidth(110);
+
+    this->easyButton->setMinimumWidth(110);
+    this->normalButton->setMinimumWidth(110);
+    this->hardButton->setMinimumWidth(110);
+
+    this->easyButton->setFixedHeight(30);
+    this->normalButton->setFixedHeight(30);
+    this->hardButton->setFixedHeight(30);
+
+    this->accountButton->setMaximumWidth(30);
+    this->accountButton->setMinimumWidth(30);
+    this->accountButton->setFixedHeight(20);
+
     this->generalButton->setFixedHeight(80);
     this->soundButton->setFixedHeight(80);
     this->videoButton->setFixedHeight(80);
@@ -193,14 +256,37 @@ void Settings::adjustComponents() noexcept {
     this->soundMusicSlider->setMinimumWidth(200);
     this->soundFXSlider->setMinimumWidth(200);
 
+    this->windowModeButton->setMaximumWidth(120);
+    this->fullscreenButton->setMaximumWidth(120);
     this->brightnessSlider->setMaximumWidth(200);
+
+    this->windowModeButton->setMinimumWidth(120);
+    this->fullscreenButton->setMinimumWidth(120);
     this->brightnessSlider->setMinimumWidth(200);
+
+    this->moveRightButton->setMaximumWidth(100);
+    this->moveLeftButton->setMaximumWidth(100);
+    this->rotateButton->setMaximumWidth(100);
+    this->dropButton->setMaximumWidth(100);
+
+    this->moveRightButton->setMinimumWidth(100);
+    this->moveLeftButton->setMinimumWidth(100);
+    this->rotateButton->setMinimumWidth(100);
+    this->dropButton->setMinimumWidth(100);
+
+    this->moveRightButton->setFixedHeight(30);
+    this->moveLeftButton->setFixedHeight(30);
+    this->rotateButton->setFixedHeight(30);
+    this->dropButton->setFixedHeight(30);
 }
 
 void Settings::styleComponents() noexcept {
     auto buttonStyle = Util::getStyle("GeneralButton.css");
     auto settingButtonStyle = Util::getStyle("SettingButtons.css");
     auto slidersStyle = Util::getStyle("Sliders.css");
+    auto difficultyButtonsStyle = Util::getStyle("DifficultyButtons.css");
+    auto displayButtonsStyle = Util::getStyle("DisplayModeButtons.css");
+    auto controlsButtonsStyle = Util::getStyle("ControlsButtons.css");
 
     this->backButton->setStyleSheet(buttonStyle.c_str());
     this->okButton->setStyleSheet(buttonStyle.c_str());
@@ -212,11 +298,25 @@ void Settings::styleComponents() noexcept {
     this->videoButton->setStyleSheet(settingButtonStyle.c_str());
     this->controlsButton->setStyleSheet(settingButtonStyle.c_str());
 
+    this->easyButton->setStyleSheet(difficultyButtonsStyle.c_str());
+    this->normalButton->setStyleSheet(difficultyButtonsStyle.c_str());
+    this->hardButton->setStyleSheet(difficultyButtonsStyle.c_str());
+
+    this->accountButton->setIcon(Util::getIcon("google play.png", 30, 20));
+    this->accountButton->setIconSize(QSize (30, 20));
+
     this->soundMasterSlider->setStyleSheet(slidersStyle.c_str());
     this->soundMusicSlider->setStyleSheet(slidersStyle.c_str());
     this->soundFXSlider->setStyleSheet(slidersStyle.c_str());
 
+    this->windowModeButton->setStyleSheet(displayButtonsStyle.c_str());
+    this->fullscreenButton->setStyleSheet(displayButtonsStyle.c_str());
     this->brightnessSlider->setStyleSheet(slidersStyle.c_str());
+
+    this->moveRightButton->setStyleSheet(controlsButtonsStyle.c_str());
+    this->moveLeftButton->setStyleSheet(controlsButtonsStyle.c_str());
+    this->rotateButton->setStyleSheet(controlsButtonsStyle.c_str());
+    this->dropButton->setStyleSheet(controlsButtonsStyle.c_str());
 }
 
 void Settings::connectComponents() noexcept {
@@ -264,10 +364,17 @@ Settings::~Settings() noexcept {
 
     this->generalSettingsLayout->removeItem(this->generalSettingsLabel);
     this->generalSettingsLayout->removeItem(this->generalActionsLayout);
+    this->generalActionsLayout->removeItem(this->difficultyLabelButtons);
 
     this->generalSettingsLabel->removeWidget(this->difficultyLabel);
     this->generalSettingsLabel->removeWidget(this->accountLabel);
     this->generalSettingsLabel->removeWidget(this->notificationsLabel);
+
+    this->difficultyLabelButtons->removeWidget(this->easyButton);
+    this->difficultyLabelButtons->removeWidget(this->normalButton);
+    this->difficultyLabelButtons->removeWidget(this->hardButton);
+    this->generalActionsLayout->removeWidget(this->accountButton);
+    this->generalActionsLayout->removeWidget(this->notificationsBox);
 
     this->upSettingsButtons->removeWidget(this->soundButton);
 
@@ -290,13 +397,17 @@ Settings::~Settings() noexcept {
 
     this->videoSettingsLayout->removeItem(this->videoSettingsLabel);
     this->videoSettingsLayout->removeItem(this->videoActionsLayout);
+    this->videoActionsLayout->removeItem(this->displayModeButtons);
 
     this->videoSettingsLabel->removeWidget(this->resolutionLabel);
     this->videoSettingsLabel->removeWidget(this->displayModeLabel);
     this->videoSettingsLabel->removeWidget(this->brightnessLabel);
     this->videoSettingsLabel->removeWidget(this->shadowsLabel);
 
+    this->displayModeButtons->removeWidget(this->windowModeButton);
+    this->displayModeButtons->removeWidget(this->fullscreenButton);
     this->videoActionsLayout->removeWidget(this->brightnessSlider);
+    this->videoActionsLayout->removeWidget(this->shadowsBox);
 
     this->upSettingsButtons->removeWidget(this->controlsButton);
 
@@ -309,6 +420,11 @@ Settings::~Settings() noexcept {
     this->controlsSettingsLabel->removeWidget(this->moveLeftLabel);
     this->controlsSettingsLabel->removeWidget(this->rotateLabel);
     this->controlsSettingsLabel->removeWidget(this->dropLabel);
+
+    this->controlsActionsLayout->removeWidget(this->moveRightButton);
+    this->controlsActionsLayout->removeWidget(this->moveLeftButton);
+    this->controlsActionsLayout->removeWidget(this->rotateButton);
+    this->controlsActionsLayout->removeWidget(this->dropButton);
 
     this->mainLayout->removeItem(this->lowerButtonsLayout);
     this->mainLayout->removeItem(this->upSettingsButtons);
@@ -333,10 +449,17 @@ Settings::~Settings() noexcept {
 
     delete this->generalSettingsLabel;
     delete this->generalActionsLayout;
+    delete this->difficultyLabelButtons;
 
     delete this->difficultyLabel;
     delete this->accountLabel;
     delete this->notificationsLabel;
+
+    delete this->easyButton;
+    delete this->normalButton;
+    delete this->hardButton;
+    delete this->accountButton;
+    delete this->notificationsBox;
 
     delete this->soundSettingsLayout;
 
@@ -355,13 +478,17 @@ Settings::~Settings() noexcept {
 
     delete this->videoSettingsLabel;
     delete this->videoActionsLayout;
+    delete this->displayModeButtons;
 
     delete this->resolutionLabel;
     delete this->displayModeLabel;
     delete this->brightnessLabel;
     delete this->shadowsLabel;
 
+    delete this->windowModeButton;
+    delete this->fullscreenButton;
     delete this->brightnessSlider;
+    delete this->shadowsBox;
 
     delete this->controlsSettingsLayout;
 
@@ -372,4 +499,9 @@ Settings::~Settings() noexcept {
     delete this->moveLeftLabel;
     delete this->rotateLabel;
     delete this->dropLabel;
+
+    delete this->moveRightButton;
+    delete this->moveLeftButton;
+    delete this->rotateButton;
+    delete this->dropButton;
 }

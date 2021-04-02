@@ -22,7 +22,7 @@ void Inbox::init() noexcept {
 
 void Inbox::addMessage(const std::string & developer, const std::string & message) noexcept {
     auto container = new QListWidgetItem(this->messageList);
-    this->messageList->addItem(container );
+    this->messageList->addItem(container);
 
     auto widget = new InboxListItem();
     widget->init();

@@ -9,11 +9,6 @@ QPushButton {
     font-size: 20px;
 }
 
-/*QPushButton:hover {*/
-/*    border-style: solid;*/
-/*    background-color: #dbb3b3;*/
-/*}*/
-
 QPushButton:pressed {
     border-style: inset;
 
