@@ -142,6 +142,8 @@ private:
     QPushButton * rotateButton { nullptr };
     QPushButton * dropButton { nullptr };
 
+    QPushButton * controlAwaitingInput {nullptr};
+
     void inline setControlsSettingsVisibility ( bool visibility ) noexcept {
         this->moveRightLabel->setVisible(visibility);
         this->moveLeftLabel->setVisible(visibility);
@@ -152,6 +154,8 @@ private:
         this->rotateButton->setVisible(visibility);
         this->dropButton->setVisible(visibility);
     }
+
+    const char * controlButtonAwaitingInputText = " ... ";
 
     const char * moveRightLabelText = "MOVE RIGHT";
     const char * moveLeftLabelText = "MOVE LEFT";
@@ -180,6 +184,8 @@ private:
     const char * applyButtonText    = "Apply";
 
 public:
+    bool eventFilter(QObject *, QEvent *) noexcept;
+
     explicit Settings (QWidget * parent) noexcept : QWidget(parent) {
 
     }

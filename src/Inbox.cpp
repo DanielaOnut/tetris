@@ -45,8 +45,19 @@ void Inbox::alignComponents() noexcept {
 }
 
 Inbox::~Inbox () noexcept {
+    for ( int i = this->messageList->count() - 1; i >= 0; i-- ) {
+        /// memory leak if not done !
+        // scoatem widget din container
+        auto container = this->messageList->item(i);
+        auto widget = this->messageList->itemWidget( container );
+        this->messageList->removeItemWidget( container );
+
+        delete widget;
+        delete container;
+    }
+
     this->generalLayout->removeWidget(this->messageList);
 
-    delete this->messageList; /// TODO : memory leak
+    delete this->messageList;
     delete this->generalLayout;
 }

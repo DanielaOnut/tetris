@@ -2,6 +2,7 @@
 #include "Settings.h"
 
 #include "Util.h"
+#include <CurrentSettings.h>
 
 void Settings::init() {
     this->createComponents();
@@ -78,7 +79,11 @@ void Settings::createComponents () noexcept {
     this->rotateLabel = new QLabel (this->rotateLabelText, this);
     this->dropLabel = new QLabel (this->dropLabelText, this);
 
-    this->moveRightButton = new QPushButton (this->moveRightButtonText, this);
+    this->moveRightButton = new QPushButton (
+            CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveRightKey),
+            this
+    );
+
     this->moveLeftButton = new QPushButton (this->moveLeftButtonText, this);
     this->rotateButton = new QPushButton (this->rotateButtonText, this);
     this->dropButton = new QPushButton (this->dropButtonText, this);
@@ -278,6 +283,14 @@ void Settings::adjustComponents() noexcept {
     this->moveLeftButton->setFixedHeight(30);
     this->rotateButton->setFixedHeight(30);
     this->dropButton->setFixedHeight(30);
+
+    for ( int i = 0; i < this->children().count(); i++ ) {
+        auto pWidget = dynamic_cast < QWidget * > (this->children().value(i));
+        if ( pWidget != nullptr )
+            pWidget->installEventFilter(this);
+    }
+
+    this->installEventFilter(this);
 }
 
 void Settings::styleComponents() noexcept {
@@ -350,12 +363,82 @@ void Settings::connectComponents() noexcept {
         this->setControlsSettingsVisibility(true);
     } );
 
+    connect( this->moveRightButton, & QPushButton::clicked, [this]() {
+        this->moveRightButton->setText(this->controlButtonAwaitingInputText);
+        this->moveRightButton->setStyleSheet(Util::getStyle("ControlsButtonsAwaitingInput.css").c_str());
+        this->controlAwaitingInput = this->moveRightButton;
+    });
+}
+
+#include <QEvent>
+#include <QKeyEvent>
+#include <iostream>
+bool Settings::eventFilter ( QObject * pObject, QEvent * pEvent ) noexcept {
+    if ( pEvent->type() == QEvent::Type::MouseButtonPress ) {
+        if ( pObject == this->moveRightButton ) {
+            std::cout << "Am apasat pe buton iarasi" << '\n';
+        } else if ( this->controlAwaitingInput != nullptr ) {
+            std::cout << "Am apasat pe atlceva" << '\n';
+            this->controlAwaitingInput->setText(this->moveRightButtonText);
+            this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());
+            this->controlAwaitingInput = nullptr;
+        }
+    }
+
+    if ( pEvent->type() == QEvent::Type::KeyPress ) {
+        if ( this->controlAwaitingInput != nullptr ) {
+            if ( this->controlAwaitingInput == this->moveRightButton ) {
+                CurrentSettings::instance().control().setMoveRightKey(
+                        static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key())
+                );
+
+                this->controlAwaitingInput->setText(
+                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveRightKey)
+                );
+            }
+
+//            this->controlAwaitingInput->setText(dynamic_cast<QKeyEvent *>(pEvent)->key());
+            this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());
+            this->controlAwaitingInput = nullptr;
+        }
+    }
+
+    return false;
 }
 
 Settings::~Settings() noexcept {
-    this->lowerButtonsLayout->removeWidget(this->backButton);
-    this->lowerButtonsLayout->removeWidget(this->okButton);
-    this->lowerButtonsLayout->removeWidget(this->applyButton);
+    /// clear lower area
+    [this] () {
+        this->lowerButtonsLayout->removeWidget(this->backButton);
+        this->lowerButtonsLayout->removeWidget(this->okButton);
+        this->lowerButtonsLayout->removeWidget(this->applyButton);
+
+        delete this->backButton;
+        delete this->okButton;
+        delete this->applyButton;
+    } ();
+
+    /**
+     * echvalent cu
+
+
+    auto clearLowerButtons = [this] () {
+        this->lowerButtonsLayout->removeWidget(this->backButton);
+        this->lowerButtonsLayout->removeWidget(this->okButton);
+        this->lowerButtonsLayout->removeWidget(this->applyButton);
+
+        delete this->backButton;
+        delete this->okButton;
+        delete this->applyButton;
+    };
+
+    clearLowerButtons();
+
+    */
+//    this->lowerButtonsLayout->removeWidget(this->backButton);
+//    this->lowerButtonsLayout->removeWidget(this->okButton);
+//    this->lowerButtonsLayout->removeWidget(this->applyButton);
+
     this->resetButtonLayout->removeWidget(this->resetButton);
 
     this->upSettingsButtons->removeWidget(this->generalButton);
@@ -441,9 +524,9 @@ Settings::~Settings() noexcept {
     delete this->controlsButton;
     delete this->resetButton;
 
-    delete this->backButton;
-    delete this->okButton;
-    delete this->applyButton;
+//    delete this->backButton;
+//    delete this->okButton;
+//    delete this->applyButton;
 
     delete this->generalSettingsLayout;
 
