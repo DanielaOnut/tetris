@@ -64,6 +64,10 @@ void Settings::createComponents () noexcept {
     this->brightnessLabel = new QLabel (this->brightnessLabelText, this);
     this->shadowsLabel = new QLabel (this->shadowsLabelText, this);
 
+    this->resolutions.push_front("1280 x 720");
+    this->resolutions.push_front("2560 x 1440");
+    this->resolutions.push_front("1920 x 1080");
+    this->dropDownList = new QComboBox (this);
     this->windowModeButton = new QPushButton (this->windowModeButtonText, this);
     this->fullscreenButton = new QPushButton (this->fullscreenButtonText, this);
     this->brightnessSlider = new QSlider (Qt::Horizontal, this);
@@ -138,6 +142,11 @@ void Settings::alignComponents() noexcept {
 
     this->videoSettingsLayout->addItem( this->videoSettingsLabel );
     this->videoSettingsLayout->addItem( this->videoActionsLayout );
+
+    this->videoActionsLayout->addWidget( this->dropDownList );
+    this->dropDownList->addItems( this->resolutions );
+    this->dropDownList->setMaxCount(3);
+
     this->videoActionsLayout->addItem( this->displayModeButtons );
 
     this->videoSettingsLabel->addWidget( this->resolutionLabel );
@@ -261,10 +270,12 @@ void Settings::adjustComponents() noexcept {
     this->soundMusicSlider->setMinimumWidth(200);
     this->soundFXSlider->setMinimumWidth(200);
 
+    this->dropDownList->setMaximumWidth(150);
     this->windowModeButton->setMaximumWidth(120);
     this->fullscreenButton->setMaximumWidth(120);
     this->brightnessSlider->setMaximumWidth(200);
 
+    this->dropDownList->setMinimumWidth(150);
     this->windowModeButton->setMinimumWidth(120);
     this->fullscreenButton->setMinimumWidth(120);
     this->brightnessSlider->setMinimumWidth(200);
@@ -487,6 +498,7 @@ Settings::~Settings() noexcept {
     this->videoSettingsLabel->removeWidget(this->brightnessLabel);
     this->videoSettingsLabel->removeWidget(this->shadowsLabel);
 
+    this->videoActionsLayout->removeWidget(this->dropDownList);
     this->displayModeButtons->removeWidget(this->windowModeButton);
     this->displayModeButtons->removeWidget(this->fullscreenButton);
     this->videoActionsLayout->removeWidget(this->brightnessSlider);
@@ -568,6 +580,7 @@ Settings::~Settings() noexcept {
     delete this->brightnessLabel;
     delete this->shadowsLabel;
 
+    delete this->dropDownList;
     delete this->windowModeButton;
     delete this->fullscreenButton;
     delete this->brightnessSlider;

@@ -7,6 +7,8 @@
 #include <QSlider>
 #include <QLabel>
 #include <QCheckBox>
+#include <QComboBox>
+#include <QStringList>
 
 class Settings : public QWidget {
     Q_OBJECT
@@ -102,6 +104,8 @@ private:
     QLabel      * brightnessLabel  { nullptr };
     QLabel      * shadowsLabel     { nullptr };
 
+    QStringList   resolutions      { nullptr };
+    QComboBox   * dropDownList     { nullptr };
     QPushButton * windowModeButton { nullptr };
     QPushButton * fullscreenButton { nullptr };
     QSlider     * brightnessSlider  { nullptr };
@@ -112,6 +116,7 @@ private:
         this->displayModeLabel->setVisible(visibility);
         this->brightnessLabel->setVisible(visibility);
         this->shadowsLabel->setVisible(visibility);
+        this->dropDownList->setVisible(visibility);
         this->windowModeButton->setVisible(visibility);
         this->fullscreenButton->setVisible(visibility);
         this->brightnessSlider->setVisible(visibility);
