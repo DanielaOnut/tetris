@@ -26,6 +26,7 @@ void Menu::createComponents () noexcept {
 
     this->rightButtonsLayout = new QHBoxLayout (nullptr);
 
+    this->coinButton = new QPushButton (this->coinButtonText, this);
     this->profileButton = new QPushButton (this->profileButtonText, this);
     this->settingsButton = new QPushButton (this->settingsButtonText, this);
 
@@ -51,6 +52,7 @@ void Menu::alignComponents() noexcept {
     this->centralButtonsLayout->addWidget( this->statisticsButton );
     this->centralButtonsLayout->addWidget( this->tutorialButton );
 
+    this->rightButtonsLayout->addWidget( this->coinButton );
     this->rightButtonsLayout->addWidget( this->profileButton );
     this->rightButtonsLayout->addWidget( this->settingsButton );
 
@@ -59,7 +61,10 @@ void Menu::alignComponents() noexcept {
     this->leftButtonsLayout->addWidget( this->shopButton );
     this->leftButtonsLayout->addWidget( this->exitButton );
 
-    this->generalLayout->setAlignment(this->rightButtonsLayout, Qt::AlignTop | Qt::AlignRight);
+    this->rightButtonsLayout->setAlignment(this->coinButton, Qt::AlignLeft | Qt::AlignTop);
+    this->rightButtonsLayout->setAlignment(this->profileButton, Qt::AlignRight | Qt::AlignTop);
+    this->rightButtonsLayout->setAlignment(this->settingsButton, Qt::AlignTop);
+
     this->generalLayout->setAlignment(this->centralButtonsLayout, Qt::AlignHCenter | Qt::AlignVCenter);
 
     this->leftButtonsLayout->setAlignment(this->friendsButton, Qt::AlignBottom);
@@ -83,6 +88,9 @@ void Menu::adjustComponents () noexcept {
     this->friendsButton->setMinimumWidth(100);
     this->inboxButton->setMinimumWidth(100);
     this->shopButton->setMinimumWidth(100);
+
+    this->settingsButton->setMaximumWidth(65);
+    this->settingsButton->setMinimumWidth(65);
 }
 #include <QIcon>
 void Menu::styleComponents() noexcept {
@@ -103,6 +111,15 @@ void Menu::styleComponents() noexcept {
 
     this->exitButton->setStyleSheet(exitButtonStyle.c_str());
 
+    this->coinButton->setStyleSheet ("QPushButton {\n"
+                                     "    border-color: #96a2c3;\n"
+                                     "    background-color: #f1f1f1;\n"
+                                     "    border-width: 2px;\n"
+                                     "    border-radius: 3px;\n"
+                                     "    border-style: outset;\n"
+                                     "    margin: 3px;\n"
+                                     "}");
+    this->coinButton->setIcon(Util::getIcon("coin.png", 30, 30));
     this->settingsButton->setIcon(Util::getIcon("rotita.png", 50, 50));
     this->settingsButton->setIconSize(QSize(50, 50)); /// scoatem background-ul ( alpha pe alb )
     this->settingsButton->setText("");

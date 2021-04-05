@@ -9,22 +9,84 @@ CurrentSettings CurrentSettings::_instance;
 #include <QKeyEvent>
 void CurrentSettings::ControlSettings::setMoveRightKey(Qt::Key qKey) noexcept {
     switch (qKey) {
-// region Unused Cases
         case Qt::Key_Escape:
-            break;
         case Qt::Key_Tab:
-            break;
-        case Qt::Key_Backtab:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
             break;
         case Qt::Key_Backspace:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
             break;
         case Qt::Key_Return:
-            break;
-        case Qt::Key_Enter:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
             break;
         case Qt::Key_Insert:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
             break;
         case Qt::Key_Delete:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Shift:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Control:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Alt:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_CapsLock:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Left:
+        case Qt::Key_Up:
+        case Qt::Key_Right:
+        case Qt::Key_Down:
+            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Left);
+            break;
+        case Qt::Key_0:
+        case Qt::Key_1:
+        case Qt::Key_2:
+        case Qt::Key_3:
+        case Qt::Key_4:
+        case Qt::Key_5:
+        case Qt::Key_6:
+        case Qt::Key_7:
+        case Qt::Key_8:
+        case Qt::Key_9:
+            this->moveRightKey = static_cast<ControlKey>(qKey);
+            break;
+        case Qt::Key_A:
+        case Qt::Key_B:
+        case Qt::Key_C:
+        case Qt::Key_D:
+        case Qt::Key_E:
+        case Qt::Key_F:
+        case Qt::Key_G:
+        case Qt::Key_H:
+        case Qt::Key_I:
+        case Qt::Key_J:
+        case Qt::Key_K:
+        case Qt::Key_L:
+        case Qt::Key_M:
+        case Qt::Key_N:
+        case Qt::Key_O:
+        case Qt::Key_P:
+        case Qt::Key_Q:
+        case Qt::Key_R:
+        case Qt::Key_S:
+        case Qt::Key_T:
+        case Qt::Key_U:
+        case Qt::Key_V:
+        case Qt::Key_W:
+        case Qt::Key_X:
+        case Qt::Key_Y:
+        case Qt::Key_Z:
+            this->moveRightKey = static_cast<ControlKey>(qKey + 32);
+            break;
+        case Qt::Key_Space:
+            this->moveRightKey = static_cast<ControlKey>(qKey);
+// region Unused Cases
+/**        case Qt::Key_Backtab:
             break;
         case Qt::Key_Pause:
             break;
@@ -38,27 +100,11 @@ void CurrentSettings::ControlSettings::setMoveRightKey(Qt::Key qKey) noexcept {
             break;
         case Qt::Key_End:
             break;
-// endregion
-        case Qt::Key_Left:
-        case Qt::Key_Up:
-        case Qt::Key_Right:
-        case Qt::Key_Down:
-            this->moveRightKey = static_cast<ControlKey>(qKey - Qt::Key_Left);
-            break;
-// region Unused Cases
         case Qt::Key_PageUp:
             break;
         case Qt::Key_PageDown:
             break;
-        case Qt::Key_Shift:
-            break;
-        case Qt::Key_Control:
-            break;
         case Qt::Key_Meta:
-            break;
-        case Qt::Key_Alt:
-            break;
-        case Qt::Key_CapsLock:
             break;
         case Qt::Key_NumLock:
             break;
@@ -150,8 +196,6 @@ void CurrentSettings::ControlSettings::setMoveRightKey(Qt::Key qKey) noexcept {
             break;
         case Qt::Key_Direction_R:
             break;
-        case Qt::Key_Space:
-            break;
         case Qt::Key_Exclam:
             break;
         case Qt::Key_QuoteDbl:
@@ -182,26 +226,6 @@ void CurrentSettings::ControlSettings::setMoveRightKey(Qt::Key qKey) noexcept {
             break;
         case Qt::Key_Slash:
             break;
-        case Qt::Key_0:
-            break;
-        case Qt::Key_1:
-            break;
-        case Qt::Key_2:
-            break;
-        case Qt::Key_3:
-            break;
-        case Qt::Key_4:
-            break;
-        case Qt::Key_5:
-            break;
-        case Qt::Key_6:
-            break;
-        case Qt::Key_7:
-            break;
-        case Qt::Key_8:
-            break;
-        case Qt::Key_9:
-            break;
         case Qt::Key_Colon:
             break;
         case Qt::Key_Semicolon:
@@ -216,36 +240,6 @@ void CurrentSettings::ControlSettings::setMoveRightKey(Qt::Key qKey) noexcept {
             break;
         case Qt::Key_At:
             break;
-// endregion
-        case Qt::Key_A:
-        case Qt::Key_B:
-        case Qt::Key_C:
-        case Qt::Key_D:
-        case Qt::Key_E:
-        case Qt::Key_F:
-        case Qt::Key_G:
-        case Qt::Key_H:
-        case Qt::Key_I:
-        case Qt::Key_J:
-        case Qt::Key_K:
-        case Qt::Key_L:
-        case Qt::Key_M:
-        case Qt::Key_N:
-        case Qt::Key_O:
-        case Qt::Key_P:
-        case Qt::Key_Q:
-        case Qt::Key_R:
-        case Qt::Key_S:
-        case Qt::Key_T:
-        case Qt::Key_U:
-        case Qt::Key_V:
-        case Qt::Key_W:
-        case Qt::Key_X:
-        case Qt::Key_Y:
-        case Qt::Key_Z:
-            this->moveRightKey = static_cast<ControlKey>(qKey + 32);
-            break;
-// region Unused Cases
         case Qt::Key_BracketLeft:
             break;
         case Qt::Key_Backslash:
@@ -924,6 +918,7 @@ void CurrentSettings::ControlSettings::setMoveRightKey(Qt::Key qKey) noexcept {
             break;
         case Qt::Key_unknown:
             break;
+**/
 // endregion
     }
 }

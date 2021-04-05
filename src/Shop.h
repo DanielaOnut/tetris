@@ -11,6 +11,7 @@
 #include <QWidget>
 #include <QListWidget>
 #include <QLabel>
+#include "Util.h"
 
 class Shop : public QWidget {
 private:
@@ -40,6 +41,8 @@ private:
     QLabel  * itemNameLabel {nullptr};
     QLabel  * priceLabel  {nullptr};
 
+    QPushButton  * coinButton   {nullptr};
+
 public:
     explicit ShopListItem ( QWidget * pParent = nullptr ) noexcept : QWidget(nullptr) { }
 
@@ -56,6 +59,7 @@ public:
 
         this->itemNameLabel = new QLabel (this);
         this->priceLabel = new QLabel (this);
+        this->coinButton = new QPushButton (this);
     }
 
     void alignComponents () {
@@ -63,14 +67,28 @@ public:
 
         this->generalLayout->addWidget(this->itemNameLabel);
         this->generalLayout->addWidget(this->priceLabel);
+        this->generalLayout->addWidget(this->coinButton);
+
+        this->itemNameLabel->setAlignment(Qt::AlignLeft);
+        this->priceLabel->setAlignment(Qt::AlignRight);
+        this->generalLayout->setAlignment(Qt::AlignTop);
     }
 
     void adjustComponents () {
-
+        this->coinButton->setMaximumWidth(20);
+        this->coinButton->setMinimumWidth(20);
+        this->coinButton->setFixedHeight(20);
     }
 
     void styleComponents () {
-
+        this->coinButton->setStyleSheet ("QPushButton {\n"
+                                         "    border-color: #96a2c3;\n"
+                                         "    background-color: #f1f1f1;\n"
+                                         "    border-width: 2px;\n"
+                                         "    border-radius: 3px;\n"
+                                         "    border-style: outset;\n"
+                                         "    margin: 3px;\n"
+                                         "}");
     }
 
     void connectComponents () {
@@ -83,6 +101,11 @@ public:
 
     void setPrice ( std::string const & price ) noexcept {
         this->priceLabel->setText(price.c_str());
+    }
+
+    void setButton () noexcept {
+        this->coinButton->setIcon(Util::getIcon("coin.png", 20, 20));
+        this->coinButton->setIconSize(QSize (20, 20));
     }
 };
 

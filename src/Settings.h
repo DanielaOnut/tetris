@@ -160,7 +160,7 @@ private:
         this->dropButton->setVisible(visibility);
     }
 
-    const char * controlButtonAwaitingInputText = " ... ";
+    const char * controlButtonAwaitingInputText = "Press a key";
 
     const char * moveRightLabelText = "MOVE RIGHT";
     const char * moveLeftLabelText = "MOVE LEFT";

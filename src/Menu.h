@@ -13,7 +13,7 @@
 
 /**
  *
- *  todo 4:    designs : settings, statistics
+ *  todo 4:    designs : statistics
  *
  * todo 3 :
  *      Look up ALL destructors for any mem. leak -done-
@@ -37,12 +37,14 @@ private:
     const char      * statisticsButtonText  = "Statistics";
     const char      * tutorialButtonText    = "How to Play";
 
-    /// Upper Right Buttons
+    /// Upper Right Buttons (and coin button)
     QLayout         * rightButtonsLayout     = nullptr;
 
+    QPushButton     * coinButton            = nullptr;
     QPushButton     * profileButton         = nullptr;
     QPushButton     * settingsButton        = nullptr;
 
+    const char      * coinButtonText        = "300";
     const char      * profileButtonText     = "PH_P";
     const char      * settingsButtonText    = "PH_S";
 

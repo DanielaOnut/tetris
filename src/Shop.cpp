@@ -23,6 +23,7 @@ void Shop::addItem(const std::string & item, const std::string & price) noexcept
     widget->init();
     widget->setItemName(item);
     widget->setPrice(price);
+    widget->setButton();
 
     container->setSizeHint(widget->sizeHint());
     this->itemsList->setItemWidget(container, widget);
@@ -39,6 +40,14 @@ void Shop::alignComponents() noexcept {
 }
 
 Shop::~Shop () noexcept {
+    for (int i = this->itemsList->count() - 1;i >= 0;i--) {
+        auto container = this->itemsList->item(i);
+        auto widget = this->itemsList->itemWidget(container);
+        this->itemsList->removeItemWidget(container);
+        delete widget;
+        delete container;
+    }
+
     this->generalLayout->removeWidget(this->itemsList);
 
     delete this->itemsList;

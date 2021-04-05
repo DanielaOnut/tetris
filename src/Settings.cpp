@@ -344,40 +344,46 @@ void Settings::styleComponents() noexcept {
 }
 
 void Settings::connectComponents() noexcept {
-    connect( this->backButton, & QPushButton::clicked, [this] () { emit this->back(); } );
+    connect(this->backButton, &QPushButton::clicked, [this]() { emit this->back(); });
 
-    connect( this->generalButton, & QPushButton::clicked, [this](){
+    connect(this->generalButton, &QPushButton::clicked, [this]() {
         this->setGeneralSettingsVisibility(true);
         this->setSoundSettingsVisibility(false);
         this->setVideoSettingsVisibility(false);
         this->setControlsSettingsVisibility(false);
-    } );
+    });
 
-    connect( this->soundButton, & QPushButton::clicked, [this](){
+    connect(this->soundButton, &QPushButton::clicked, [this]() {
         this->setGeneralSettingsVisibility(false);
         this->setSoundSettingsVisibility(true);
         this->setVideoSettingsVisibility(false);
         this->setControlsSettingsVisibility(false);
-    } );
+    });
 
-    connect( this->videoButton, & QPushButton::clicked, [this](){
+    connect(this->videoButton, &QPushButton::clicked, [this]() {
         this->setGeneralSettingsVisibility(false);
         this->setSoundSettingsVisibility(false);
         this->setVideoSettingsVisibility(true);
         this->setControlsSettingsVisibility(false);
-    } );
+    });
 
-    connect( this->controlsButton, & QPushButton::clicked, [this](){
+    connect(this->controlsButton, &QPushButton::clicked, [this]() {
         this->setGeneralSettingsVisibility(false);
         this->setSoundSettingsVisibility(false);
         this->setVideoSettingsVisibility(false);
         this->setControlsSettingsVisibility(true);
-    } );
+    });
 
-    connect( this->moveRightButton, & QPushButton::clicked, [this]() {
+    connect(this->moveRightButton, &QPushButton::clicked, [this]() {
         this->moveRightButton->setText(this->controlButtonAwaitingInputText);
         this->moveRightButton->setStyleSheet(Util::getStyle("ControlsButtonsAwaitingInput.css").c_str());
         this->controlAwaitingInput = this->moveRightButton;
+    });
+
+    connect(this->moveLeftButton, &QPushButton::clicked, [this]() {
+        this->moveLeftButton->setText(this->controlButtonAwaitingInputText);
+        this->moveLeftButton->setStyleSheet(Util::getStyle("ControlsButtonsAwaitingInput.css").c_str());
+        this->controlAwaitingInput = this->moveLeftButton;
     });
 }
 
@@ -390,7 +396,8 @@ bool Settings::eventFilter ( QObject * pObject, QEvent * pEvent ) noexcept {
             std::cout << "Am apasat pe buton iarasi" << '\n';
         } else if ( this->controlAwaitingInput != nullptr ) {
             std::cout << "Am apasat pe atlceva" << '\n';
-            this->controlAwaitingInput->setText(this->moveRightButtonText);
+//            this->controlAwaitingInput->setText(this->moveRightButtonText);
+            this->controlAwaitingInput->setText(CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveRightKey));
             this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());
             this->controlAwaitingInput = nullptr;
         }
@@ -600,4 +607,6 @@ Settings::~Settings() noexcept {
     delete this->moveLeftButton;
     delete this->rotateButton;
     delete this->dropButton;
+
+    delete this->controlAwaitingInput;
 }
