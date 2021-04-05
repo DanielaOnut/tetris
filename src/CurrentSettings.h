@@ -8,9 +8,9 @@
 #define GEN_KEY(_key, _value) KEY_ ## _key = _value
 
 /**
- * Todo : Celelalte butoane
+ * Todo : Celelalte butoane -done-
  * Todo : Complete space mapping
- * Todo : Assign all used buttons ( digits too, shift, control, tab, capslock ? ) -done-5
+ * Todo : Assign all used buttons ( digits too, shift, control, tab, capslock ? ) -done-
  * Todo : Attempt to integrate audio settings
  * Todo : DDown List for Resolutions -done-
  * Todo : Prepare Questions from this class
@@ -104,6 +104,9 @@ private:
         ControlKey  dropKey         {KEY_SPACE};
 
         void setMoveRightKey (Qt::Key qKey) noexcept;
+        void setMoveLeftKey (Qt::Key qKey) noexcept;
+        void setRotateKey (Qt::Key qKey) noexcept;
+        void setDropKey (Qt::Key qKey) noexcept;
     };
 
     enum Difficulty {

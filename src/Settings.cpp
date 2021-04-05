@@ -88,9 +88,18 @@ void Settings::createComponents () noexcept {
             this
     );
 
-    this->moveLeftButton = new QPushButton (this->moveLeftButtonText, this);
-    this->rotateButton = new QPushButton (this->rotateButtonText, this);
-    this->dropButton = new QPushButton (this->dropButtonText, this);
+    this->moveLeftButton = new QPushButton (
+            CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveLeftKey),
+            this
+    );
+    this->rotateButton = new QPushButton (
+            CurrentSettings::controlKeyToString(CurrentSettings::instance().control().rotateKey),
+            this
+    );
+    this->dropButton = new QPushButton (
+            CurrentSettings::controlKeyToString(CurrentSettings::instance().control().dropKey),
+            this
+    );
 
     this->backButton = new QPushButton ( this->backButtonText, this );
     this->okButton = new QPushButton ( this->okButtonText, this );
@@ -385,6 +394,18 @@ void Settings::connectComponents() noexcept {
         this->moveLeftButton->setStyleSheet(Util::getStyle("ControlsButtonsAwaitingInput.css").c_str());
         this->controlAwaitingInput = this->moveLeftButton;
     });
+
+    connect(this->rotateButton, &QPushButton::clicked, [this]() {
+        this->rotateButton->setText(this->controlButtonAwaitingInputText);
+        this->rotateButton->setStyleSheet(Util::getStyle("ControlsButtonsAwaitingInput.css").c_str());
+        this->controlAwaitingInput = this->rotateButton;
+    });
+
+    connect(this->dropButton, &QPushButton::clicked, [this]() {
+        this->dropButton->setText(this->controlButtonAwaitingInputText);
+        this->dropButton->setStyleSheet(Util::getStyle("ControlsButtonsAwaitingInput.css").c_str());
+        this->controlAwaitingInput = this->dropButton;
+    });
 }
 
 #include <QEvent>
@@ -392,14 +413,28 @@ void Settings::connectComponents() noexcept {
 #include <iostream>
 bool Settings::eventFilter ( QObject * pObject, QEvent * pEvent ) noexcept {
     if ( pEvent->type() == QEvent::Type::MouseButtonPress ) {
-        if ( pObject == this->moveRightButton ) {
-            std::cout << "Am apasat pe buton iarasi" << '\n';
-        } else if ( this->controlAwaitingInput != nullptr ) {
-            std::cout << "Am apasat pe atlceva" << '\n';
-//            this->controlAwaitingInput->setText(this->moveRightButtonText);
-            this->controlAwaitingInput->setText(CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveRightKey));
-            this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());
-            this->controlAwaitingInput = nullptr;
+        if ( this->controlAwaitingInput != nullptr ) {
+            if (controlAwaitingInput == this->moveRightButton) {
+                this->controlAwaitingInput->setText(
+                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveRightKey));
+                this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());
+                this->controlAwaitingInput = nullptr;
+            }
+            if ( this->controlAwaitingInput == this->moveLeftButton ) {
+                this->controlAwaitingInput->setText(CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveLeftKey));
+                this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());
+                this->controlAwaitingInput = nullptr;
+            }
+            if ( this->controlAwaitingInput == this->rotateButton ) {
+                this->controlAwaitingInput->setText(CurrentSettings::controlKeyToString(CurrentSettings::instance().control().rotateKey));
+                this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());
+                this->controlAwaitingInput = nullptr;
+            }
+            if ( this->controlAwaitingInput == this->dropButton ) {
+                this->controlAwaitingInput->setText(CurrentSettings::controlKeyToString(CurrentSettings::instance().control().dropKey));
+                this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());
+                this->controlAwaitingInput = nullptr;
+            }
         }
     }
 
@@ -414,8 +449,24 @@ bool Settings::eventFilter ( QObject * pObject, QEvent * pEvent ) noexcept {
                         CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveRightKey)
                 );
             }
-
-//            this->controlAwaitingInput->setText(dynamic_cast<QKeyEvent *>(pEvent)->key());
+            if ( this->controlAwaitingInput == this->moveLeftButton ) {
+                CurrentSettings::instance().control().setMoveLeftKey(static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key()));
+                this->controlAwaitingInput->setText(
+                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveLeftKey)
+                );
+            }
+            if ( this->controlAwaitingInput == this->rotateButton ) {
+                CurrentSettings::instance().control().setRotateKey(static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key()));
+                this->controlAwaitingInput->setText(
+                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().rotateKey)
+                );
+            }
+            if ( this->controlAwaitingInput == this->dropButton ) {
+                CurrentSettings::instance().control().setDropKey(static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key()));
+                this->controlAwaitingInput->setText(
+                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().dropKey)
+                );
+            }
             this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());
             this->controlAwaitingInput = nullptr;
         }

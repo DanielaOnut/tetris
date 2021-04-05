@@ -922,3 +922,247 @@ void CurrentSettings::ControlSettings::setMoveRightKey(Qt::Key qKey) noexcept {
 // endregion
     }
 }
+
+void CurrentSettings::ControlSettings::setMoveLeftKey(Qt::Key qKey) noexcept {
+    switch (qKey) {
+        case Qt::Key_Escape:
+        case Qt::Key_Tab:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Backspace:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Return:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Insert:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Delete:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Shift:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Control:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Alt:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_CapsLock:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Left:
+        case Qt::Key_Up:
+        case Qt::Key_Right:
+        case Qt::Key_Down:
+            this->moveLeftKey = static_cast<ControlKey>(qKey - Qt::Key_Left);
+            break;
+        case Qt::Key_0:
+        case Qt::Key_1:
+        case Qt::Key_2:
+        case Qt::Key_3:
+        case Qt::Key_4:
+        case Qt::Key_5:
+        case Qt::Key_6:
+        case Qt::Key_7:
+        case Qt::Key_8:
+        case Qt::Key_9:
+            this->moveLeftKey = static_cast<ControlKey>(qKey);
+            break;
+        case Qt::Key_A:
+        case Qt::Key_B:
+        case Qt::Key_C:
+        case Qt::Key_D:
+        case Qt::Key_E:
+        case Qt::Key_F:
+        case Qt::Key_G:
+        case Qt::Key_H:
+        case Qt::Key_I:
+        case Qt::Key_J:
+        case Qt::Key_K:
+        case Qt::Key_L:
+        case Qt::Key_M:
+        case Qt::Key_N:
+        case Qt::Key_O:
+        case Qt::Key_P:
+        case Qt::Key_Q:
+        case Qt::Key_R:
+        case Qt::Key_S:
+        case Qt::Key_T:
+        case Qt::Key_U:
+        case Qt::Key_V:
+        case Qt::Key_W:
+        case Qt::Key_X:
+        case Qt::Key_Y:
+        case Qt::Key_Z:
+            this->moveLeftKey= static_cast<ControlKey>(qKey + 32);
+            break;
+        case Qt::Key_Space:
+            this->moveLeftKey = static_cast<ControlKey>(qKey);
+    }
+}
+
+void CurrentSettings::ControlSettings::setRotateKey(Qt::Key qKey) noexcept {
+    switch (qKey) {
+        case Qt::Key_Escape:
+        case Qt::Key_Tab:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Backspace:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Return:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Insert:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Delete:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Shift:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Control:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Alt:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_CapsLock:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Left:
+        case Qt::Key_Up:
+        case Qt::Key_Right:
+        case Qt::Key_Down:
+            this->rotateKey = static_cast<ControlKey>(qKey - Qt::Key_Left);
+            break;
+        case Qt::Key_0:
+        case Qt::Key_1:
+        case Qt::Key_2:
+        case Qt::Key_3:
+        case Qt::Key_4:
+        case Qt::Key_5:
+        case Qt::Key_6:
+        case Qt::Key_7:
+        case Qt::Key_8:
+        case Qt::Key_9:
+            this->rotateKey = static_cast<ControlKey>(qKey);
+            break;
+        case Qt::Key_A:
+        case Qt::Key_B:
+        case Qt::Key_C:
+        case Qt::Key_D:
+        case Qt::Key_E:
+        case Qt::Key_F:
+        case Qt::Key_G:
+        case Qt::Key_H:
+        case Qt::Key_I:
+        case Qt::Key_J:
+        case Qt::Key_K:
+        case Qt::Key_L:
+        case Qt::Key_M:
+        case Qt::Key_N:
+        case Qt::Key_O:
+        case Qt::Key_P:
+        case Qt::Key_Q:
+        case Qt::Key_R:
+        case Qt::Key_S:
+        case Qt::Key_T:
+        case Qt::Key_U:
+        case Qt::Key_V:
+        case Qt::Key_W:
+        case Qt::Key_X:
+        case Qt::Key_Y:
+        case Qt::Key_Z:
+            this->rotateKey = static_cast<ControlKey>(qKey + 32);
+            break;
+        case Qt::Key_Space:
+            this->rotateKey = static_cast<ControlKey>(qKey);
+    }
+}
+
+void CurrentSettings::ControlSettings::setDropKey(Qt::Key qKey) noexcept {
+    switch (qKey) {
+        case Qt::Key_Escape:
+        case Qt::Key_Tab:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Backspace:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Return:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Insert:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Delete:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Shift:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Control:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Alt:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_CapsLock:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Escape + 4);
+            break;
+        case Qt::Key_Left:
+        case Qt::Key_Up:
+        case Qt::Key_Right:
+        case Qt::Key_Down:
+            this->dropKey = static_cast<ControlKey>(qKey - Qt::Key_Left);
+            break;
+        case Qt::Key_0:
+        case Qt::Key_1:
+        case Qt::Key_2:
+        case Qt::Key_3:
+        case Qt::Key_4:
+        case Qt::Key_5:
+        case Qt::Key_6:
+        case Qt::Key_7:
+        case Qt::Key_8:
+        case Qt::Key_9:
+            this->dropKey = static_cast<ControlKey>(qKey);
+            break;
+        case Qt::Key_A:
+        case Qt::Key_B:
+        case Qt::Key_C:
+        case Qt::Key_D:
+        case Qt::Key_E:
+        case Qt::Key_F:
+        case Qt::Key_G:
+        case Qt::Key_H:
+        case Qt::Key_I:
+        case Qt::Key_J:
+        case Qt::Key_K:
+        case Qt::Key_L:
+        case Qt::Key_M:
+        case Qt::Key_N:
+        case Qt::Key_O:
+        case Qt::Key_P:
+        case Qt::Key_Q:
+        case Qt::Key_R:
+        case Qt::Key_S:
+        case Qt::Key_T:
+        case Qt::Key_U:
+        case Qt::Key_V:
+        case Qt::Key_W:
+        case Qt::Key_X:
+        case Qt::Key_Y:
+        case Qt::Key_Z:
+            this->dropKey = static_cast<ControlKey>(qKey + 32);
+            break;
+        case Qt::Key_Space:
+            this->dropKey = static_cast<ControlKey>(qKey);
+    }
+}
+
