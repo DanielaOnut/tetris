@@ -332,7 +332,7 @@ void Settings::styleComponents() noexcept {
     this->controlsButton->setStyleSheet(settingButtonStyle.c_str());
 
     this->easyButton->setStyleSheet(difficultyButtonsStyle.c_str());
-    this->normalButton->setStyleSheet(difficultyButtonsStyle.c_str());
+    this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
     this->hardButton->setStyleSheet(difficultyButtonsStyle.c_str());
 
     this->accountButton->setIcon(Util::getIcon("google play.png", 30, 20));
@@ -360,6 +360,24 @@ void Settings::connectComponents() noexcept {
         this->setSoundSettingsVisibility(false);
         this->setVideoSettingsVisibility(false);
         this->setControlsSettingsVisibility(false);
+    });
+
+    connect (this->easyButton, &QPushButton::clicked, [this]() {
+        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
+        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+    });
+
+    connect (this->normalButton, &QPushButton::clicked, [this]() {
+        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
+        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+    });
+
+    connect (this->hardButton, &QPushButton::clicked, [this]() {
+        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
     });
 
     connect(this->soundButton, &QPushButton::clicked, [this]() {
