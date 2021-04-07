@@ -10,6 +10,16 @@
 #include <QComboBox>
 #include <QStringList>
 
+class ControlButton : public QPushButton {
+    Q_OBJECT
+
+public:
+    explicit ControlButton ( QWidget * parent ) noexcept : QPushButton( parent ) { }
+    ControlButton ( const char * text, QWidget * parent ) noexcept : QPushButton( text, parent ) {}
+
+    void keyPressEvent(QKeyEvent *) override {}
+};
+
 class Settings : public QWidget {
     Q_OBJECT
 

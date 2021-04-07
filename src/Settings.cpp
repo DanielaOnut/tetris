@@ -83,20 +83,20 @@ void Settings::createComponents () noexcept {
     this->rotateLabel = new QLabel (this->rotateLabelText, this);
     this->dropLabel = new QLabel (this->dropLabelText, this);
 
-    this->moveRightButton = new QPushButton (
+    this->moveRightButton = new ControlButton (
             CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveRightKey),
             this
     );
 
-    this->moveLeftButton = new QPushButton (
+    this->moveLeftButton = new ControlButton (
             CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveLeftKey),
             this
     );
-    this->rotateButton = new QPushButton (
+    this->rotateButton = new ControlButton (
             CurrentSettings::controlKeyToString(CurrentSettings::instance().control().rotateKey),
             this
     );
-    this->dropButton = new QPushButton (
+    this->dropButton = new ControlButton (
             CurrentSettings::controlKeyToString(CurrentSettings::instance().control().dropKey),
             this
     );
