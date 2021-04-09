@@ -199,7 +199,7 @@ private:
     const char * applyButtonText    = "Apply";
 
 public:
-    bool eventFilter(QObject *, QEvent *) noexcept;
+    bool eventFilter(QObject *, QEvent *) noexcept override;
 
     explicit Settings (QWidget * parent) noexcept : QWidget(parent) {
 

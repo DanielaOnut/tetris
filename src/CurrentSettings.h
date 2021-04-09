@@ -9,10 +9,7 @@
 
 /**
  * Todo : Celelalte butoane -done-
- * Todo : Complete space mapping
- * Todo : Assign all used buttons ( digits too, shift, control, tab, capslock ? ) -done-
  * Todo : Attempt to integrate audio settings
- * Todo : DDown List for Resolutions -done-
  * Todo : Prepare Questions from this class
  */
 
