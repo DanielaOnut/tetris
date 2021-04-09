@@ -9,6 +9,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QStringList>
+#include <CurrentSettings.h>
 
 class ControlButton : public QPushButton {
     Q_OBJECT
@@ -181,6 +182,11 @@ private:
     const char * moveLeftButtonText = "Left Arrow";
     const char * rotateButtonText = "R";
     const char * dropButtonText = "Spacebar";
+
+    CurrentSettings::ControlKey moveRightKey {CurrentSettings::instance().control().moveRightKey};
+    CurrentSettings::ControlKey moveLeftKey  {CurrentSettings::instance().control().moveLeftKey};
+    CurrentSettings::ControlKey rotateKey    {CurrentSettings::instance().control().rotateKey};
+    CurrentSettings::ControlKey dropKey      {CurrentSettings::instance().control().dropKey};
 
     const char * generalButtonText  = "GENERAL";
     const char * soundButtonText    = "SOUND";

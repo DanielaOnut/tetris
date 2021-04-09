@@ -76,7 +76,9 @@ public:
         GEN_KEY(Alt, 39),
         GEN_KEY(CapsLock, 40),
 
-        GEN_KEY(SPACE, ' ')
+        GEN_KEY(SPACE, ' '),
+
+        GEN_KEY(UNDEFINED, -1)
     };
 
 private:
@@ -89,9 +91,9 @@ private:
     };
 
     struct AudioSettings {
-        float       masterVolume; // [0.0f - 1.0f]
-        float       musicVolume;  // [0.0f - 1.0f]
-        float       fxVolume;     // [0.0f - 1.0f]
+        float       masterVolume    {1.0f}; // [0.0f - 1.0f]
+        float       musicVolume     {1.0f}; // [0.0f - 1.0f]
+        float       fxVolume        {1.0f}; // [0.0f - 1.0f]
     };
 
     struct ControlSettings {
@@ -117,7 +119,6 @@ private:
         bool        notificationsToggle;
     };
 
-private:
     static CurrentSettings _instance;
 
     GeneralSettings generalSettings;
@@ -125,6 +126,9 @@ private:
     AudioSettings   audioSettings;
     ControlSettings controlSettings;
 public:
+
+    static ControlKey getControlKeyForQKey ( Qt::Key ) noexcept;
+
     GeneralSettings & general () noexcept {
         return this->generalSettings;
     }

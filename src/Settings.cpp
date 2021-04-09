@@ -67,6 +67,7 @@ void Settings::createComponents () noexcept {
     this->resolutions.push_front("1280 x 720");
     this->resolutions.push_front("2560 x 1440");
     this->resolutions.push_front("1920 x 1080");
+//    this->resolutions << "1280 x 720" << "2560 x 1440" << "1920 x 1080";
     this->dropDownList = new QComboBox (this);
     this->windowModeButton = new QPushButton (this->windowModeButtonText, this);
     this->fullscreenButton = new QPushButton (this->fullscreenButtonText, this);
@@ -279,6 +280,19 @@ void Settings::adjustComponents() noexcept {
     this->soundMusicSlider->setMinimumWidth(200);
     this->soundFXSlider->setMinimumWidth(200);
 
+    this->soundMasterSlider->setMinimum(0);
+    this->soundMasterSlider->setMaximum(100);
+
+    this->soundMusicSlider->setMinimum(0);
+    this->soundMusicSlider->setMaximum(100);
+
+    this->soundMasterSlider->setValue(
+            static_cast<int>((CurrentSettings::instance().audio().masterVolume * 100.0f))
+    );
+
+    this->soundFXSlider->setMinimum(0);
+    this->soundFXSlider->setMaximum(100);
+
     this->dropDownList->setMaximumWidth(150);
     this->windowModeButton->setMaximumWidth(120);
     this->fullscreenButton->setMaximumWidth(120);
@@ -352,9 +366,9 @@ void Settings::styleComponents() noexcept {
     this->dropButton->setStyleSheet(controlsButtonsStyle.c_str());
 }
 
-void Settings::connectComponents() noexcept {
-    connect(this->backButton, &QPushButton::clicked, [this]() { emit this->back(); });
+#include <iostream>
 
+void Settings::connectComponents() noexcept {
     connect(this->generalButton, &QPushButton::clicked, [this]() {
         this->setGeneralSettingsVisibility(true);
         this->setSoundSettingsVisibility(false);
@@ -424,7 +438,27 @@ void Settings::connectComponents() noexcept {
         this->dropButton->setStyleSheet(Util::getStyle("ControlsButtonsAwaitingInput.css").c_str());
         this->controlAwaitingInput = this->dropButton;
     });
+
+    auto applyFunction = [this]{
+        CurrentSettings::instance().control().moveRightKey = this->moveRightKey;
+        CurrentSettings::instance().control().moveLeftKey = this->moveLeftKey;
+        CurrentSettings::instance().control().rotateKey = this->rotateKey;
+        CurrentSettings::instance().control().dropKey = this->dropKey;
+
+//        std::cout << this->soundMasterSlider->value() << '\n';
+        CurrentSettings::instance().audio().masterVolume =
+                static_cast < float > ( this->soundMasterSlider->value() ) / 100.0f;
+    };
+
+    connect(this->applyButton, & QPushButton::clicked, applyFunction);
+    connect(this->okButton, & QPushButton::clicked, applyFunction);
+
+    auto backFunction = [this] { emit this->back(); };
+
+    connect(this->backButton, &QPushButton::clicked, backFunction );
+    connect(this->okButton, & QPushButton::clicked, backFunction );
 }
+
 
 #include <QEvent>
 #include <QKeyEvent>
@@ -459,30 +493,46 @@ bool Settings::eventFilter ( QObject * pObject, QEvent * pEvent ) noexcept {
     if ( pEvent->type() == QEvent::Type::KeyPress ) {
         if ( this->controlAwaitingInput != nullptr ) {
             if ( this->controlAwaitingInput == this->moveRightButton ) {
-                CurrentSettings::instance().control().setMoveRightKey(
-                        static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key())
-                );
+//                CurrentSettings::instance().control().setMoveRightKey(
+//                        static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key())
+//                );
+                this->moveRightKey = CurrentSettings::getControlKeyForQKey(static_cast < Qt::Key > ( dynamic_cast < QKeyEvent * > (pEvent)->key()));
 
                 this->controlAwaitingInput->setText(
-                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveRightKey)
+                        CurrentSettings::controlKeyToString(this->moveRightKey)
                 );
             }
             if ( this->controlAwaitingInput == this->moveLeftButton ) {
-                CurrentSettings::instance().control().setMoveLeftKey(static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key()));
+//                CurrentSettings::instance().control().setMoveLeftKey(static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key()));
+//                this->controlAwaitingInput->setText(
+//                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveLeftKey)
+//                );
+                this->moveLeftKey = CurrentSettings::getControlKeyForQKey(static_cast < Qt::Key > ( dynamic_cast < QKeyEvent * > (pEvent)->key()));
+
                 this->controlAwaitingInput->setText(
-                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().moveLeftKey)
+                        CurrentSettings::controlKeyToString(this->moveLeftKey)
                 );
             }
             if ( this->controlAwaitingInput == this->rotateButton ) {
-                CurrentSettings::instance().control().setRotateKey(static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key()));
+//                CurrentSettings::instance().control().setRotateKey(static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key()));
+//                this->controlAwaitingInput->setText(
+//                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().rotateKey)
+//                );
+                this->rotateKey = CurrentSettings::getControlKeyForQKey(static_cast < Qt::Key > ( dynamic_cast < QKeyEvent * > (pEvent)->key()));
+
                 this->controlAwaitingInput->setText(
-                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().rotateKey)
+                        CurrentSettings::controlKeyToString(this->rotateKey)
                 );
             }
             if ( this->controlAwaitingInput == this->dropButton ) {
-                CurrentSettings::instance().control().setDropKey(static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key()));
+//                CurrentSettings::instance().control().setDropKey(static_cast<Qt::Key>(dynamic_cast < QKeyEvent * > (pEvent)->key()));
+//                this->controlAwaitingInput->setText(
+//                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().dropKey)
+//                );
+                this->dropKey = CurrentSettings::getControlKeyForQKey(static_cast < Qt::Key > ( dynamic_cast < QKeyEvent * > (pEvent)->key()));
+
                 this->controlAwaitingInput->setText(
-                        CurrentSettings::controlKeyToString(CurrentSettings::instance().control().dropKey)
+                        CurrentSettings::controlKeyToString(this->dropKey)
                 );
             }
             this->controlAwaitingInput->setStyleSheet(Util::getStyle("ControlsButtons.css").c_str());

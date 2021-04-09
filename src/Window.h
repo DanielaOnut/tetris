@@ -25,7 +25,7 @@ public:
     void switchToMenu () noexcept;
     void switchToSettings () noexcept;
 
-    ~Window () noexcept;
+    ~Window () noexcept override;
 };
 
 
