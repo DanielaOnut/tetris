@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "Inbox.h"
 #include "Shop.h"
+#include "Friends.h"
 
 void Menu::init () noexcept {
     this->createComponents();
@@ -163,9 +164,9 @@ void Menu::connectComponents() noexcept {
                 { 300, 400 }
         );
 
-        auto settings = new Settings(nullptr);
-        settings->init();
-        this->currentPopup->setContent(settings);
+        auto friends = new Friends(nullptr);
+        friends->init();
+        this->currentPopup->setContent(friends);
 
         connect ( this->currentPopup, & Popup::close, [this]() {
             delete this->currentPopup;
