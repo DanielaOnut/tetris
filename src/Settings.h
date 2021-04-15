@@ -55,6 +55,9 @@ private:
     QPushButton * accountButton { nullptr };
     QCheckBox   * notificationsBox  { nullptr };
 
+    CurrentSettings::Difficulty   difficultyMode = {CurrentSettings::instance().general().difficulty};
+    bool        notificationsBoxStatus = {CurrentSettings::instance().general().notificationsToggle};
+
     void inline setGeneralSettingsVisibility ( bool visibility ) noexcept {
         this->difficultyLabel->setVisible(visibility);
         this->accountLabel->setVisible(visibility);
@@ -140,6 +143,11 @@ private:
     const char  * shadowsLabelText = "Shadows";
     const char  * windowModeButtonText = "Window";
     const char  * fullscreenButtonText = "Fullscreen";
+
+    int         height = {CurrentSettings::instance().video().resolutionHeight};
+    int         width  = {CurrentSettings::instance().video().resolutionWidth};
+    CurrentSettings::DisplayMode displayModeKey {CurrentSettings::instance().video().mode};
+    bool        shadowsBoxStatus {CurrentSettings::instance().video().shadows};
 
     QPushButton * controlsButton { nullptr };
 

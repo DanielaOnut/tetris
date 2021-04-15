@@ -21,6 +21,12 @@ public:
         FULLSCREEN
     };
 
+    enum Difficulty {
+        EASY,
+        NORMAL,
+        HARD
+    };
+
     enum ControlKey {
         GEN_KEY(A, 'a'),
         GEN_KEY(B, 'b'),
@@ -83,17 +89,17 @@ public:
 
 private:
     struct VideoSettings {
-        int         resolutionWidth;
-        int         resolutionHeight;
-        DisplayMode mode;
-        bool        shadows;
-        float       brightness; // [0.0f - 1.0f]
+        int         resolutionHeight = 1920;
+        int         resolutionWidth  = 1080;
+        DisplayMode mode        {WINDOWED};
+        float       brightness  {0.5f}; // [0.0f - 1.0f]
+        bool        shadows     = true;
     };
 
     struct AudioSettings {
-        float       masterVolume    {1.0f}; // [0.0f - 1.0f]
-        float       musicVolume     {1.0f}; // [0.0f - 1.0f]
-        float       fxVolume        {1.0f}; // [0.0f - 1.0f]
+        float       masterVolume    {0.5f}; // [0.0f - 1.0f]
+        float       musicVolume     {0.5f}; // [0.0f - 1.0f]
+        float       fxVolume        {0.5f}; // [0.0f - 1.0f]
     };
 
     struct ControlSettings {
@@ -108,15 +114,9 @@ private:
         void setDropKey (Qt::Key qKey) noexcept;
     };
 
-    enum Difficulty {
-        EASY,
-        MEDIUM,
-        HARD
-    };
-
     struct GeneralSettings {
-        Difficulty  difficulty;
-        bool        notificationsToggle;
+        Difficulty  difficulty = NORMAL;
+        bool        notificationsToggle = true;
     };
 
     static CurrentSettings _instance;

@@ -267,6 +267,8 @@ void Settings::adjustComponents() noexcept {
     this->accountButton->setMinimumWidth(30);
     this->accountButton->setFixedHeight(20);
 
+    this->notificationsBox->setChecked(this->notificationsBoxStatus);
+
     this->generalButton->setFixedHeight(80);
     this->soundButton->setFixedHeight(80);
     this->videoButton->setFixedHeight(80);
@@ -286,12 +288,12 @@ void Settings::adjustComponents() noexcept {
     this->soundMusicSlider->setMinimum(0);
     this->soundMusicSlider->setMaximum(100);
 
-    this->soundMasterSlider->setValue(
-            static_cast<int>((CurrentSettings::instance().audio().masterVolume * 100.0f))
-    );
-
     this->soundFXSlider->setMinimum(0);
     this->soundFXSlider->setMaximum(100);
+
+    this->soundMasterSlider->setValue(static_cast<int>(CurrentSettings::instance().audio().masterVolume * 100.0f));
+    this->soundMusicSlider->setValue(static_cast<int>(CurrentSettings::instance().audio().musicVolume * 100.0f));
+    this->soundFXSlider->setValue(static_cast<int>(CurrentSettings::instance().audio().fxVolume * 100.0f));
 
     this->dropDownList->setMaximumWidth(150);
     this->windowModeButton->setMaximumWidth(120);
@@ -302,6 +304,15 @@ void Settings::adjustComponents() noexcept {
     this->windowModeButton->setMinimumWidth(120);
     this->fullscreenButton->setMinimumWidth(120);
     this->brightnessSlider->setMinimumWidth(200);
+
+    if (this->height == 1920)
+        this->dropDownList->setCurrentText("1920 x 1080");
+    else if (this->height == 2560)
+        this->dropDownList->setCurrentText("2560 x 1440");
+    else if (this->height == 1280)
+        this->dropDownList->setCurrentText("1280 x 720");
+    this->brightnessSlider->setValue(static_cast <int> (CurrentSettings::instance().video().brightness * 100.0f));
+    this->shadowsBox->setChecked(this->shadowsBoxStatus);
 
     this->moveRightButton->setMaximumWidth(100);
     this->moveLeftButton->setMaximumWidth(100);
@@ -345,9 +356,21 @@ void Settings::styleComponents() noexcept {
     this->videoButton->setStyleSheet(settingButtonStyle.c_str());
     this->controlsButton->setStyleSheet(settingButtonStyle.c_str());
 
-    this->easyButton->setStyleSheet(difficultyButtonsStyle.c_str());
-    this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
-    this->hardButton->setStyleSheet(difficultyButtonsStyle.c_str());
+    if (this->difficultyMode == CurrentSettings::EASY) {
+        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
+        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+    }
+    else if (this->difficultyMode == CurrentSettings::NORMAL) {
+        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
+        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+    }
+    else if (this->difficultyMode == CurrentSettings::HARD) {
+        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
+    }
 
     this->accountButton->setIcon(Util::getIcon("google play.png", 30, 20));
     this->accountButton->setIconSize(QSize (30, 20));
@@ -356,8 +379,15 @@ void Settings::styleComponents() noexcept {
     this->soundMusicSlider->setStyleSheet(slidersStyle.c_str());
     this->soundFXSlider->setStyleSheet(slidersStyle.c_str());
 
-    this->windowModeButton->setStyleSheet(displayButtonsStyle.c_str());
-    this->fullscreenButton->setStyleSheet(displayButtonsStyle.c_str());
+    if (this->displayModeKey == CurrentSettings::FULLSCREEN) {
+        this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
+        this->windowModeButton->setStyleSheet(displayButtonsStyle.c_str());
+    }
+    else {
+        this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
+        this->fullscreenButton->setStyleSheet(displayButtonsStyle.c_str());
+    }
+
     this->brightnessSlider->setStyleSheet(slidersStyle.c_str());
 
     this->moveRightButton->setStyleSheet(controlsButtonsStyle.c_str());
@@ -367,9 +397,40 @@ void Settings::styleComponents() noexcept {
 }
 
 #include <iostream>
+#include <string>
 
 void Settings::connectComponents() noexcept {
-    connect(this->generalButton, &QPushButton::clicked, [this]() {
+    connect (this->resetButton, &QPushButton::clicked, [this]() {
+        this->difficultyMode = CurrentSettings::NORMAL;
+        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
+        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->notificationsBoxStatus = true;
+        this->notificationsBox->setChecked(true);
+
+        this->dropDownList->setCurrentText("1920 x 1080");
+        this->displayModeKey = CurrentSettings::WINDOWED;
+        this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
+        this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
+        this->brightnessSlider->setValue(50);
+        this->shadowsBoxStatus = true;
+        this->shadowsBox->setChecked(true);
+
+        this->moveRightKey = CurrentSettings::KEY_RIGHT_ARROW;
+        this->moveRightButton->setText("Right Arrow");
+        this->moveLeftKey = CurrentSettings::KEY_LEFT_ARROW;
+        this->moveLeftButton->setText("Left Arrow");
+        this->rotateKey = CurrentSettings::KEY_R;
+        this->rotateButton->setText("R");
+        this->dropKey = CurrentSettings::KEY_SPACE;
+        this->dropButton->setText("Spacebar");
+
+        this->soundMasterSlider->setValue(50);
+        this->soundMusicSlider->setValue(50);
+        this->soundFXSlider->setValue(50);
+    });
+
+    connect (this->generalButton, &QPushButton::clicked, [this]() {
         this->setGeneralSettingsVisibility(true);
         this->setSoundSettingsVisibility(false);
         this->setVideoSettingsVisibility(false);
@@ -380,18 +441,25 @@ void Settings::connectComponents() noexcept {
         this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
         this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
         this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->difficultyMode = CurrentSettings::EASY;
     });
 
     connect (this->normalButton, &QPushButton::clicked, [this]() {
         this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
         this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
         this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+        this->difficultyMode = CurrentSettings::NORMAL;
     });
 
     connect (this->hardButton, &QPushButton::clicked, [this]() {
         this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
         this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
         this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
+        this->difficultyMode = CurrentSettings::HARD;
+    });
+
+    connect (this->notificationsBox, & QCheckBox::clicked, [this]() {
+        this->notificationsBoxStatus = ! this->notificationsBoxStatus;
     });
 
     connect(this->soundButton, &QPushButton::clicked, [this]() {
@@ -406,6 +474,22 @@ void Settings::connectComponents() noexcept {
         this->setSoundSettingsVisibility(false);
         this->setVideoSettingsVisibility(true);
         this->setControlsSettingsVisibility(false);
+    });
+
+    connect (this->windowModeButton, &QPushButton::clicked, [this]() {
+        this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
+        this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
+        this->displayModeKey = CurrentSettings::WINDOWED;
+    });
+
+    connect (this->fullscreenButton, &QPushButton::clicked, [this]() {
+        this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
+        this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
+        this->displayModeKey = CurrentSettings::FULLSCREEN;
+    });
+
+    connect (this->shadowsBox, & QCheckBox::clicked, [this]() {
+        this->shadowsBoxStatus = ! this->shadowsBoxStatus;
     });
 
     connect(this->controlsButton, &QPushButton::clicked, [this]() {
@@ -440,14 +524,37 @@ void Settings::connectComponents() noexcept {
     });
 
     auto applyFunction = [this]{
+        CurrentSettings::instance().general().difficulty = this->difficultyMode;
+        CurrentSettings::instance().general().notificationsToggle = this->notificationsBoxStatus;
+
+        CurrentSettings::instance().video().mode = this->displayModeKey;
+        CurrentSettings::instance().video().brightness = static_cast <float> (this->brightnessSlider->value()) / 100.0f;
+        CurrentSettings::instance().video().shadows = this->shadowsBoxStatus;
+
         CurrentSettings::instance().control().moveRightKey = this->moveRightKey;
         CurrentSettings::instance().control().moveLeftKey = this->moveLeftKey;
         CurrentSettings::instance().control().rotateKey = this->rotateKey;
         CurrentSettings::instance().control().dropKey = this->dropKey;
 
 //        std::cout << this->soundMasterSlider->value() << '\n';
-        CurrentSettings::instance().audio().masterVolume =
-                static_cast < float > ( this->soundMasterSlider->value() ) / 100.0f;
+        CurrentSettings::instance().audio().masterVolume = static_cast < float > ( this->soundMasterSlider->value() ) / 100.0f;
+        CurrentSettings::instance().audio().musicVolume = static_cast < float > ( this->soundMusicSlider->value() ) / 100.0f;
+        CurrentSettings::instance().audio().fxVolume = static_cast < float > ( this->soundFXSlider->value() ) / 100.0f;
+
+//        std::cout << this->dropDownList->itemText(this->dropDownList->currentIndex()).toStdString() << '\n';
+//        std::cout << this->dropDownList->currentText().toStdString() << '\n';
+        auto string = this->dropDownList->currentText().toStdString();
+        int number = 0; int updatedHeight = 0;
+        for (const auto i : string)
+            if (i >= '0' && i <= '9')
+                number = number * 10 + (i - '0');
+            else if (number) {
+                this->height = number;
+                number = 0;
+            }
+        this->width = number;
+        CurrentSettings::instance().video().resolutionHeight = this->height;
+        CurrentSettings::instance().video().resolutionWidth = this->width;
     };
 
     connect(this->applyButton, & QPushButton::clicked, applyFunction);
@@ -457,6 +564,8 @@ void Settings::connectComponents() noexcept {
 
     connect(this->backButton, &QPushButton::clicked, backFunction );
     connect(this->okButton, & QPushButton::clicked, backFunction );
+
+    connect (this->resetButton, &QPushButton::clicked, applyFunction);
 }
 
 

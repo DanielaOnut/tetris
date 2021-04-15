@@ -32,7 +32,7 @@ add_executable(
         src/Inbox.h
         src/Shop.cpp
         src/Shop.h
-        src/CurrentSettings.cpp src/CurrentSettings.h)
+        src/CurrentSettings.cpp src/CurrentSettings.h src/Game/Score.cpp src/Game/Score.h src/Friends.cpp src/Friends.h)
 
 
 if (NOT CMAKE_PREFIX_PATH)
