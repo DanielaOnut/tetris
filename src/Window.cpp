@@ -18,7 +18,7 @@ void Window::init () noexcept {
 
     /// Avem 1 singur activ
     /// Incepem din Menu
-    this->resize(1280, 720);
+    this->resize(CurrentSettings::instance().video().resolutionWidth, CurrentSettings::instance().video().resolutionHeight);
     // Vertical Box Layout
     this->mainLayout = new QVBoxLayout(this);
 
@@ -33,17 +33,34 @@ void Window::switchToMenu() noexcept {
          delete this->activePanel;
     }
 
-    this->activePanel = new Menu(this);
+    this->activePanel = new Menu(this); // derived to base is implicit
     this->mainLayout->addWidget( this->activePanel );
 
     auto howToPlaySwitchRequested = [this] () {
         this->switchToTutorial();
     };
 
-    connect ( dynamic_cast < Menu * > (this->activePanel), & Menu::howToPlay, howToPlaySwitchRequested );
-    connect ( dynamic_cast < Menu *  > (this->activePanel), & Menu::settings, [this]() {this->switchToSettings();} );
+    auto menu = dynamic_cast < Menu * > ( this->activePanel );
 
-    dynamic_cast < Menu * > (this->activePanel)->init();
+    connect ( menu, & Menu::howToPlay, howToPlaySwitchRequested );
+    connect ( menu, & Menu::settings, [this]() {this->switchToSettings();} );
+    connect ( menu, & Menu::game, [this] { this->switchToGame(); } );
+
+    menu->init();
+}
+
+#include <Game.h>
+
+void Window::switchToGame() noexcept {
+    this->mainLayout->removeWidget(this->activePanel);
+    delete this->activePanel;
+
+    this->activePanel = new Game(this);
+    this->mainLayout->addWidget(this->activePanel);
+
+    auto game = dynamic_cast < Game * > ( this->activePanel );
+
+    game->init();
 }
 
 void Window::switchToTutorial() noexcept {

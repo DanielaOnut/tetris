@@ -89,8 +89,8 @@ public:
 
 private:
     struct VideoSettings {
-        int         resolutionHeight = 1920;
-        int         resolutionWidth  = 1080;
+        int         resolutionWidth  = 1280;
+        int         resolutionHeight = 720;
         DisplayMode mode        {WINDOWED};
         float       brightness  {0.5f}; // [0.0f - 1.0f]
         bool        shadows     = true;

@@ -24,6 +24,7 @@ public:
     void switchToTutorial () noexcept;
     void switchToMenu () noexcept;
     void switchToSettings () noexcept;
+    void switchToGame() noexcept;
 
     ~Window () noexcept override;
 };

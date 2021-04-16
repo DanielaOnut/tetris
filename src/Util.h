@@ -29,6 +29,8 @@ public:
      */
     static std::string getStyle(std::string const &) noexcept;
     static QIcon getIcon(std::string const &, unsigned int, unsigned int) noexcept;
+
+    static QPixmap getPixmap(const std::string &iconPath) noexcept;
 };
 
 

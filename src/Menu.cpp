@@ -151,6 +151,8 @@ void Menu::connectComponents() noexcept {
         emit this->howToPlay();
     };
 
+    connect( this->playButton, & QPushButton::clicked, [this] {emit this->game();} );
+
     connect ( this->tutorialButton, & QPushButton::clicked, howToPlayCallback );
     connect ( this->exitButton, & QPushButton::clicked, [](){QApplication::exit(0);} );
     connect ( this->settingsButton, & QPushButton::clicked, [this]() {emit this->settings();} );

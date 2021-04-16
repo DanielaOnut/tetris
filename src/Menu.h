@@ -81,6 +81,7 @@ signals:
     void howToPlay(); // functia semnal
     // NU se defineste - numai in QT
     void settings ();
+    void game ();
 
 public slots:
 //    void onPlayClick () noexcept;

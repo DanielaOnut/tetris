@@ -40,3 +40,7 @@ std::string Util::getStyle(const std::string & relativePath) noexcept {
 QIcon Util::getIcon(const std::string & iconPath, unsigned int width, unsigned int heigth) noexcept {
     return QIcon ( QPixmap( ("./../resources/images/" + iconPath).c_str() ).scaled(width, heigth) );
 }
+
+QPixmap Util::getPixmap(const std::string & iconPath) noexcept {
+    return QPixmap ( ("./../resources/images/" + iconPath).c_str() );
+}

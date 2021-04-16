@@ -12,6 +12,7 @@ set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 
 include_directories(src)
+include_directories(src/Game)
 
 add_executable(
         ${PROJECT_NAME}
@@ -32,7 +33,7 @@ add_executable(
         src/Inbox.h
         src/Shop.cpp
         src/Shop.h
-        src/CurrentSettings.cpp src/CurrentSettings.h src/Game/Score.cpp src/Game/Score.h src/Friends.cpp src/Friends.h)
+        src/CurrentSettings.cpp src/CurrentSettings.h src/Game/Score.cpp src/Game/Score.h src/Friends.cpp src/Friends.h src/Game/Game.cpp src/Game/Game.h src/Game/Board.cpp src/Game/Board.h src/Game/Square.cpp src/Game/Square.h src/Game/SquareTexture.cpp src/Game/SquareTexture.h)
 
 
 if (NOT CMAKE_PREFIX_PATH)

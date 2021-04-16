@@ -305,12 +305,21 @@ void Settings::adjustComponents() noexcept {
     this->fullscreenButton->setMinimumWidth(120);
     this->brightnessSlider->setMinimumWidth(200);
 
-    if (this->height == 1920)
-        this->dropDownList->setCurrentText("1920 x 1080");
-    else if (this->height == 2560)
-        this->dropDownList->setCurrentText("2560 x 1440");
-    else if (this->height == 1280)
-        this->dropDownList->setCurrentText("1280 x 720");
+    auto resToString = [](int w, int h) -> std::string {
+        return std::to_string(w) + " x " + std::to_string(h);
+    };
+
+    for ( int i = 0; i < this->dropDownList->count(); i++ ) {
+        if ( this->dropDownList->itemText(i).toStdString() == resToString(this->width, this->height) )
+            this->dropDownList->setCurrentIndex(i);
+    }
+
+//    if (this->width == 1920)
+//        this->dropDownList->setCurrentText("1920 x 1080");
+//    else if (this->width == 2560)
+//        this->dropDownList->setCurrentText("2560 x 1440");
+//    else if (this->width == 1280)
+//        this->dropDownList->setCurrentText("1280 x 720");
     this->brightnessSlider->setValue(static_cast <int> (CurrentSettings::instance().video().brightness * 100.0f));
     this->shadowsBox->setChecked(this->shadowsBoxStatus);
 
