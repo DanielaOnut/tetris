@@ -417,7 +417,7 @@ void Settings::connectComponents() noexcept {
         this->notificationsBoxStatus = true;
         this->notificationsBox->setChecked(true);
 
-        this->dropDownList->setCurrentText("1920 x 1080");
+        this->dropDownList->setCurrentText("1280 x 720");
         this->displayModeKey = CurrentSettings::WINDOWED;
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
@@ -558,10 +558,10 @@ void Settings::connectComponents() noexcept {
             if (i >= '0' && i <= '9')
                 number = number * 10 + (i - '0');
             else if (number) {
-                this->height = number;
+                this->width = number;
                 number = 0;
             }
-        this->width = number;
+        this->height = number;
         CurrentSettings::instance().video().resolutionHeight = this->height;
         CurrentSettings::instance().video().resolutionWidth = this->width;
     };

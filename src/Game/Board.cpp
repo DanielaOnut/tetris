@@ -4,6 +4,7 @@
 
 #include "Board.h"
 #include <CurrentSettings.h>
+#include <Figure.h>
 
 #include <iostream>
 
@@ -24,11 +25,14 @@ void Board::init() noexcept {
     }
 
     for ( int i = 0; i < this->height; i ++ ) {
-        for ( int j = 0; j < this->width; j++ ) {
-            this->squares[i][j].setTexture( SquareTexture::empty() );
+        for (int j = 0; j < this->width; j++) {
+//            if (i == 2 && j == 2)
+//                this->squares[i][j].setTexture( SquareTexture::blue() );
+
+//            else
+            this->squares[i][j].setTexture(SquareTexture::empty());
         }
     }
-
     this->repaint();
 }
 

@@ -33,7 +33,7 @@ add_executable(
         src/Inbox.h
         src/Shop.cpp
         src/Shop.h
-        src/CurrentSettings.cpp src/CurrentSettings.h src/Game/Score.cpp src/Game/Score.h src/Friends.cpp src/Friends.h src/Game/Game.cpp src/Game/Game.h src/Game/Board.cpp src/Game/Board.h src/Game/Square.cpp src/Game/Square.h src/Game/SquareTexture.cpp src/Game/SquareTexture.h)
+        src/CurrentSettings.cpp src/CurrentSettings.h src/Game/Score.cpp src/Game/Score.h src/Friends.cpp src/Friends.h src/Game/Game.cpp src/Game/Game.h src/Game/Board.cpp src/Game/Board.h src/Game/Square.cpp src/Game/Square.h src/Game/SquareTexture.cpp src/Game/SquareTexture.h src/Game/Figure.cpp src/Game/Figure.h)
 
 
 if (NOT CMAKE_PREFIX_PATH)
