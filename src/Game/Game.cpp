@@ -27,6 +27,9 @@ void Game::alignComponents() noexcept {
     this->setLayout(this->generalLayout);
 
     this->generalLayout->addWidget(this->gameBoard);
+
+    this->generalLayout->setAlignment(this->gameBoard, Qt::AlignHCenter | Qt::AlignTop);
+
 }
 
 void Game::adjustComponents() noexcept {

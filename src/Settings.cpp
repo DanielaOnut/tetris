@@ -410,10 +410,17 @@ void Settings::styleComponents() noexcept {
 
 void Settings::connectComponents() noexcept {
     connect (this->resetButton, &QPushButton::clicked, [this]() {
-        this->difficultyMode = CurrentSettings::NORMAL;
-        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
-        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
-        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+//        this->difficultyMode = CurrentSettings::NORMAL;
+        this->difficultyMode = CurrentSettings::defaults().general().difficulty; /// TODO : set defaults for all
+        switch ( this->difficultyMode ) {
+            case CurrentSettings::EASY:   this->easyButton->click();   break;
+            case CurrentSettings::NORMAL: this->normalButton->click(); break;
+            case CurrentSettings::HARD:   this->hardButton->click();   break;
+        }
+
+//        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
+//        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
+//        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
         this->notificationsBoxStatus = true;
         this->notificationsBox->setChecked(true);
 

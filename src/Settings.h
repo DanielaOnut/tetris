@@ -15,6 +15,14 @@ class ControlButton : public QPushButton {
     Q_OBJECT
 
 public:
+    // QWidget * p = ...;
+    // auto x = p;
+    // auto y = ControlButton { p }; apel explicit
+    // auto z = { p }; eroare ambiguitate, facem QWidget(QWidget *) sau facem CBut(QWidget *)
+
+    // Integer ... conversie std::string
+    // explicit : std::string("Ceva") + (std::string)(Integer(5));
+    // implicit : std::string("Ceva") + Integer(5);
     explicit ControlButton ( QWidget * parent ) noexcept : QPushButton( parent ) { }
     ControlButton ( const char * text, QWidget * parent ) noexcept : QPushButton( text, parent ) {}
 
@@ -179,7 +187,7 @@ private:
         this->dropButton->setVisible(visibility);
     }
 
-    const char * controlButtonAwaitingInputText = "Press a key";
+    constexpr static char const * controlButtonAwaitingInputText = "Press a key";
 
     const char * moveRightLabelText = "MOVE RIGHT";
     const char * moveLeftLabelText = "MOVE LEFT";

@@ -27,6 +27,20 @@ public:
 
     void paintEvent ( QPaintEvent * ) noexcept override;
 
+    virtual QPixmap const * getSquareTexture () const noexcept = 0;
+    /**
+     *
+     * Figure L -> portocaliu ?
+     *
+     * class FigureL : public Figure {
+     * ...
+     *      QPixmap const * getSquareTexture () const noexcept override {
+     *          return SquareTexture::orange();
+     *      }
+     * ...
+     * }
+     */
+
     Square ** getFigureSquares () noexcept {
         return this->squares;
     }

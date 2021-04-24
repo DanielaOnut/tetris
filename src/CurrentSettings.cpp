@@ -5,7 +5,67 @@
 #include "CurrentSettings.h"
 
 CurrentSettings CurrentSettings::_instance;
+CurrentSettings const CurrentSettings::_defaultInstance(true);
 
+/**
+ * Explicit Initializer for Settings Defaults Instance
+ */
+CurrentSettings::CurrentSettings(bool) noexcept {
+    this->generalSettings = (GeneralSettings){
+            .difficulty = HARD,
+            .notificationsToggle = false
+    };
+
+    this->videoSettings = (VideoSettings){
+        .resolutionWidth = 0,
+        .resolutionHeight = 0,
+        .mode = WINDOWED,
+        .brightness = 0.0f,
+        .shadows = false
+    };
+
+    this->audioSettings = (AudioSettings){
+        .masterVolume = 100.0f,
+        .musicVolume = 100.0f,
+        .fxVolume = 100.0f
+    },
+
+    this->controlSettings = (ControlSettings) {
+        .moveRightKey = KEY_UNDEFINED,
+        .moveLeftKey = KEY_UNDEFINED,
+        .rotateKey = KEY_UNDEFINED,
+        .dropKey = KEY_UNDEFINED
+    };
+}
+
+//{
+//    .generalSettings = {
+//        .difficulty = NORMAL,
+//        .notificationsToggle = false
+//    },
+//
+//    .videoSettings = {
+//        .resolutionHeight = 0,
+//        .resolutionWidth = 0,
+//        .brightness = 0.0f,
+//        .mode = WINDOWED,
+//        .shadows = false
+//    },
+//
+//    .audioSettings = {
+//        .masterVolume = 100.0f,
+//        .fxVolume = 100.0f,
+//        .musicVolume = 100.0f
+//    },
+//
+//    .controlSettings = {
+//        .dropKey = KEY_UNDEFINED,
+//        .rotateKey = KEY_UNDEFINED,
+//        .moveLeftKey = KEY_UNDEFINED,
+//        .moveRightKey = KEY_UNDEFINED
+//    }
+//};
+//
 #include <QKeyEvent>
 
 CurrentSettings::ControlKey CurrentSettings::getControlKeyForQKey (Qt::Key key) noexcept {

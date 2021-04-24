@@ -33,20 +33,30 @@ void Window::switchToMenu() noexcept {
          delete this->activePanel;
     }
 
-    this->activePanel = new Menu(this); // derived to base is implicit
-    this->mainLayout->addWidget( this->activePanel );
+    auto menu = new Menu(this);
+    this->mainLayout->addWidget( menu );
 
-    auto howToPlaySwitchRequested = [this] () {
-        this->switchToTutorial();
-    };
-
-    auto menu = dynamic_cast < Menu * > ( this->activePanel );
-
-    connect ( menu, & Menu::howToPlay, howToPlaySwitchRequested );
-    connect ( menu, & Menu::settings, [this]() {this->switchToSettings();} );
-    connect ( menu, & Menu::game, [this] { this->switchToGame(); } );
+    connect ( menu, & Menu::howToPlay, [this]{this->switchToTutorial();} );
+    connect ( menu, & Menu::settings, [this]{this->switchToSettings();} );
+    connect ( menu, & Menu::game, [this]{ this->switchToGame(); } );
 
     menu->init();
+
+    this->activePanel = menu;
+//    this->activePanel = new Menu(this); // derived to base is implicit
+//    this->mainLayout->addWidget( this->activePanel );
+
+//    auto howToPlaySwitchRequested = [this] () {
+//        this->switchToTutorial();
+//    };
+
+//    auto menu = dynamic_cast < Menu * > ( this->activePanel );
+//
+//    connect ( menu, & Menu::howToPlay, howToPlaySwitchRequested );
+//    connect ( menu, & Menu::settings, [this]() {this->switchToSettings();} );
+//    connect ( menu, & Menu::game, [this] { this->switchToGame(); } );
+//
+//    menu->init();
 }
 
 #include <Game.h>

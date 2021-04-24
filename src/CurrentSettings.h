@@ -119,7 +119,11 @@ private:
         bool        notificationsToggle = true;
     };
 
+    CurrentSettings () noexcept = default;
+    CurrentSettings (bool) noexcept;
+
     static CurrentSettings _instance;
+    static CurrentSettings const _defaultInstance;
 
     GeneralSettings generalSettings;
     VideoSettings   videoSettings;
@@ -145,8 +149,28 @@ public:
         return this->controlSettings;
     }
 
+    GeneralSettings const & general () const noexcept {
+        return this->generalSettings;
+    }
+
+    VideoSettings const & video () const noexcept {
+        return this->videoSettings;
+    }
+
+    AudioSettings const & audio () const noexcept {
+        return this->audioSettings;
+    }
+
+    ControlSettings const & control () const noexcept {
+        return this->controlSettings;
+    }
+
     static CurrentSettings & instance() noexcept {
         return CurrentSettings::_instance;
+    }
+
+    static CurrentSettings const & defaults () noexcept {
+        return CurrentSettings::_defaultInstance;
     }
 
     static const char * controlKeyToString (ControlKey key) {
