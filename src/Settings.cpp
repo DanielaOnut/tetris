@@ -411,39 +411,49 @@ void Settings::styleComponents() noexcept {
 void Settings::connectComponents() noexcept {
     connect (this->resetButton, &QPushButton::clicked, [this]() {
 //        this->difficultyMode = CurrentSettings::NORMAL;
-        this->difficultyMode = CurrentSettings::defaults().general().difficulty; /// TODO : set defaults for all
+        this->difficultyMode = CurrentSettings::defaults().general().difficulty;
         switch ( this->difficultyMode ) {
             case CurrentSettings::EASY:   this->easyButton->click();   break;
             case CurrentSettings::NORMAL: this->normalButton->click(); break;
             case CurrentSettings::HARD:   this->hardButton->click();   break;
         }
 
-//        this->easyButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
-//        this->normalButton->setStyleSheet(Util::getStyle("DifficultyButtonsPressed.css").c_str());
-//        this->hardButton->setStyleSheet(Util::getStyle("DifficultyButtons.css").c_str());
-        this->notificationsBoxStatus = true;
-        this->notificationsBox->setChecked(true);
+        this->notificationsBoxStatus = CurrentSettings::defaults().general().notificationsToggle;
+        switch ( this->notificationsBoxStatus ) {
+            case true: this->notificationsBox->setChecked(true);   break;
+            case false: this->notificationsBox->setChecked(false); break;
+        }
 
-        this->dropDownList->setCurrentText("1280 x 720");
-        this->displayModeKey = CurrentSettings::WINDOWED;
-        this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
-        this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
-        this->brightnessSlider->setValue(50);
-        this->shadowsBoxStatus = true;
-        this->shadowsBox->setChecked(true);
+        switch ( CurrentSettings::defaults().video().resolutionWidth ) {
+            case 1280: this->dropDownList->setCurrentText("1280 x 720"); break;
+            case 2560: this->dropDownList->setCurrentText("2560 x 1440"); break;
+            case 1920: this->dropDownList->setCurrentText("1920 x 1080"); break;
+        }
+        this->displayModeKey = CurrentSettings::defaults().video().mode;
+        switch ( this->displayModeKey ) {
+            case CurrentSettings::WINDOWED: this->windowModeButton->click(); break;
+            case CurrentSettings::FULLSCREEN: this->fullscreenButton->click(); break;
+        }
+        float brightnessSliderValue = CurrentSettings::defaults().video().brightness;
+        this->brightnessSlider->setValue((int) (brightnessSliderValue * 100));
+        this->shadowsBoxStatus = CurrentSettings::defaults().video().shadows;
+        switch ( this->shadowsBoxStatus ) {
+            case true: this->shadowsBox->setChecked(true);   break;
+            case false: this->shadowsBox->setChecked(false); break;
+        }
 
-        this->moveRightKey = CurrentSettings::KEY_RIGHT_ARROW;
-        this->moveRightButton->setText("Right Arrow");
-        this->moveLeftKey = CurrentSettings::KEY_LEFT_ARROW;
-        this->moveLeftButton->setText("Left Arrow");
-        this->rotateKey = CurrentSettings::KEY_R;
-        this->rotateButton->setText("R");
-        this->dropKey = CurrentSettings::KEY_SPACE;
-        this->dropButton->setText("Spacebar");
+        this->moveRightKey = CurrentSettings::defaults().control().moveRightKey;
+        this->moveRightButton->setText(CurrentSettings::controlKeyToString(this->moveRightKey));
+        this->moveLeftKey = CurrentSettings::defaults().control().moveLeftKey;
+        this->moveLeftButton->setText(CurrentSettings::controlKeyToString(this->moveLeftKey));
+        this->rotateKey = CurrentSettings::defaults().control().rotateKey;
+        this->rotateButton->setText(CurrentSettings::controlKeyToString(this->rotateKey));
+        this->dropKey = CurrentSettings::defaults().control().dropKey;
+        this->dropButton->setText(CurrentSettings::controlKeyToString(this->dropKey));
 
-        this->soundMasterSlider->setValue(50);
-        this->soundMusicSlider->setValue(50);
-        this->soundFXSlider->setValue(50);
+        this->soundMasterSlider->setValue(static_cast<int>(CurrentSettings::defaults().audio().masterVolume));
+        this->soundMusicSlider->setValue(static_cast<int>(CurrentSettings::defaults().audio().musicVolume));
+        this->soundFXSlider->setValue(static_cast<int>(CurrentSettings::defaults().audio().fxVolume));
     });
 
     connect (this->generalButton, &QPushButton::clicked, [this]() {

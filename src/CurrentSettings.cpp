@@ -12,60 +12,32 @@ CurrentSettings const CurrentSettings::_defaultInstance(true);
  */
 CurrentSettings::CurrentSettings(bool) noexcept {
     this->generalSettings = (GeneralSettings){
-            .difficulty = HARD,
-            .notificationsToggle = false
+            .difficulty = NORMAL,
+            .notificationsToggle = true
     };
 
     this->videoSettings = (VideoSettings){
-        .resolutionWidth = 0,
-        .resolutionHeight = 0,
+        .resolutionWidth = 1280,
+        .resolutionHeight = 720,
         .mode = WINDOWED,
-        .brightness = 0.0f,
+        .brightness = 0.5f,
         .shadows = false
     };
 
     this->audioSettings = (AudioSettings){
-        .masterVolume = 100.0f,
-        .musicVolume = 100.0f,
-        .fxVolume = 100.0f
+        .masterVolume = 50.0f,
+        .musicVolume = 50.0f,
+        .fxVolume = 50.0f
     },
 
     this->controlSettings = (ControlSettings) {
-        .moveRightKey = KEY_UNDEFINED,
-        .moveLeftKey = KEY_UNDEFINED,
-        .rotateKey = KEY_UNDEFINED,
-        .dropKey = KEY_UNDEFINED
+        .moveRightKey = KEY_RIGHT_ARROW,
+        .moveLeftKey = KEY_LEFT_ARROW,
+        .rotateKey = KEY_R,
+        .dropKey = KEY_SPACE
     };
 }
 
-//{
-//    .generalSettings = {
-//        .difficulty = NORMAL,
-//        .notificationsToggle = false
-//    },
-//
-//    .videoSettings = {
-//        .resolutionHeight = 0,
-//        .resolutionWidth = 0,
-//        .brightness = 0.0f,
-//        .mode = WINDOWED,
-//        .shadows = false
-//    },
-//
-//    .audioSettings = {
-//        .masterVolume = 100.0f,
-//        .fxVolume = 100.0f,
-//        .musicVolume = 100.0f
-//    },
-//
-//    .controlSettings = {
-//        .dropKey = KEY_UNDEFINED,
-//        .rotateKey = KEY_UNDEFINED,
-//        .moveLeftKey = KEY_UNDEFINED,
-//        .moveRightKey = KEY_UNDEFINED
-//    }
-//};
-//
 #include <QKeyEvent>
 
 CurrentSettings::ControlKey CurrentSettings::getControlKeyForQKey (Qt::Key key) noexcept {

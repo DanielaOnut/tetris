@@ -93,7 +93,7 @@ private:
         int         resolutionHeight = 720;
         DisplayMode mode        {WINDOWED};
         float       brightness  {0.5f}; // [0.0f - 1.0f]
-        bool        shadows     = true;
+        bool        shadows     = false;
     };
 
     struct AudioSettings {
