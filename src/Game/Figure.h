@@ -14,38 +14,13 @@
 
 class Figure : public QWidget {
     Q_OBJECT
-
-private:
-    Square ** squares {nullptr};
-    int height;
-    int width;
-    int squareSize {-1};
 public:
-    explicit Figure (QWidget * parent) noexcept : QWidget(parent) { }
+//    explicit Figure (QWidget * parent) noexcept : QWidget(parent) { }
 
-    void createFigure (QPixmap *, const char *, int) noexcept;
-
-    void paintEvent ( QPaintEvent * ) noexcept override;
-
-    virtual QPixmap const * getSquareTexture () const noexcept = 0;
-    /**
-     *
-     * Figure L -> portocaliu ?
-     *
-     * class FigureL : public Figure {
-     * ...
-     *      QPixmap const * getSquareTexture () const noexcept override {
-     *          return SquareTexture::orange();
-     *      }
-     * ...
-     * }
-     */
-
-    Square ** getFigureSquares () noexcept {
-        return this->squares;
-    }
-
-    ~Figure() noexcept override;
+    virtual void drawFigure (int x, int y, Square ** & boardMatrix) noexcept = 0;
+    virtual QPixmap * getSquareTexture () const noexcept = 0;
+    virtual void setWidth (int) noexcept = 0;
+    virtual void setHeight (int) noexcept = 0;
 };
 
 

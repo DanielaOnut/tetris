@@ -5,6 +5,13 @@
 #include "Board.h"
 #include <CurrentSettings.h>
 #include <Figure.h>
+#include <FigureL.h>
+#include <FigureReversedL.h>
+#include <FigureSquare.h>
+#include <FigureI.h>
+#include <FigureT.h>
+#include <FigureZ.h>
+#include <FigureReversedZ.h>
 
 #include <iostream>
 
@@ -24,15 +31,30 @@ void Board::init() noexcept {
         this->squares [i] = new Square [this->width];
     }
 
-    for ( int i = 0; i < this->height; i ++ ) {
+    for ( int i = 0; i < this->height; i ++ )
         for (int j = 0; j < this->width; j++) {
-//            if (i == 2 && j == 2)
-//                this->squares[i][j].setTexture( SquareTexture::blue() );
-
-//            else
             this->squares[i][j].setTexture(SquareTexture::empty());
         }
-    }
+    FigureL f1;
+    f1.drawFigure(2, 6, this->squares);
+
+    FigureSquare f2;
+    f2.drawFigure(18, 3, this->squares);
+
+    FigureI f3;
+    f3.drawFigure(16, 9, this->squares);
+
+    FigureT f4;
+    f4.drawFigure(19, 6, this->squares);
+
+    FigureReversedL f5;
+    f5.drawFigure (7, 4, this->squares);
+
+    FigureZ f6;
+    f6.drawFigure(18,0,this->squares);
+
+    FigureReversedZ f7;
+    f7.drawFigure(18,5,this->squares);
 
     this->setMinimumWidth( this->squareSize * this->width + this->horizontalMargin * 2 );
     this->setMinimumHeight( this->squareSize * this->height + this->verticalMargin * 2 );

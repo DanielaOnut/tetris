@@ -33,7 +33,7 @@ add_executable(
         src/Inbox.h
         src/Shop.cpp
         src/Shop.h
-        src/CurrentSettings.cpp src/CurrentSettings.h src/Game/Score.cpp src/Game/Score.h src/Friends.cpp src/Friends.h src/Game/Game.cpp src/Game/Game.h src/Game/Board.cpp src/Game/Board.h src/Game/Square.cpp src/Game/Square.h src/Game/SquareTexture.cpp src/Game/SquareTexture.h src/Game/Figure.cpp src/Game/Figure.h)
+        src/CurrentSettings.cpp src/CurrentSettings.h src/Game/Score.cpp src/Game/Score.h src/Friends.cpp src/Friends.h src/Game/Game.cpp src/Game/Game.h src/Game/Board.cpp src/Game/Board.h src/Game/Square.cpp src/Game/Square.h src/Game/SquareTexture.cpp src/Game/SquareTexture.h src/Game/Figure.cpp src/Game/Figure.h src/Game/FigureL.cpp src/Game/FigureL.h src/Game/FigureSquare.cpp src/Game/FigureSquare.h src/Game/FigureI.cpp src/Game/FigureI.h src/Game/FigureT.cpp src/Game/FigureT.h src/Game/FigureReversedL.cpp src/Game/FigureReversedL.h src/Game/FigureZ.cpp src/Game/FigureZ.h src/Game/FigureReversedZ.cpp src/Game/FigureReversedZ.h)
 
 
 if (NOT CMAKE_PREFIX_PATH)
