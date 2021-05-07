@@ -8,6 +8,7 @@
 #include <QWidget>
 #include <Board.h>
 #include <QLayout>
+#include <QTimer>
 
 class Game : public QWidget {
     Q_OBJECT
@@ -15,6 +16,8 @@ class Game : public QWidget {
     QLayout * generalLayout {nullptr};
 
     Board * gameBoard { nullptr };
+
+    QTimer * shapeFallTimer {nullptr};
 
 public:
     explicit Game ( QWidget * parent ) noexcept : QWidget(parent) { }

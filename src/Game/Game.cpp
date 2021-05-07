@@ -21,6 +21,9 @@ void Game::createComponents() noexcept {
     this->generalLayout = new QHBoxLayout(nullptr);
 
     this->gameBoard = new Board(this);
+
+    this->shapeFallTimer = new QTimer(this);
+    this->shapeFallTimer->setInterval(2000);
 }
 
 void Game::alignComponents() noexcept {
@@ -39,9 +42,11 @@ void Game::adjustComponents() noexcept {
 void Game::styleComponents() noexcept {
 
 }
+#include <iostream>
 
 void Game::connectComponents() noexcept {
-
+//    connect(this->shapeFallTimer, & QTimer::timeout, [this]{ this->gameBoard->dropActiveShape(); std::cout << "Cazi\n";});
+    this->shapeFallTimer->start();
 }
 
 Game::~Game() noexcept {
@@ -50,4 +55,6 @@ Game::~Game() noexcept {
     delete this->generalLayout;
 
     delete this->gameBoard;
+
+    delete this->shapeFallTimer;
 }
