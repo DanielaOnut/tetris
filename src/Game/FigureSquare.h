@@ -50,6 +50,18 @@ public:
         return "FigureSquare";
     }
 
+    int rotationCount() const noexcept override {
+        return 0;
+    }
+
+    const int * xOffsetsForRotation(int) const noexcept override {
+        return nullptr;
+    }
+
+    const int * yOffsetsForRotation(int) const noexcept override {
+        return nullptr;
+    }
+
 };
 
 

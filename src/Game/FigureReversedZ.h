@@ -15,8 +15,8 @@ private:
     int height = 2;
     int width = 2;
 
-    int xfigureOffsets[4] = {0, 1,  0,  1};
-    int yfigureOffsets[4] = {0, 0, -1, -1};
+    int xFigureOffsets[4] = {0, 1,  0,  1};
+    int yFigureOffsets[4] = {0, 0, -1, -1};
 public:
 
     void drawFigure (int x, int y, Square ** & boardMatrix) noexcept (false) override {
@@ -48,6 +48,18 @@ public:
 
     const char * toString () noexcept override {
         return "FigureReversedZ";
+    }
+
+    int rotationCount() const noexcept override {
+        return 0;
+    }
+
+    const int * xOffsetsForRotation(int) const noexcept override {
+        return nullptr;
+    }
+
+    const int * yOffsetsForRotation(int) const noexcept override {
+        return nullptr;
     }
 
 };

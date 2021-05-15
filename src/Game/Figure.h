@@ -13,17 +13,25 @@
 #include <Util.h>
 #include <Board.h>
 #include <Figure.h>
+#include <string>
 
 class Figure : public QWidget {
     Q_OBJECT
 public:
+    constexpr static int SQUARE_COUNT = 4;
 //    explicit Figure (QWidget * parent) noexcept : QWidget(parent) { }
 
-    virtual void drawFigure (int x, int y, Square ** & boardMatrix) noexcept (false) = 0;
+    virtual void drawFigure (int x, int y, Square ** & boardMatrix) noexcept (false);
     virtual QPixmap * getSquareTexture () const noexcept = 0;
     virtual int getWidth () noexcept = 0;
     virtual int getHeight () noexcept = 0;
     virtual const char * toString () noexcept = 0;
+
+    virtual int rotationCount () const noexcept = 0;
+    virtual int const * xOffsetsForRotation (int) const noexcept = 0;
+    virtual int const * yOffsetsForRotation (int) const noexcept = 0;
+
+    ~Figure () noexcept override = default;
 };
 
 
