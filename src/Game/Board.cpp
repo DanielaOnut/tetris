@@ -85,3 +85,30 @@ void Board::paintEvent(QPaintEvent * event ) noexcept {
 
     QWidget::paintEvent( event );
 }
+
+#include <FigureI.h>
+
+void Board::dropActiveShape() noexcept {
+    static int x = 0;
+    static int y = 0;
+
+    if ( this->activeFigure == nullptr ) {
+        this->activeFigure = new FigureI();
+        x = 3;
+        y = 5;
+    }
+
+    if ( y > 15 )
+        return;
+    /// FigureI ( x, y, squares )
+    /// FigureI -> patratele sale
+    /// Figure -> moveDown
+    ///     sa-si mute patratele si sa le de-textureze pe cele vechi
+
+    this->activeFigure->drawFigure(x, y, this->squares);
+    std::cout << y << '\n';
+    y++;
+
+
+    this->repaint();
+}

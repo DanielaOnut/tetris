@@ -45,7 +45,8 @@ void Game::styleComponents() noexcept {
 #include <iostream>
 
 void Game::connectComponents() noexcept {
-//    connect(this->shapeFallTimer, & QTimer::timeout, [this]{ this->gameBoard->dropActiveShape(); std::cout << "Cazi\n";});
+    connect(this->shapeFallTimer, & QTimer::timeout, [this]{ this->gameBoard->dropActiveShape();});
+
     this->shapeFallTimer->start();
 }
 

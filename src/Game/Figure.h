@@ -11,7 +11,7 @@
 #include <Square.h>
 #include <SquareTexture.h>
 #include <Util.h>
-#include <Board.h>
+//#include <Board.h>
 #include <Figure.h>
 #include <string>
 

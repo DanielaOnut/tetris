@@ -8,6 +8,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <Square.h>
+#include <Figure.h>
 
 class Board : public QWidget {
     Q_OBJECT
@@ -28,6 +29,8 @@ private:
 
     Square ** squares {nullptr};
 
+    Figure * activeFigure {nullptr};
+
 public:
     explicit Board(QWidget * parent) noexcept : QWidget(parent) { }
 
@@ -42,6 +45,8 @@ public:
     }
 
     void paintEvent ( QPaintEvent * ) noexcept override;
+
+    void dropActiveShape() noexcept;
 
     ~Board() noexcept override;
 };
