@@ -36,25 +36,25 @@ void Board::init() noexcept {
             this->squares[i][j].setTexture(SquareTexture::empty());
         }
     FigureL f1;
-    f1.drawFigure(2, 6, this->squares);
+    f1.drawFigure(6, 2, this->squares);
 
     FigureSquare f2;
-    f2.drawFigure(18, 3, this->squares);
+    f2.drawFigure(3, 18, this->squares);
 
     FigureI f3;
-    f3.drawFigure(16, 9, this->squares);
+    f3.drawFigure(9, 16, this->squares);
 
     FigureT f4;
-    f4.drawFigure(19, 6, this->squares);
+    f4.drawFigure(6, 19, this->squares);
 
     FigureReversedL f5;
-    f5.drawFigure (7, 4, this->squares);
+    f5.drawFigure (4, 7, this->squares);
 
     FigureZ f6;
-    f6.drawFigure(18,0,this->squares);
+    f6.drawFigure(0,18,this->squares);
 
     FigureReversedZ f7;
-    f7.drawFigure(18,5,this->squares);
+    f7.drawFigure(5,18,this->squares);
 
     this->setMinimumWidth( this->squareSize * this->width + this->horizontalMargin * 2 );
     this->setMinimumHeight( this->squareSize * this->height + this->verticalMargin * 2 );

@@ -12,23 +12,26 @@ class FigureReversedL : public Figure {
 private:
     QPixmap * squareTexture {nullptr};
 
-    int height = 0;
-    int width = 0;
+    int height = 3;
+    int width = 1;
+
+    int xfigureOffsets[4] = {0, -1, 0, 0};
+    int yfigureOffsets[4] = {0,  0, 1, 2};
 public:
 
-    void drawFigure (int x, int y, Square ** & boardMatrix) noexcept override {
+    void drawFigure (int x, int y, Square ** & boardMatrix) noexcept (false) override {
         int matrixWidth = Board::DEFAULT_WIDTH;
         int matrixHeight = Board::DEFAULT_HEIGHT;
-        if (x > matrixHeight - 3 && y > matrixWidth)
-            throw std::runtime_error ("coordinates out of the matrix dimensions");
+        if (y > matrixHeight - 3)
+            throw std::runtime_error ("FigureReversedL: y is out of the matrix dimensions");
+        if (x > matrixWidth)
+            throw std::runtime_error ("FigureReversedL: x is out of the matrix dimensions");
         this->squareTexture = this->getSquareTexture();
-        this->setHeight(3);
-        this->setWidth(1);
 
-        int i = x;
-        for (i = x; this->height--; i++)
-            boardMatrix[i][y].setTexture(this->squareTexture);
-        boardMatrix[i-1][y-1].setTexture(this->squareTexture);
+        int i = y;
+        for (i = y; this->height--; i++)
+            boardMatrix[i][x].setTexture(this->squareTexture);
+        boardMatrix[i-1][x-1].setTexture(this->squareTexture);
     }
 
 
@@ -36,12 +39,16 @@ public:
         return SquareTexture::blue();
     }
 
-    void setWidth (const int width) noexcept override {
-        this->width = width;
+    int getWidth () noexcept override {
+        return this->width;
     }
 
-    void setHeight (const int height) noexcept override {
-        this->height = height;
+    int getHeight () noexcept override {
+        return this->height;
+    }
+
+    const char * toString () noexcept override {
+        return "FigureReversedL";
     }
 
 };
