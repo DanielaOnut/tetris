@@ -10,45 +10,14 @@
 
 class FigureI : public Figure {
 private:
-    QPixmap * squareTexture;
-
-    int height = 4;
-    int width = 0;
-
-//    int xfigureOffsets[4] = { 0, 0, 0, 0};
-//    int yfigureOffsets[4] = {-1, 0, 1, 2};
-//private static final int[][] xShapeOffsets = { {  0, 0, 0, 0 }, {-1, 0, 1, 2 } };
-//private static final int[][] yShapeOffsets = { { -1, 0, 1, 2 }, { 0, 0, 0, 0 } };
-
     constexpr static int ROTATION_COUNT = 2;
 
     int xFigureOffsets [ROTATION_COUNT][4] = { {0, 0, 0, 0}, {-1, 0, 1, 2} };
     int yFigureOffsets [ROTATION_COUNT][4] = { {-1, 0, 1, 2}, {0, 0, 0, 0} };
 public:
 
-//    void drawFigure (int x, int y, Square ** & boardMatrix) noexcept (false) override {
-//        int matrixWidth = Board::DEFAULT_WIDTH;
-//        int matrixHeight = Board::DEFAULT_HEIGHT;
-//        if (y > matrixHeight)
-//            throw std::runtime_error ("FigureI: y is out of the matrix dimensions");
-//        if (x > matrixWidth)
-//            throw std::runtime_error ("FigureI: x is out of the matrix dimensions");
-//        this->squareTexture = this->getSquareTexture();
-//
-//        for (int i = y; this->height--; i++)
-//            boardMatrix[i][x].setTexture(this->squareTexture);
-//    }
-
     QPixmap * getSquareTexture () const noexcept override {
         return SquareTexture::lightblue();
-    }
-
-    int getWidth () noexcept override {
-        return this->width;
-    }
-
-    int getHeight () noexcept override {
-        return this->height;
     }
 
     const char * toString () noexcept override {

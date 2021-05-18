@@ -23,36 +23,12 @@ public:
 
     virtual void drawFigure (int x, int y, Square ** & boardMatrix) noexcept (false);
     virtual QPixmap * getSquareTexture () const noexcept = 0;
-    virtual int getWidth () noexcept = 0;
-    virtual int getHeight () noexcept = 0;
     virtual const char * toString () noexcept = 0;
-
     virtual int rotationCount () const noexcept = 0;
     virtual int const * xOffsetsForRotation (int) const noexcept = 0;
     virtual int const * yOffsetsForRotation (int) const noexcept = 0;
 
     ~Figure () noexcept override = default;
 };
-
-
-//void Figure::drawFigure(int x, int y, Square ** & boardMatrix, const char * figure) noexcept(false) {
-//    int matrixWidth = Board::DEFAULT_WIDTH;
-//    int matrixHeight = Board::DEFAULT_HEIGHT;
-//    if (figure == "FigureL" || figure == "FigureReversedL") {
-//        if (x > matrixHeight - 1)
-//            throw std::runtime_error ("x is out of the matrix dimensions");
-//        if (y > matrixWidth - 3)
-//            throw std::runtime_error ("y is out of the matrix dimensions");
-//        QPixmap * squareTexture;
-//        if (figure == "FigureL")
-//            squareTexture = SquareTexture::orange();
-//        else
-//            squareTexture = SquareTexture::blue();
-//        int i = y;
-//        for (i = y; 3--; i++)
-//            boardMatrix[i][x].setTexture(squareTexture);
-//        boardMatrix[i-1][x+1].setTexture(squareTexture);
-//    }
-//}
 
 #endif //PROIECT_FIGURE_H

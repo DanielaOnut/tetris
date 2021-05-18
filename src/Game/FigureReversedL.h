@@ -10,41 +10,13 @@
 
 class FigureReversedL : public Figure {
 private:
-    QPixmap * squareTexture {nullptr};
+    constexpr static int ROTATION_COUNT = 4;
 
-    int height = 3;
-    int width = 1;
-
-    int xFigureOffsets[4] = {0, -1, 0, 0};
-    int yFigureOffsets[4] = {0,  0, 1, 2};
+    int xFigureOffsets[ROTATION_COUNT][4] = { {0,-1, 0, 0}, {0, 0, 1, 2}, {0, 1, 0, 0}, {0, 0,-1,-2} };
+    int yFigureOffsets[ROTATION_COUNT][4] = { {0, 0,-1,-2}, {0,-1, 0, 0}, {0, 0, 1, 2}, {0, 1, 0, 0} };
 public:
-
-    void drawFigure (int x, int y, Square ** & boardMatrix) noexcept (false) override {
-        int matrixWidth = Board::DEFAULT_WIDTH;
-        int matrixHeight = Board::DEFAULT_HEIGHT;
-        if (y > matrixHeight - 3)
-            throw std::runtime_error ("FigureReversedL: y is out of the matrix dimensions");
-        if (x > matrixWidth)
-            throw std::runtime_error ("FigureReversedL: x is out of the matrix dimensions");
-        this->squareTexture = this->getSquareTexture();
-
-        int i = y;
-        for (i = y; this->height--; i++)
-            boardMatrix[i][x].setTexture(this->squareTexture);
-        boardMatrix[i-1][x-1].setTexture(this->squareTexture);
-    }
-
-
     QPixmap * getSquareTexture () const noexcept override {
         return SquareTexture::blue();
-    }
-
-    int getWidth () noexcept override {
-        return this->width;
-    }
-
-    int getHeight () noexcept override {
-        return this->height;
     }
 
     const char * toString () noexcept override {
@@ -56,12 +28,12 @@ public:
         return 0;
     }
 
-    const int * xOffsetsForRotation(int) const noexcept override {
-        return nullptr;
+    const int * xOffsetsForRotation(int rotationIndex) const noexcept override {
+        return reinterpret_cast < int const * > (this->xFigureOffsets[rotationIndex]);
     }
 
-    const int * yOffsetsForRotation(int) const noexcept override {
-        return nullptr;
+    const int * yOffsetsForRotation(int rotationIndex) const noexcept override {
+        return reinterpret_cast < int const * > (this->yFigureOffsets[rotationIndex]);
     }
 };
 
