@@ -25,7 +25,7 @@ public:
     }
 
     int rotationCount() const noexcept override {
-        return 0;
+        return ROTATION_COUNT;
     }
 
     const int * xOffsetsForRotation(int rotationIndex) const noexcept override {

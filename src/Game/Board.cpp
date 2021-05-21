@@ -86,9 +86,9 @@ void Board::paintEvent(QPaintEvent * event ) noexcept {
     QWidget::paintEvent( event );
 }
 
-void Board::clearDrawnShapes (int x, int y) noexcept {
+void Board::clearDrawnShapes (int x, int y, int rotation) noexcept {
     for (int i = 0;i < 4;i++)
-        this->squares[y + this->activeFigure->yOffsetsForRotation(0)[i]][x + this->activeFigure->xOffsetsForRotation(0)[i]]
+        this->squares[y + this->activeFigure->yOffsetsForRotation(rotation)[i]][x + this->activeFigure->xOffsetsForRotation(rotation)[i]]
                 .setTexture(SquareTexture::empty());
 }
 
@@ -98,7 +98,7 @@ void Board::dropActiveShape() noexcept {
 
     if ( this->activeFigure == nullptr ) {
         this->activeFigure = new FigureReversedZ();
-        x = 5;
+        x = 3;
         y = 3;
     }
 
@@ -111,5 +111,5 @@ void Board::dropActiveShape() noexcept {
 
     this->repaint();
 
-    this->clearDrawnShapes(x,y - 1);
+    this->clearDrawnShapes(x,y - 1,0);
 }
