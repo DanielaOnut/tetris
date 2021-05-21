@@ -23,7 +23,7 @@ void Game::createComponents() noexcept {
     this->gameBoard = new Board(this);
 
     this->shapeFallTimer = new QTimer(this);
-    this->shapeFallTimer->setInterval(2000);
+    this->shapeFallTimer->setInterval(1500);
 }
 
 void Game::alignComponents() noexcept {

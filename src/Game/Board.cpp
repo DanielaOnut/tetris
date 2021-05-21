@@ -35,8 +35,8 @@ void Board::init() noexcept {
         for (int j = 0; j < this->width; j++) {
             this->squares[i][j].setTexture(SquareTexture::empty());
         }
-    FigureL f1;
-    f1.drawFigure(6, 4, this->squares);
+//    FigureL f1;
+//    f1.drawFigure(6, 4, this->squares);
 
     FigureSquare f2;
     f2.drawFigure(3, 18, this->squares);
@@ -47,8 +47,8 @@ void Board::init() noexcept {
     FigureT f4;
     f4.drawFigure(7, 19, this->squares);
 
-    FigureReversedL f5;
-    f5.drawFigure (4, 7, this->squares);
+//    FigureReversedL f5;
+//    f5.drawFigure (4, 7, this->squares);
 
     FigureZ f6;
     f6.drawFigure(0,18,this->squares);
@@ -86,29 +86,30 @@ void Board::paintEvent(QPaintEvent * event ) noexcept {
     QWidget::paintEvent( event );
 }
 
-#include <FigureI.h>
+void Board::clearDrawnShapes (int x, int y) noexcept {
+    for (int i = 0;i < 4;i++)
+        this->squares[y + this->activeFigure->yOffsetsForRotation(0)[i]][x + this->activeFigure->xOffsetsForRotation(0)[i]]
+                .setTexture(SquareTexture::empty());
+}
 
 void Board::dropActiveShape() noexcept {
     static int x = 0;
     static int y = 0;
 
     if ( this->activeFigure == nullptr ) {
-        this->activeFigure = new FigureI();
-        x = 3;
-        y = 5;
+        this->activeFigure = new FigureReversedZ();
+        x = 5;
+        y = 3;
     }
 
-    if ( y > 15 )
+    if ( y > 17 )
         return;
-    /// FigureI ( x, y, squares )
-    /// FigureI -> patratele sale
-    /// Figure -> moveDown
-    ///     sa-si mute patratele si sa le de-textureze pe cele vechi
 
     this->activeFigure->drawFigure(x, y, this->squares);
-    std::cout << y << '\n';
+//    std::cout << y << '\n';
     y++;
 
-
     this->repaint();
+
+    this->clearDrawnShapes(x,y - 1);
 }
