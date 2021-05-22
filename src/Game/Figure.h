@@ -17,9 +17,22 @@
 
 class Figure : public QWidget {
     Q_OBJECT
+protected:
+    int x, y;
 public:
     constexpr static int SQUARE_COUNT = 4;
 //    explicit Figure (QWidget * parent) noexcept : QWidget(parent) { }
+
+    /**
+     *
+     * @param boardMatrix
+     * @return true if shape spawned | false if shape could not find space to spawn at
+     *
+     */
+//    virtual bool findCoordinatesToSpawnAt (Square ** & boardMatrix) noexcept = 0; TODO, uncomment
+
+    /// for later
+    /// virtual std::list < std::pair < int, int > > findCoordinatesToSpawnAt (Square ** & boardMatrix ) noexcept = 0;
 
     virtual void drawFigure (int x, int y, Square ** & boardMatrix) noexcept (false);
     virtual QPixmap * getSquareTexture () const noexcept = 0;

@@ -15,7 +15,19 @@
 
 #include <iostream>
 
+#include <Game.h>
 void Board::init() noexcept {
+    auto * p = dynamic_cast < Game * > (this->parent());
+    if ( p != nullptr ) {
+        // Game is parent
+
+        connect ( p, & Game::moveRight, [] {
+            std::cout << "Should move right\n";
+            // preferabil intr-o alta functie
+            // incerci sa muti figura
+        } );
+    }
+
     auto resWidth = CurrentSettings::instance().video().resolutionWidth;
     auto resHeight = CurrentSettings::instance().video().resolutionHeight;
 

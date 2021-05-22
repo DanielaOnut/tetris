@@ -23,7 +23,8 @@ void Game::createComponents() noexcept {
     this->gameBoard = new Board(this);
 
     this->shapeFallTimer = new QTimer(this);
-    this->shapeFallTimer->setInterval(1500);
+
+    this->moveRightSignalGenerator = new QTimer(this);
 }
 
 void Game::alignComponents() noexcept {
@@ -36,16 +37,23 @@ void Game::alignComponents() noexcept {
 }
 
 void Game::adjustComponents() noexcept {
+    this->shapeFallTimer->setInterval(1500);
 
+    this->moveRightSignalGenerator->setInterval(150);
 }
 
 void Game::styleComponents() noexcept {
 
 }
+
 #include <iostream>
 
 void Game::connectComponents() noexcept {
     connect(this->shapeFallTimer, & QTimer::timeout, [this]{ this->gameBoard->dropActiveShape();});
+
+    connect(this->moveRightSignalGenerator, & QTimer::timeout, [this]{
+        emit this->moveRight();
+    });
 
     this->shapeFallTimer->start();
 }
@@ -58,4 +66,34 @@ Game::~Game() noexcept {
     delete this->gameBoard;
 
     delete this->shapeFallTimer;
+}
+#include <CurrentSettings.h>
+
+void Game::keyPressEvent(QKeyEvent *event) {
+//    if ( ! event->isAutoRepeat() )
+//        std::cout << event->text().toStdString() << " pressed\n";
+
+    if ( ! event->isAutoRepeat() ) {
+        if (
+                CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
+                CurrentSettings::instance().control().moveRightKey
+        ) {
+            emit this->moveRight();
+            this->moveRightSignalGenerator->start();
+        }
+    }
+//    std::cout << event->text().toStdString() << " pressed " << event->isAutoRepeat() << '\n';
+}
+
+void Game::keyReleaseEvent(QKeyEvent *event) {
+//    if ( ! event->isAutoRepeat() )
+//        std::cout << event->text().toStdString() << " released\n";
+    if ( ! event->isAutoRepeat() ) {
+        if (
+                CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
+                CurrentSettings::instance().control().moveRightKey
+        )
+            this->moveRightSignalGenerator->stop();
+    }
+//    std::cout << event->text().toStdString() << " released " << event->isAutoRepeat() << '\n';
 }
