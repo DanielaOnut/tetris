@@ -109,6 +109,10 @@ void Board::dropActiveShape() noexcept {
     static int y = 0;
 
     if ( this->activeFigure == nullptr ) {
+
+        /// this->activeFigure = new Figure::generateRandom() ? momentan una din ele
+        /// auto r = this->activeFigure->findCoordinatesToSpawnAt ();
+        /// if ( ! r ) ... game over or smth
         this->activeFigure = new FigureReversedZ();
         x = 3;
         y = 3;
@@ -118,6 +122,8 @@ void Board::dropActiveShape() noexcept {
         return;
 
     this->activeFigure->drawFigure(x, y, this->squares);
+    /// this->activeFigure->drop (); <- ori are rezultat, ori arunca exceptie
+    /// this->activeFigure->drawFigure ();
 //    std::cout << y << '\n';
     y++;
 
