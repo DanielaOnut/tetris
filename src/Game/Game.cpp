@@ -55,7 +55,7 @@ void Game::connectComponents() noexcept {
         emit this->moveRight();
     });
 
-    this->shapeFallTimer->start();
+//    this->shapeFallTimer->start();
 }
 
 Game::~Game() noexcept {

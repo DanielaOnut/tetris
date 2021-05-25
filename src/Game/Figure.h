@@ -29,17 +29,24 @@ public:
      * @return true if shape spawned | false if shape could not find space to spawn at
      *
      */
-//    virtual bool findCoordinatesToSpawnAt (Square ** & boardMatrix) noexcept = 0; TODO, uncomment
+    virtual bool findCoordinatesToSpawnAt (Square ** & boardMatrix, int rotation) noexcept;
 
     /// for later
     /// virtual std::list < std::pair < int, int > > findCoordinatesToSpawnAt (Square ** & boardMatrix ) noexcept = 0;
 
-    virtual void drawFigure (int x, int y, Square ** & boardMatrix) noexcept (false);
+    virtual void drawFigure (Square ** & boardMatrix, int rotation) noexcept;
     virtual QPixmap * getSquareTexture () const noexcept = 0;
     virtual const char * toString () noexcept = 0;
     virtual int rotationCount () const noexcept = 0;
     virtual int const * xOffsetsForRotation (int) const noexcept = 0;
     virtual int const * yOffsetsForRotation (int) const noexcept = 0;
+
+    int getX () noexcept {
+        return this->x;
+    }
+    int getY () noexcept {
+        return this->y;
+    }
 
     ~Figure () noexcept override = default;
 };

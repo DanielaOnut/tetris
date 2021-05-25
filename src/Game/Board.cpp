@@ -47,26 +47,26 @@ void Board::init() noexcept {
         for (int j = 0; j < this->width; j++) {
             this->squares[i][j].setTexture(SquareTexture::empty());
         }
-//    FigureL f1;
-//    f1.drawFigure(6, 4, this->squares);
+    FigureL f1;
+    f1.drawFigure(this->squares, 1);
 
     FigureSquare f2;
-    f2.drawFigure(3, 18, this->squares);
+    f2.drawFigure(this->squares,0);
 
     FigureI f3;
-    f3.drawFigure(9, 17, this->squares);
+    f3.drawFigure(this->squares,1);
 
     FigureT f4;
-    f4.drawFigure(7, 19, this->squares);
+    f4.drawFigure(this->squares,2);
 
-//    FigureReversedL f5;
-//    f5.drawFigure (4, 7, this->squares);
+    FigureReversedL f5;
+    f5.drawFigure (this->squares, 2);
 
     FigureZ f6;
-    f6.drawFigure(0,18,this->squares);
+    f6.drawFigure (this->squares,1);
 
     FigureReversedZ f7;
-    f7.drawFigure(5,18,this->squares);
+    f7.drawFigure(this->squares,0);
 
     this->setMinimumWidth( this->squareSize * this->width + this->horizontalMargin * 2 );
     this->setMinimumHeight( this->squareSize * this->height + this->verticalMargin * 2 );
@@ -121,7 +121,7 @@ void Board::dropActiveShape() noexcept {
     if ( y > 17 )
         return;
 
-    this->activeFigure->drawFigure(x, y, this->squares);
+//    this->activeFigure->drawFigure(this->squares,0);
     /// this->activeFigure->drop (); <- ori are rezultat, ori arunca exceptie
     /// this->activeFigure->drawFigure ();
 //    std::cout << y << '\n';

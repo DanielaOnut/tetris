@@ -6,19 +6,36 @@
 #include <Board.h>
 #include <QPainter>
 
-void Figure::drawFigure(int x, int y, Square **&boardMatrix) noexcept(false) {
+void Figure::drawFigure (Square **&boardMatrix, int rotation) noexcept {
+    this->findCoordinatesToSpawnAt(boardMatrix, rotation);
+    auto sqTexture = this->getSquareTexture();
+    for ( int i = 0; i < SQUARE_COUNT; i++ )
+        boardMatrix[this->y + this->yOffsetsForRotation(rotation)[i]][this->x + this->xOffsetsForRotation(rotation)[i]]
+            .setTexture(sqTexture);
+}
+
+bool Figure::findCoordinatesToSpawnAt(Square ** & boardMatrix, int rotation) noexcept {
     int matrixWidth = Board::DEFAULT_WIDTH;
     int matrixHeight = Board::DEFAULT_HEIGHT;
-
-    if ( y > matrixHeight )
-        throw std::runtime_error ( std::string(this->toString()) + ": y is out of the matrix dimensions");
-    if (x > matrixWidth)
-        throw std::runtime_error ( std::string(this->toString()) + ": x is out of the matrix dimensions");
-    auto sqTexture = this->getSquareTexture();
-
-    for ( int i = 0; i < SQUARE_COUNT; i++ )
-        boardMatrix[y + this->yOffsetsForRotation(0)[i]][x + this->xOffsetsForRotation(0)[i]]
-            .setTexture(sqTexture);
+    int i, j, k;
+    for ( i = 0; i < matrixHeight; i++ )
+        for ( j = 0; j < matrixWidth; j++ ) {
+            for ( k = 0; k < SQUARE_COUNT; k++ ) {
+                int newLin = i + this->yOffsetsForRotation(rotation)[k];
+                int newCol = j + this->xOffsetsForRotation(rotation)[k];
+                if (newLin >= 0 && newLin < matrixHeight && newCol >= 0 && newCol < matrixWidth) {
+                    if (boardMatrix[newLin][newCol].getTexture() != SquareTexture::empty())
+                        break;
+                }
+                else break;
+            }
+            if (k >= SQUARE_COUNT) {
+                this->x = j;
+                this->y = i;
+                return true;
+            }
+        }
+    return false;
 }
 
 //void Figure::paintEvent(QPaintEvent * event) noexcept {
