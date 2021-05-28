@@ -31,6 +31,7 @@ public:
     virtual void dropFigure (Square ** & boardMatrix, int rotation) noexcept (false);
     virtual void drawFigure (Square ** & boardMatrix, int rotation) noexcept;
     void clearDrawnFigures(Square ** & boardMatrix, int rotation) const noexcept;
+    void moveFigureToRight (Square ** & boardMatrix, int rotation) noexcept (false);
     virtual QPixmap * getSquareTexture () const noexcept = 0;
     virtual const char * toString () noexcept = 0;
     virtual int rotationCount () const noexcept = 0;

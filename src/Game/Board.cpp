@@ -17,17 +17,7 @@
 
 #include <Game.h>
 void Board::init() noexcept {
-    auto * p = dynamic_cast < Game * > (this->parent());
-    if ( p != nullptr ) {
-        // Game is parent
-
-        connect ( p, & Game::moveRight, [] {
-            std::cout << "Should move right\n";
-            // preferabil intr-o alta functie
-            // incerci sa muti figura
-        } );
-    }
-
+    this->moveActiveShapeToRight();
     auto resWidth = CurrentSettings::instance().video().resolutionWidth;
     auto resHeight = CurrentSettings::instance().video().resolutionHeight;
 
@@ -96,6 +86,17 @@ void Board::paintEvent(QPaintEvent * event ) noexcept {
     }
 
     QWidget::paintEvent( event );
+}
+
+void Board::moveActiveShapeToRight() noexcept {
+    auto * p = dynamic_cast < Game * > (this->parent());
+    if ( p != nullptr ) {
+        // Game is parent
+        connect ( p, & Game::moveRight, [this] {
+            this->activeFigure->moveFigureToRight(this->squares, 0);
+            this->activeFigure->clearDrawnFigures(this->squares, 0);
+        } );
+    }
 }
 
 void Board::dropActiveShape() noexcept {

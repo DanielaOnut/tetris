@@ -47,6 +47,7 @@ public:
     void paintEvent ( QPaintEvent * ) noexcept override;
 
     void dropActiveShape() noexcept;
+    void moveActiveShapeToRight() noexcept;
 
     ~Board() noexcept override;
 };
