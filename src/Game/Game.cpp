@@ -25,6 +25,7 @@ void Game::createComponents() noexcept {
     this->shapeFallTimer = new QTimer(this);
 
     this->moveRightSignalGenerator = new QTimer(this);
+    this->moveLeftSignalGenerator = new QTimer(this);
 }
 
 void Game::alignComponents() noexcept {
@@ -40,6 +41,7 @@ void Game::adjustComponents() noexcept {
     this->shapeFallTimer->setInterval(1300);
 
     this->moveRightSignalGenerator->setInterval(150);
+    this->moveLeftSignalGenerator->setInterval(150);
 }
 
 void Game::styleComponents() noexcept {
@@ -53,6 +55,10 @@ void Game::connectComponents() noexcept {
 
     connect(this->moveRightSignalGenerator, & QTimer::timeout, [this]{
         emit this->moveRight();
+    });
+
+    connect(this->moveLeftSignalGenerator, & QTimer::timeout, [this]{
+        emit this->moveLeft();
     });
 
     this->shapeFallTimer->start();
@@ -81,6 +87,13 @@ void Game::keyPressEvent(QKeyEvent *event) {
             emit this->moveRight();
             this->moveRightSignalGenerator->start();
         }
+        if (
+            CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
+            CurrentSettings::instance().control().moveLeftKey
+        ) {
+            emit this->moveLeft();
+            this->moveLeftSignalGenerator->start();
+        }
     }
 //    std::cout << event->text().toStdString() << " pressed " << event->isAutoRepeat() << '\n';
 }
@@ -94,6 +107,11 @@ void Game::keyReleaseEvent(QKeyEvent *event) {
                 CurrentSettings::instance().control().moveRightKey
         )
             this->moveRightSignalGenerator->stop();
+        if (
+                CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
+                CurrentSettings::instance().control().moveLeftKey
+                )
+            this->moveLeftSignalGenerator->stop();
     }
 //    std::cout << event->text().toStdString() << " released " << event->isAutoRepeat() << '\n';
 }

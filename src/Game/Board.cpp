@@ -18,6 +18,7 @@
 #include <Game.h>
 void Board::init() noexcept {
     this->moveActiveShapeToRight();
+    this->moveActiveShapeToLeft();
     auto resWidth = CurrentSettings::instance().video().resolutionWidth;
     auto resHeight = CurrentSettings::instance().video().resolutionHeight;
 
@@ -88,7 +89,7 @@ void Board::paintEvent(QPaintEvent * event ) noexcept {
     QWidget::paintEvent( event );
 }
 
-void Board::moveActiveShapeToRight() noexcept {
+void Board::moveActiveShapeToRight () noexcept {
     auto * p = dynamic_cast < Game * > (this->parent());
     if ( p != nullptr ) {
         // Game is parent
@@ -99,9 +100,19 @@ void Board::moveActiveShapeToRight() noexcept {
     }
 }
 
+void Board::moveActiveShapeToLeft () noexcept {
+    auto * p = dynamic_cast < Game * > (this->parent());
+    if ( p != nullptr ) {
+        connect ( p, & Game::moveLeft, [this] {
+            this->activeFigure->moveFigureToLeft(this->squares, 0);
+            this->activeFigure->clearDrawnFigures(this->squares, 0);
+        } );
+    }
+}
+
 void Board::dropActiveShape() noexcept {
     if (this->activeFigure == nullptr)
-        this->activeFigure = new FigureT();
+        this->activeFigure = new FigureReversedL();
     this->activeFigure->dropFigure(this->squares, 0);
     this->repaint();
     this->activeFigure->clearDrawnFigures(this->squares, 0);

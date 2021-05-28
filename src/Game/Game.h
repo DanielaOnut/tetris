@@ -20,6 +20,7 @@ class Game : public QWidget {
     QTimer * shapeFallTimer {nullptr};
 
     QTimer * moveRightSignalGenerator {nullptr};
+    QTimer * moveLeftSignalGenerator {nullptr};
 
 public:
     explicit Game ( QWidget * parent ) noexcept : QWidget(parent) { }

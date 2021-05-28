@@ -48,6 +48,7 @@ public:
 
     void dropActiveShape() noexcept;
     void moveActiveShapeToRight() noexcept;
+    void moveActiveShapeToLeft() noexcept;
 
     ~Board() noexcept override;
 };

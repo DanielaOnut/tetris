@@ -46,7 +46,7 @@ void Figure::dropFigure (Square ** & boardMatrix, int rotation) noexcept (false)
 
 void Figure::moveFigureToRight (Square **&boardMatrix, int rotation) noexcept(false) {
     int matrixWidth = Board::DEFAULT_WIDTH;
-    if (boardMatrix[this->y + 1][this->x].getTexture() == SquareTexture::empty() && (matrixWidth - this->x > 1)) {
+    if (boardMatrix[this->y][this->x + 1].getTexture() == SquareTexture::empty() && (matrixWidth - this->x > 1)) {
         this->x++;
         for (int i = 0; i < SQUARE_COUNT; i++) {
             boardMatrix[this->y + this->yOffsetsForRotation(rotation)[i]][this->x + this->xOffsetsForRotation(rotation)[i]]
@@ -55,6 +55,18 @@ void Figure::moveFigureToRight (Square **&boardMatrix, int rotation) noexcept(fa
     }
     else
         throw std::runtime_error ("figure can't be moved to right anymore");
+}
+
+void Figure::moveFigureToLeft (Square **&boardMatrix, int rotation) noexcept(false) {
+    if (boardMatrix[this->y][this->x - 1].getTexture() == SquareTexture::empty() && this->x > 0) {
+        this->x--;
+        for (int i = 0; i < SQUARE_COUNT; i++) {
+            boardMatrix[this->y + this->yOffsetsForRotation(rotation)[i]][this->x + this->xOffsetsForRotation(rotation)[i]]
+                    .setTexture(this->getSquareTexture());
+        }
+    }
+    else
+        throw std::runtime_error ("figure can't be moved to left anymore");
 }
 
 bool Figure::findCoordinatesToSpawnAt(Square ** & boardMatrix, int rotation) noexcept {
