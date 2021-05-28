@@ -47,26 +47,26 @@ void Board::init() noexcept {
         for (int j = 0; j < this->width; j++) {
             this->squares[i][j].setTexture(SquareTexture::empty());
         }
-    FigureL f1;
-    f1.drawFigure(this->squares, 1);
-
-    FigureSquare f2;
-    f2.drawFigure(this->squares,0);
-
-    FigureI f3;
-    f3.drawFigure(this->squares,1);
-
-    FigureT f4;
-    f4.drawFigure(this->squares,2);
-
-    FigureReversedL f5;
-    f5.drawFigure (this->squares, 2);
-
-    FigureZ f6;
-    f6.drawFigure (this->squares,1);
-
-    FigureReversedZ f7;
-    f7.drawFigure(this->squares,0);
+//    FigureL f1;
+//    f1.drawFigure(this->squares, 1);
+//
+//    FigureSquare f2;
+//    f2.drawFigure(this->squares,0);
+//
+//    FigureI f3;
+//    f3.drawFigure(this->squares,1);
+//
+//    FigureT f4;
+//    f4.drawFigure(this->squares,2);
+//
+//    FigureReversedL f5;
+//    f5.drawFigure (this->squares, 2);
+//
+//    FigureZ f6;
+//    f6.drawFigure (this->squares,1);
+//
+//    FigureReversedZ f7;
+//    f7.drawFigure(this->squares,0);
 
     this->setMinimumWidth( this->squareSize * this->width + this->horizontalMargin * 2 );
     this->setMinimumHeight( this->squareSize * this->height + this->verticalMargin * 2 );
@@ -98,36 +98,10 @@ void Board::paintEvent(QPaintEvent * event ) noexcept {
     QWidget::paintEvent( event );
 }
 
-void Board::clearDrawnShapes (int x, int y, int rotation) noexcept {
-    for (int i = 0;i < 4;i++)
-        this->squares[y + this->activeFigure->yOffsetsForRotation(rotation)[i]][x + this->activeFigure->xOffsetsForRotation(rotation)[i]]
-                .setTexture(SquareTexture::empty());
-}
-
 void Board::dropActiveShape() noexcept {
-    static int x = 0;
-    static int y = 0;
-
-    if ( this->activeFigure == nullptr ) {
-
-        /// this->activeFigure = new Figure::generateRandom() ? momentan una din ele
-        /// auto r = this->activeFigure->findCoordinatesToSpawnAt ();
-        /// if ( ! r ) ... game over or smth
-        this->activeFigure = new FigureReversedZ();
-        x = 3;
-        y = 3;
-    }
-
-    if ( y > 17 )
-        return;
-
-//    this->activeFigure->drawFigure(this->squares,0);
-    /// this->activeFigure->drop (); <- ori are rezultat, ori arunca exceptie
-    /// this->activeFigure->drawFigure ();
-//    std::cout << y << '\n';
-    y++;
-
+    if (this->activeFigure == nullptr)
+        this->activeFigure = new FigureT();
+    this->activeFigure->dropFigure(this->squares, 0);
     this->repaint();
-
-    this->clearDrawnShapes(x,y - 1,0);
+    this->activeFigure->clearDrawnFigures(this->squares, 0);
 }

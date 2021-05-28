@@ -37,7 +37,7 @@ void Game::alignComponents() noexcept {
 }
 
 void Game::adjustComponents() noexcept {
-    this->shapeFallTimer->setInterval(1500);
+    this->shapeFallTimer->setInterval(1300);
 
     this->moveRightSignalGenerator->setInterval(150);
 }
@@ -55,7 +55,7 @@ void Game::connectComponents() noexcept {
         emit this->moveRight();
     });
 
-//    this->shapeFallTimer->start();
+    this->shapeFallTimer->start();
 }
 
 Game::~Game() noexcept {

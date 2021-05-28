@@ -5,13 +5,43 @@
 #include "Figure.h"
 #include <Board.h>
 #include <QPainter>
+#include <iostream>
 
 void Figure::drawFigure (Square **&boardMatrix, int rotation) noexcept {
-    this->findCoordinatesToSpawnAt(boardMatrix, rotation);
-    auto sqTexture = this->getSquareTexture();
-    for ( int i = 0; i < SQUARE_COUNT; i++ )
+    if (this->findCoordinatesToSpawnAt(boardMatrix, rotation)) {
+        auto sqTexture = this->getSquareTexture();
+        for (int i = 0; i < SQUARE_COUNT; i++)
+            boardMatrix[this->y + this->yOffsetsForRotation(rotation)[i]][this->x + this->xOffsetsForRotation(rotation)[i]]
+                    .setTexture(sqTexture);
+    }
+    else {
+        std::cout << "GAME OVER";
+        exit(0);
+    }
+}
+
+void Figure::clearDrawnFigures (Square ** & boardMatrix, int rotation) const noexcept {
+    for (int i = 0;i < SQUARE_COUNT;i++)
         boardMatrix[this->y + this->yOffsetsForRotation(rotation)[i]][this->x + this->xOffsetsForRotation(rotation)[i]]
-            .setTexture(sqTexture);
+                .setTexture(SquareTexture::empty());
+}
+
+void Figure::dropFigure (Square ** & boardMatrix, int rotation) noexcept (false) {
+    int matrixHeight = Board::DEFAULT_HEIGHT;
+    if (this->x == -1 && this->y == -1) {
+        this->drawFigure(boardMatrix, rotation);
+        return;
+    }
+    if (boardMatrix[this->y + 1][this->x].getTexture() == SquareTexture::empty() && (matrixHeight - this->y > 1)) {
+        std::cout << this->y << '\n';
+        this->y++;
+        for (int i = 0; i < SQUARE_COUNT; i++) {
+            boardMatrix[this->y + this->yOffsetsForRotation(rotation)[i]][this->x + this->xOffsetsForRotation(rotation)[i]]
+                    .setTexture(this->getSquareTexture());
+        }
+    }
+    else
+        throw std::runtime_error ("figure can't be dropped anymore");
 }
 
 bool Figure::findCoordinatesToSpawnAt(Square ** & boardMatrix, int rotation) noexcept {
