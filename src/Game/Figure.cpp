@@ -77,8 +77,13 @@ void Figure::moveFigureToLeft (Square **&boardMatrix, int rotation) noexcept(fal
     else
         throw std::runtime_error ("figure can't be moved to left anymore");
 }
-
+#include <chrono>
+#include <cmath>
+#include <iomanip>
+using namespace std;
 bool Figure::findCoordinatesToSpawnAt(Square ** & boardMatrix, int rotation) noexcept {
+    auto start = chrono::high_resolution_clock::now();
+
     int matrixWidth = Board::DEFAULT_WIDTH;
     int matrixHeight = Board::DEFAULT_HEIGHT;
     int i, j, k;
@@ -96,6 +101,15 @@ bool Figure::findCoordinatesToSpawnAt(Square ** & boardMatrix, int rotation) noe
             if (k >= SQUARE_COUNT) {
                 this->x = j;
                 this->y = i;
+
+                auto end = chrono::high_resolution_clock::now();
+
+                std::chrono::duration < double >  diff = end - start;
+
+                cout << std::fixed << std::setprecision(9) << std::setw(9) << diff.count() << '\n';
+//                auto diff = (end-start).count();
+//                cout << (diff / pow(10, 9)) << '\n';
+
                 return true;
             }
         }

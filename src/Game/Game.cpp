@@ -15,6 +15,7 @@ void Game::init() noexcept {
     this->gameBoard->setHorizontalMargin(5);
 
     this->gameBoard->init();
+    this->gameBoard->dropActiveShape();
 }
 
 void Game::createComponents() noexcept {
