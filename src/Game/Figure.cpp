@@ -58,7 +58,16 @@ void Figure::moveFigureToRight (Square **&boardMatrix, int rotation) noexcept(fa
 }
 
 void Figure::moveFigureToLeft (Square **&boardMatrix, int rotation) noexcept(false) {
-    if (boardMatrix[this->y][this->x - 1].getTexture() == SquareTexture::empty() && this->x > 0) {
+    /// cel mai stanga patrat
+    /// mergi print toate offset-urile
+
+    // same for other movements
+    int xOffsetLeftMost = 0;
+    for ( int i = 0; i < this->rotationCount(); i++ )
+        if ( xOffsetLeftMost > this->xOffsetsForRotation(rotation)[i] )
+            xOffsetLeftMost = this->xOffsetsForRotation(rotation)[i];
+
+    if (boardMatrix[this->y][this->x - 1].getTexture() == SquareTexture::empty() && this->x + xOffsetLeftMost > 0) {
         this->x--;
         for (int i = 0; i < SQUARE_COUNT; i++) {
             boardMatrix[this->y + this->yOffsetsForRotation(rotation)[i]][this->x + this->xOffsetsForRotation(rotation)[i]]

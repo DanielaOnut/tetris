@@ -38,26 +38,6 @@ void Board::init() noexcept {
         for (int j = 0; j < this->width; j++) {
             this->squares[i][j].setTexture(SquareTexture::empty());
         }
-//    FigureL f1;
-//    f1.drawFigure(this->squares, 1);
-//
-//    FigureSquare f2;
-//    f2.drawFigure(this->squares,0);
-//
-//    FigureI f3;
-//    f3.drawFigure(this->squares,1);
-//
-//    FigureT f4;
-//    f4.drawFigure(this->squares,2);
-//
-//    FigureReversedL f5;
-//    f5.drawFigure (this->squares, 2);
-//
-//    FigureZ f6;
-//    f6.drawFigure (this->squares,1);
-//
-//    FigureReversedZ f7;
-//    f7.drawFigure(this->squares,0);
 
     this->setMinimumWidth( this->squareSize * this->width + this->horizontalMargin * 2 );
     this->setMinimumHeight( this->squareSize * this->height + this->verticalMargin * 2 );
@@ -94,8 +74,16 @@ void Board::moveActiveShapeToRight () noexcept {
     if ( p != nullptr ) {
         // Game is parent
         connect ( p, & Game::moveRight, [this] {
-            this->activeFigure->moveFigureToRight(this->squares, 0);
-            this->activeFigure->clearDrawnFigures(this->squares, 0);
+            /// first clear then move
+            try {
+                if ( this->activeFigure != nullptr ) {
+                    this->activeFigure->clearDrawnFigures(this->squares, 0);
+                    this->activeFigure->moveFigureToRight(this->squares, 0);
+                    this->repaint();
+                }
+            } catch (std::exception const & e) {
+                std::cout << e.what() << '\n';
+            }
         } );
     }
 }
@@ -104,8 +92,15 @@ void Board::moveActiveShapeToLeft () noexcept {
     auto * p = dynamic_cast < Game * > (this->parent());
     if ( p != nullptr ) {
         connect ( p, & Game::moveLeft, [this] {
-            this->activeFigure->moveFigureToLeft(this->squares, 0);
-            this->activeFigure->clearDrawnFigures(this->squares, 0);
+            try {
+                if ( this->activeFigure != nullptr ) {
+                    this->activeFigure->clearDrawnFigures(this->squares, 0);
+                    this->activeFigure->moveFigureToLeft(this->squares, 0);
+                    this->repaint();
+                }
+            } catch (std::exception const & e) {
+                std::cout << e.what() << '\n';
+            }
         } );
     }
 }
@@ -113,7 +108,8 @@ void Board::moveActiveShapeToLeft () noexcept {
 void Board::dropActiveShape() noexcept {
     if (this->activeFigure == nullptr)
         this->activeFigure = new FigureReversedL();
+    if ( this->activeFigure->getY() >= 0 )
+        this->activeFigure->clearDrawnFigures(this->squares, 0);
     this->activeFigure->dropFigure(this->squares, 0);
     this->repaint();
-    this->activeFigure->clearDrawnFigures(this->squares, 0);
 }

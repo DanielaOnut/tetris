@@ -114,9 +114,9 @@ Window::~Window () noexcept {
 
 void Window::keyPressEvent(QKeyEvent *event) {
     auto * p = dynamic_cast < Game * > ( this->activePanel );
+
     if ( p != nullptr )
         p->keyPressEvent(event);
-//    std::cout << event->text().toStdString() << " pressed\n";
 }
 
 void Window::keyReleaseEvent(QKeyEvent *event) {
