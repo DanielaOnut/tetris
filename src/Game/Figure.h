@@ -20,6 +20,7 @@ class Figure : public QWidget {
 protected:
     int x = -1;
     int y = -1;
+    int rotation = 0;
 public:
     constexpr static int SQUARE_COUNT = 4;
 //    explicit Figure (QWidget * parent) noexcept : QWidget(parent) { }
@@ -27,12 +28,12 @@ public:
     /// for later
     /// virtual std::list < std::pair < int, int > > findCoordinatesToSpawnAt (Square ** & boardMatrix ) noexcept = 0;
 
-    virtual bool findCoordinatesToSpawnAt (Square ** & boardMatrix, int rotation) noexcept;
-    virtual void dropFigure (Square ** & boardMatrix, int rotation) noexcept (false);
-    virtual void drawFigure (Square ** & boardMatrix, int rotation) noexcept;
-    void clearDrawnFigures(Square ** & boardMatrix, int rotation) const noexcept;
-    void moveFigureToRight (Square ** & boardMatrix, int rotation) noexcept (false);
-    void moveFigureToLeft (Square ** & boardMatrix, int rotation) noexcept (false);
+    virtual bool findCoordinatesToSpawnAt (Square ** & boardMatrix) noexcept;
+    virtual void dropFigure (Square ** & boardMatrix) noexcept (false);
+    virtual void drawFigure (Square ** & boardMatrix) noexcept;
+    void clearDrawnFigures(Square ** & boardMatrix) const noexcept;
+    void moveFigureToRight (Square ** & boardMatrix) noexcept (false);
+    void moveFigureToLeft (Square ** & boardMatrix) noexcept (false);
     virtual QPixmap * getSquareTexture () const noexcept = 0;
     virtual const char * toString () noexcept = 0;
     virtual int rotationCount () const noexcept = 0;

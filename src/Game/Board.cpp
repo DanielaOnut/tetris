@@ -27,7 +27,7 @@ void Board::init() noexcept {
             ( resHeight - this->verticalMargin * 2 ) / this->height
     );
 
-    std::cout << this->squareSize << '\n';
+//    std::cout << this->squareSize << '\n';
 
     this->squares = new Square * [this->height];
     for ( int i = 0; i < this->height; i++ ) {
@@ -77,8 +77,8 @@ void Board::moveActiveShapeToRight () noexcept {
             /// first clear then move
             try {
                 if ( this->activeFigure != nullptr ) {
-                    this->activeFigure->clearDrawnFigures(this->squares, 0);
-                    this->activeFigure->moveFigureToRight(this->squares, 0);
+                    this->activeFigure->clearDrawnFigures(this->squares);
+                    this->activeFigure->moveFigureToRight(this->squares);
                     this->repaint();
                 }
             } catch (std::exception const & e) {
@@ -94,8 +94,8 @@ void Board::moveActiveShapeToLeft () noexcept {
         connect ( p, & Game::moveLeft, [this] {
             try {
                 if ( this->activeFigure != nullptr ) {
-                    this->activeFigure->clearDrawnFigures(this->squares, 0);
-                    this->activeFigure->moveFigureToLeft(this->squares, 0);
+                    this->activeFigure->clearDrawnFigures(this->squares);
+                    this->activeFigure->moveFigureToLeft(this->squares);
                     this->repaint();
                 }
             } catch (std::exception const & e) {
@@ -109,7 +109,7 @@ void Board::dropActiveShape() noexcept {
     if (this->activeFigure == nullptr)
         this->activeFigure = new FigureReversedL();
     if ( this->activeFigure->getY() >= 0 )
-        this->activeFigure->clearDrawnFigures(this->squares, 0);
-    this->activeFigure->dropFigure(this->squares, 0);
+        this->activeFigure->clearDrawnFigures(this->squares);
+    this->activeFigure->dropFigure(this->squares);
     this->repaint();
 }
