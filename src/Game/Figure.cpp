@@ -32,8 +32,11 @@ void Figure::dropFigure (Square ** & boardMatrix) noexcept (false) {
         this->drawFigure(boardMatrix);
         return;
     }
-    if (boardMatrix[this->y + 1][this->x].getTexture() == SquareTexture::empty() && (matrixHeight - this->y > 1)) {
-//        std::cout << this->y << '\n';
+    int yOffsetMax = 0;
+    for (int i = 0;i < SQUARE_COUNT;i++)
+        if (this->yOffsetsForRotation(this->rotation)[i] > yOffsetMax)
+            yOffsetMax = this->yOffsetsForRotation(this->rotation)[i];
+    if (this->y + yOffsetMax + 1 < matrixHeight && boardMatrix[this->y + 1][this->x].getTexture() == SquareTexture::empty()) {
         this->y++;
         for (int i = 0; i < SQUARE_COUNT; i++) {
             boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
@@ -46,7 +49,11 @@ void Figure::dropFigure (Square ** & boardMatrix) noexcept (false) {
 
 void Figure::moveFigureToRight (Square **&boardMatrix) noexcept(false) {
     int matrixWidth = Board::DEFAULT_WIDTH;
-    if (boardMatrix[this->y][this->x + 1].getTexture() == SquareTexture::empty() && (matrixWidth - this->x > 1)) {
+    int xOffsetRightMost = 0;
+    for ( int i = 0; i < SQUARE_COUNT; i++ )
+        if ( xOffsetRightMost < this->xOffsetsForRotation(this->rotation)[i] )
+            xOffsetRightMost = this->xOffsetsForRotation(this->rotation)[i];
+    if (this->x + xOffsetRightMost + 1 < matrixWidth && boardMatrix[this->y][this->x + 1].getTexture() == SquareTexture::empty()) {
         this->x++;
         for (int i = 0; i < SQUARE_COUNT; i++) {
             boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
@@ -63,10 +70,9 @@ void Figure::moveFigureToLeft (Square **&boardMatrix) noexcept(false) {
 
     // same for other movements
     int xOffsetLeftMost = 0;
-    for ( int i = 0; i < this->rotationCount(); i++ )
+    for ( int i = 0; i < SQUARE_COUNT; i++ )
         if ( xOffsetLeftMost > this->xOffsetsForRotation(this->rotation)[i] )
             xOffsetLeftMost = this->xOffsetsForRotation(this->rotation)[i];
-
     if (boardMatrix[this->y][this->x - 1].getTexture() == SquareTexture::empty() && this->x + xOffsetLeftMost > 0) {
         this->x--;
         for (int i = 0; i < SQUARE_COUNT; i++) {

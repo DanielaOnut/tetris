@@ -107,9 +107,16 @@ void Board::moveActiveShapeToLeft () noexcept {
 
 void Board::dropActiveShape() noexcept {
     if (this->activeFigure == nullptr)
-        this->activeFigure = new FigureReversedL();
-    if ( this->activeFigure->getY() >= 0 )
+        this->activeFigure = new FigureSquare();
+    if (this->activeFigure->getY() >= 0)
         this->activeFigure->clearDrawnFigures(this->squares);
-    this->activeFigure->dropFigure(this->squares);
-    this->repaint();
+    try {
+        if (this->activeFigure != nullptr) {
+            this->activeFigure->dropFigure(this->squares);
+            this->repaint();
+        }
+    } catch (std::exception const & e) {
+        std::cout << e.what() << '\n';
+        this->activeFigure = nullptr;
+    }
 }
