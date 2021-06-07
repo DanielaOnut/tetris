@@ -34,7 +34,7 @@ CurrentSettings::CurrentSettings(bool) noexcept {
         .moveRightKey = KEY_RIGHT_ARROW,
         .moveLeftKey = KEY_LEFT_ARROW,
         .rotateKey = KEY_R,
-        .dropKey = KEY_SPACE
+        .dropKey = KEY_DOWN_ARROW
     };
 }
 

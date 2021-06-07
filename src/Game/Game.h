@@ -21,6 +21,7 @@ class Game : public QWidget {
 
     QTimer * moveRightSignalGenerator {nullptr};
     QTimer * moveLeftSignalGenerator {nullptr};
+    QTimer * dropSignalGenerator {nullptr};
 
 public:
     explicit Game ( QWidget * parent ) noexcept : QWidget(parent) { }

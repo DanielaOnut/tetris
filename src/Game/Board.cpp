@@ -107,7 +107,7 @@ void Board::moveActiveShapeToLeft () noexcept {
 
 void Board::dropActiveShape() noexcept {
     if (this->activeFigure == nullptr)
-        this->activeFigure = new FigureSquare();
+        this->activeFigure = new FigureT();
     if (this->activeFigure->getY() >= 0)
         this->activeFigure->clearDrawnFigures(this->squares);
     try {

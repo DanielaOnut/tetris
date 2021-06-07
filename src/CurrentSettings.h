@@ -106,7 +106,7 @@ private:
         ControlKey  moveRightKey    {KEY_RIGHT_ARROW};
         ControlKey  moveLeftKey     {KEY_LEFT_ARROW};
         ControlKey  rotateKey       {KEY_R};
-        ControlKey  dropKey         {KEY_SPACE};
+        ControlKey  dropKey         {KEY_DOWN_ARROW};
 
         void setMoveRightKey (Qt::Key qKey) noexcept;
         void setMoveLeftKey (Qt::Key qKey) noexcept;

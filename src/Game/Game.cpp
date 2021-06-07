@@ -27,6 +27,7 @@ void Game::createComponents() noexcept {
 
     this->moveRightSignalGenerator = new QTimer(this);
     this->moveLeftSignalGenerator = new QTimer(this);
+    this->dropSignalGenerator = new QTimer(this);
 }
 
 void Game::alignComponents() noexcept {
@@ -43,6 +44,7 @@ void Game::adjustComponents() noexcept {
 
     this->moveRightSignalGenerator->setInterval(150);
     this->moveLeftSignalGenerator->setInterval(150);
+    this->dropSignalGenerator->setInterval(90);
 }
 
 void Game::styleComponents() noexcept {
@@ -61,6 +63,8 @@ void Game::connectComponents() noexcept {
     connect(this->moveLeftSignalGenerator, & QTimer::timeout, [this]{
         emit this->moveLeft();
     });
+
+    connect(this->dropSignalGenerator, & QTimer::timeout, [this] { this->gameBoard->dropActiveShape();});
 
     this->shapeFallTimer->start();
 }
@@ -95,6 +99,14 @@ void Game::keyPressEvent(QKeyEvent *event) {
             emit this->moveLeft();
             this->moveLeftSignalGenerator->start();
         }
+        if (
+                CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
+                CurrentSettings::instance().control().dropKey
+        ) {
+            this->gameBoard->dropActiveShape();
+            this->shapeFallTimer->stop();
+            this->dropSignalGenerator->start();
+        }
     }
 //    std::cout << event->text().toStdString() << " pressed " << event->isAutoRepeat() << '\n';
 }
@@ -113,6 +125,13 @@ void Game::keyReleaseEvent(QKeyEvent *event) {
                 CurrentSettings::instance().control().moveLeftKey
                 )
             this->moveLeftSignalGenerator->stop();
+        if (
+                CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
+                CurrentSettings::instance().control().dropKey
+        ) {
+            this->dropSignalGenerator->stop();
+            this->shapeFallTimer->start();
+        }
     }
 //    std::cout << event->text().toStdString() << " released " << event->isAutoRepeat() << '\n';
 }
