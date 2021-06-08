@@ -83,6 +83,35 @@ void Figure::moveFigureToLeft (Square **&boardMatrix) noexcept(false) {
     else
         throw std::runtime_error ("figure can't be moved to left anymore");
 }
+
+void Figure::findCoordinatesToRotateAt(Square **& boardMatrix) noexcept {
+    int xOffsetLeftMost = 0;
+    for ( int i = 0; i < SQUARE_COUNT; i++ )
+        if ( xOffsetLeftMost > this->xOffsetsForRotation(this->rotation)[i] )
+            xOffsetLeftMost = this->xOffsetsForRotation(this->rotation)[i];
+    int xOffsetRightMost = 0;
+    for ( int i = 0; i < SQUARE_COUNT; i++ )
+        if ( xOffsetRightMost < this->xOffsetsForRotation(this->rotation)[i] )
+            xOffsetRightMost = this->xOffsetsForRotation(this->rotation)[i];
+    while (this->x + xOffsetLeftMost < 0)
+        this->x++;
+    while (this->x + xOffsetRightMost >= Board::DEFAULT_WIDTH)
+        this->x--;
+}
+
+void Figure::rotateFigure(Square **& boardMatrix) noexcept(false) {
+    this->rotation++;
+    if (this->rotation >= this->rotationCount())
+        this->rotation = 0;
+    this->findCoordinatesToRotateAt(boardMatrix);
+    auto sqTexture = this->getSquareTexture();
+    for (int i = 0; i < SQUARE_COUNT; i++) {
+        boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(
+                this->rotation)[i]]
+                .setTexture(sqTexture);
+    }
+}
+
 #include <chrono>
 #include <cmath>
 #include <iomanip>

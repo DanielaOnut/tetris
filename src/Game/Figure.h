@@ -29,11 +29,13 @@ public:
     /// virtual std::list < std::pair < int, int > > findCoordinatesToSpawnAt (Square ** & boardMatrix ) noexcept = 0;
 
     virtual bool findCoordinatesToSpawnAt (Square ** & boardMatrix) noexcept;
+    virtual void findCoordinatesToRotateAt (Square ** & boardMatrix) noexcept;
     virtual void dropFigure (Square ** & boardMatrix) noexcept (false);
     virtual void drawFigure (Square ** & boardMatrix) noexcept;
     void clearDrawnFigures(Square ** & boardMatrix) const noexcept;
     void moveFigureToRight (Square ** & boardMatrix) noexcept (false);
     void moveFigureToLeft (Square ** & boardMatrix) noexcept (false);
+    void rotateFigure (Square ** & boardMatrix) noexcept (false);
     virtual QPixmap * getSquareTexture () const noexcept = 0;
     virtual const char * toString () noexcept = 0;
     virtual int rotationCount () const noexcept = 0;

@@ -107,6 +107,11 @@ void Game::keyPressEvent(QKeyEvent *event) {
             this->shapeFallTimer->stop();
             this->dropSignalGenerator->start();
         }
+        if (
+                CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
+                CurrentSettings::instance().control().rotateKey
+        )
+            this->gameBoard->rotateShape();
     }
 //    std::cout << event->text().toStdString() << " pressed " << event->isAutoRepeat() << '\n';
 }
