@@ -77,13 +77,13 @@ void Board::moveActiveShapeToRight () noexcept {
             /// first clear then move
             try {
                 if ( this->activeFigure != nullptr ) {
-                    this->activeFigure->clearDrawnFigures(this->squares);
+//                    this->activeFigure->clearDrawnFigures(this->squares);
                     this->activeFigure->moveFigureToRight(this->squares);
-                    this->repaint();
                 }
             } catch (std::exception const & e) {
                 std::cout << e.what() << '\n';
             }
+            this->repaint();
         } );
     }
 }
@@ -94,31 +94,35 @@ void Board::moveActiveShapeToLeft () noexcept {
         connect ( p, & Game::moveLeft, [this] {
             try {
                 if ( this->activeFigure != nullptr ) {
-                    this->activeFigure->clearDrawnFigures(this->squares);
+//                    this->activeFigure->clearDrawnFigures(this->squares);
                     this->activeFigure->moveFigureToLeft(this->squares);
-                    this->repaint();
                 }
             } catch (std::exception const & e) {
                 std::cout << e.what() << '\n';
             }
+            this->repaint();
         } );
     }
 }
 
 void Board::dropActiveShape() noexcept {
-    if (this->activeFigure == nullptr)
-        this->activeFigure = new FigureL();
-    if (this->activeFigure->getY() >= 0)
-        this->activeFigure->clearDrawnFigures(this->squares);
+    if (this->activeFigure == nullptr) {
+        this->activeFigure = Figure::Factory().random().at(5, 2).spawn();
+    }
     try {
         if (this->activeFigure != nullptr) {
             this->activeFigure->dropFigure(this->squares);
-            this->repaint();
+//            this->activeFigure->drawFigure(this->squares);
         }
     } catch (std::exception const & e) {
         std::cout << e.what() << '\n';
+        delete this->activeFigure;
         this->activeFigure = nullptr;
+        this->activeFigure = Figure::Factory().random().spawn();
+        /// figure spawns at -1 -1, to remove pointless click, do another drop
+        this->activeFigure->dropFigure(this->squares);
     }
+    this->repaint();
 }
 
 void Board::rotateShape () noexcept {

@@ -36,35 +36,66 @@ void Figure::dropFigure (Square ** & boardMatrix) noexcept (false) {
     for (int i = 0;i < SQUARE_COUNT;i++)
         if (this->yOffsetsForRotation(this->rotation)[i] > yOffsetMax)
             yOffsetMax = this->yOffsetsForRotation(this->rotation)[i];
-    if (this->y + yOffsetMax + 1 < matrixHeight) {
-        this->y++;
-        for (int i = 0; i < SQUARE_COUNT; i++) {
-            boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
-                    .setTexture(this->getSquareTexture());
-        }
-        if (this->y + yOffsetMax == matrixHeight - 1)
-            throw std::runtime_error ("figure can't be dropped anymore");
-        int xCoordinates[4], yCoordinates[4], newY, newX;
-        for (int i = 0;i < SQUARE_COUNT;i++) {
-            xCoordinates[i] = this->x + this->xOffsetsForRotation(this->rotation)[i];
-            yCoordinates[i] = this->y + this->yOffsetsForRotation(this->rotation)[i];
-        }
-        for (int i = 0;i < SQUARE_COUNT;i++) {
-            newY = this->y + 1 + this->yOffsetsForRotation(this->rotation)[i];
-            newX = this->x + this->xOffsetsForRotation(this->rotation)[i];
-            bool validPair = true;
-            for (int j = 0; j < 4 && validPair; j++)
-                if (newX == xCoordinates[j] && newY == yCoordinates[j])
-                    validPair = false;
-            if (validPair) {
-                if (boardMatrix[newY][newX].getTexture() != SquareTexture::empty()) {
-                    throw std::runtime_error("figure can't be dropped anymore");
-                }
-            }
-        }
+
+    int xOffsets[4];
+    int yOffsets[4];
+
+    for ( int i = 0; i < SQUARE_COUNT; i++ ) {
+        xOffsets[i] = this->x + this->xOffsetsForRotation(this->rotation)[i];
+        yOffsets[i] = this->y + 1 + this->yOffsetsForRotation(this->rotation)[i];
+
+        if ( yOffsets[i] < 0 || yOffsets[i] >= Board::DEFAULT_HEIGHT )
+            throw std::runtime_error("Out of Bounds");
+        if (
+                boardMatrix[yOffsets[i]][xOffsets[i]].getTexture() != SquareTexture::empty() &&
+                ! this->contains( xOffsets[i], yOffsets[i] )
+        )
+            throw std::runtime_error("Collision");
     }
-    else
-        throw std::runtime_error ("figure can't be dropped anymore");
+
+    this->clearDrawnFigures(boardMatrix);
+
+    this->y++;
+
+    for ( int i = 0; i < SQUARE_COUNT; i++ )
+        boardMatrix[yOffsets[i]][xOffsets[i]].setTexture(this->getSquareTexture());
+//    if (this->y + yOffsetMax + 1 < matrixHeight) {
+//
+//        /**
+//         * obtii urm. coordonate ( toate 4 )
+//         * validezi
+//         * muti
+//        */
+//
+//
+////        this->y++;
+////        for (int i = 0; i < SQUARE_COUNT; i++) {
+////            boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
+////                    .setTexture(this->getSquareTexture());
+////        }
+////        if (this->y + yOffsetMax == matrixHeight - 1)
+////            throw std::runtime_error ("figure can't be dropped anymore");
+////        int xCoordinates[4], yCoordinates[4], newY, newX;
+////        for (int i = 0;i < SQUARE_COUNT;i++) {
+////            xCoordinates[i] = this->x + this->xOffsetsForRotation(this->rotation)[i];
+////            yCoordinates[i] = this->y + this->yOffsetsForRotation(this->rotation)[i];
+////        }
+////        for (int i = 0;i < SQUARE_COUNT;i++) {
+////            newY = this->y + 1 + this->yOffsetsForRotation(this->rotation)[i];
+////            newX = this->x + this->xOffsetsForRotation(this->rotation)[i];
+////            bool validPair = true;
+////            for (int j = 0; j < 4 && validPair; j++)
+////                if (newX == xCoordinates[j] && newY == yCoordinates[j])
+////                    validPair = false;
+////            if (validPair) {
+////                if (boardMatrix[newY][newX].getTexture() != SquareTexture::empty()) {
+////                    throw std::runtime_error("figure can't be dropped anymore");
+////                }
+////            }
+////        }
+//    }
+//    else
+//        throw std::runtime_error ("figure can't be dropped anymore");
 }
 
 void Figure::moveFigureToRight (Square **&boardMatrix) noexcept(false) {
@@ -91,6 +122,7 @@ void Figure::moveFigureToRight (Square **&boardMatrix) noexcept(false) {
                     throw std::runtime_error("figure can't be moved to right anymore");
             }
         }
+        this->clearDrawnFigures(boardMatrix);
         this->x++;
         for (int i = 0; i < SQUARE_COUNT; i++) {
             boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
@@ -124,6 +156,7 @@ void Figure::moveFigureToLeft (Square **&boardMatrix) noexcept(false) {
                     throw std::runtime_error("figure can't be moved to left anymore");
             }
         }
+        this->clearDrawnFigures(boardMatrix);
         this->x--;
         for (int i = 0; i < SQUARE_COUNT; i++) {
             boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
@@ -153,7 +186,8 @@ void Figure::findCoordinatesToRotateAt(Square **& boardMatrix) noexcept {
         this->x++;
     while (this->x + xOffsetRightMost >= Board::DEFAULT_WIDTH)
         this->x--;
-    for (int i = 0;i < SQUARE_COUNT;i++)
+    for (int i = 0;i < SQUARE_COUNT;i++) /// loop cnt , >= 5 stg -> mijl ai 5
+        /// might be your infinite loop
         if (boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
                     .getTexture() != SquareTexture::empty()) {
             if (this->x <= Board::DEFAULT_WIDTH / 2)
@@ -161,10 +195,16 @@ void Figure::findCoordinatesToRotateAt(Square **& boardMatrix) noexcept {
             else if (this->x > Board::DEFAULT_WIDTH / 2)
                 this->x--;
             i = -1;
+            std::cout << "Busy Waiting....\n";
         }
+
+    /// aplici la fel, doar ca incercam propagare la stanga complet
+    /// la fel, dreapta
+    /// daca niciuna, incerci sus jos ?
+    /// daca nici asa, nu permiti rotatia
 }
 
-void Figure::rotateFigure(Square **& boardMatrix) noexcept(false) {
+void Figure::rotateFigure(Square **& boardMatrix) noexcept(false) { // remove noexcept(false)
     this->rotation++;
     if (this->rotation >= this->rotationCount())
         this->rotation = 0;
@@ -214,6 +254,51 @@ bool Figure::findCoordinatesToSpawnAt(Square ** & boardMatrix) noexcept {
             }
         }
     return false;
+}
+
+#include <FigureI.h>
+#include <FigureL.h>
+#include <FigureT.h>
+#include <FigureZ.h>
+#include <FigureSquare.h>
+#include <FigureReversedL.h>
+#include <FigureReversedZ.h>
+
+#include <ctime>
+
+static bool isRunning = false;
+static void startRandom () noexcept { // nu poate fi gasita cu extern
+    if ( isRunning ) return;
+
+    srand( time ( nullptr ) );
+    isRunning = true;
+}
+
+Figure * Figure::Factory::spawn() const noexcept {
+    Figure * newFigure;
+    startRandom();
+
+    int type = this->figureType;
+    if ( this->figureType == 0 ) {
+        type = rand() % 7 + 1;
+    }
+
+    switch ( type ) {
+        case 1: newFigure = new FigureI(); break;
+        case 2: newFigure = new FigureT(); break;
+        case 3: newFigure = new FigureZ(); break;
+        case 4: newFigure = new FigureReversedZ(); break;
+        case 5: newFigure = new FigureL(); break;
+        case 6: newFigure = new FigureReversedL(); break;
+        case 7:
+        default:
+            newFigure = new FigureSquare(); break;
+    }
+
+    newFigure->x = this->x;
+    newFigure->y = this->y;
+
+    return newFigure;
 }
 
 //void Figure::paintEvent(QPaintEvent * event) noexcept {
