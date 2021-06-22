@@ -103,6 +103,25 @@ void Board::moveActiveShapeToLeft () noexcept {
     }
 }
 
+void Board::deletingLine(int line) noexcept {
+    for (int i = line; i > 0;i--)
+        for (int j = 0;j < this->width;j++)
+            this->squares[i][j].setTexture(this->squares[i-1][j].getTexture());
+    for (int i = 0;i < this->width;i++)
+        this->squares[0][i].setTexture(SquareTexture::empty());
+}
+
+void Board::lineIsFull() noexcept {
+    for (int i = 0;i < this->height;i++) {
+        bool isFull = true;
+        for (int j = 0;j < this->width;j++)
+            if (this->squares[i][j].getTexture() == SquareTexture::empty())
+                isFull = false;
+        if (isFull)
+            this->deletingLine(i);
+    }
+}
+
 static bool noRotation = false;
 void Board::dropActiveShape() noexcept {
     if (this->activeFigure == nullptr) {
@@ -115,6 +134,9 @@ void Board::dropActiveShape() noexcept {
         }
     } catch (std::exception const & e) {
         std::cout << e.what() << '\n';
+        this->lineIsFull();
+//            if (res != -1)
+//                this->deletingLine(res);
         delete this->activeFigure;
         this->activeFigure = nullptr;
         this->activeFigure = Figure::Factory().random().spawn();
@@ -137,6 +159,9 @@ void Board::rotateShape () noexcept {
             this->activeFigure->dropFigure(this->squares);
         } catch (std::exception const & e) {
             std::cout << e.what() << " from rotation" << '\n';
+            this->lineIsFull();
+//            if (res != -1)
+//                this->deletingLine(res);
             noRotation = true;
             delete this->activeFigure;
             this->activeFigure = nullptr;

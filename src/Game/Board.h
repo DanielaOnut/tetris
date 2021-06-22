@@ -51,6 +51,9 @@ public:
     void moveActiveShapeToLeft() noexcept;
     void rotateShape() noexcept;
 
+    void lineIsFull () noexcept;
+    void deletingLine (int) noexcept;
+
     ~Board() noexcept override;
 };
 
