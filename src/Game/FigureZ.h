@@ -12,8 +12,8 @@ class FigureZ : public Figure {
 private:
     constexpr static int ROTATION_COUNT = 2;
 
-    int xFigureOffsets[ROTATION_COUNT][4] = { {0, 1, 1, 2}, {0, 0,-1,-1} };
-    int yFigureOffsets[ROTATION_COUNT][4] = { {0, 0, 1, 1}, {0, 1, 1, 2} };
+    int xFigureOffsets[ROTATION_COUNT][4] = { {0,-1, 0, 1}, {0, 0,-1,-1} };
+    int yFigureOffsets[ROTATION_COUNT][4] = { {0, 0,-1,-1}, {0, 1, 0,-1} };
 public:
 
     QPixmap * getSquareTexture () const noexcept override {

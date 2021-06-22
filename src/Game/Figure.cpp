@@ -59,43 +59,6 @@ void Figure::dropFigure (Square ** & boardMatrix) noexcept (false) {
 
     for ( int i = 0; i < SQUARE_COUNT; i++ )
         boardMatrix[yOffsets[i]][xOffsets[i]].setTexture(this->getSquareTexture());
-//    if (this->y + yOffsetMax + 1 < matrixHeight) {
-//
-//        /**
-//         * obtii urm. coordonate ( toate 4 )
-//         * validezi
-//         * muti
-//        */
-//
-//
-////        this->y++;
-////        for (int i = 0; i < SQUARE_COUNT; i++) {
-////            boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
-////                    .setTexture(this->getSquareTexture());
-////        }
-////        if (this->y + yOffsetMax == matrixHeight - 1)
-////            throw std::runtime_error ("figure can't be dropped anymore");
-////        int xCoordinates[4], yCoordinates[4], newY, newX;
-////        for (int i = 0;i < SQUARE_COUNT;i++) {
-////            xCoordinates[i] = this->x + this->xOffsetsForRotation(this->rotation)[i];
-////            yCoordinates[i] = this->y + this->yOffsetsForRotation(this->rotation)[i];
-////        }
-////        for (int i = 0;i < SQUARE_COUNT;i++) {
-////            newY = this->y + 1 + this->yOffsetsForRotation(this->rotation)[i];
-////            newX = this->x + this->xOffsetsForRotation(this->rotation)[i];
-////            bool validPair = true;
-////            for (int j = 0; j < 4 && validPair; j++)
-////                if (newX == xCoordinates[j] && newY == yCoordinates[j])
-////                    validPair = false;
-////            if (validPair) {
-////                if (boardMatrix[newY][newX].getTexture() != SquareTexture::empty()) {
-////                    throw std::runtime_error("figure can't be dropped anymore");
-////                }
-////            }
-////        }
-//    }
-//    else
-//        throw std::runtime_error ("figure can't be dropped anymore");
 }
 
 void Figure::moveFigureToRight (Square **&boardMatrix) noexcept(false) {
@@ -167,7 +130,8 @@ void Figure::moveFigureToLeft (Square **&boardMatrix) noexcept(false) {
         throw std::runtime_error ("figure can't be moved to left anymore");
 }
 
-void Figure::findCoordinatesToRotateAt(Square **& boardMatrix) noexcept {
+static int oldRotation = 0;
+bool Figure::findCoordinatesToRotateAt(Square **& boardMatrix) noexcept {
     int xOffsetLeftMost = 0;
     for ( int i = 0; i < SQUARE_COUNT; i++ )
         if ( xOffsetLeftMost > this->xOffsetsForRotation(this->rotation)[i] )
@@ -180,35 +144,113 @@ void Figure::findCoordinatesToRotateAt(Square **& boardMatrix) noexcept {
     for (int i = 0;i < SQUARE_COUNT;i++)
         if (this->yOffsetsForRotation(this->rotation)[i] > yOffsetMax)
             yOffsetMax = this->yOffsetsForRotation(this->rotation)[i];
+    int yOffsetMin = 9;
+    for (int i = 0;i < SQUARE_COUNT;i++)
+        if (this->yOffsetsForRotation(this->rotation)[i] < yOffsetMin)
+            yOffsetMin = this->yOffsetsForRotation(this->rotation)[i];
+    bool moveLeft = this->movingFigureToLeftPossible(oldRotation, boardMatrix);
+    bool moveRight = this->movingFigureToRightPossible(oldRotation, boardMatrix);
+    if (! moveLeft && ! moveRight)
+        return false;
+    if (! moveLeft && this->x + xOffsetRightMost >= Board::DEFAULT_WIDTH)
+        return false;
+    if (! moveRight && this->x + xOffsetLeftMost < 0)
+        return false;
     while (this->y + yOffsetMax >= Board::DEFAULT_HEIGHT)
         this->y--;
     while (this->x + xOffsetLeftMost < 0)
         this->x++;
     while (this->x + xOffsetRightMost >= Board::DEFAULT_WIDTH)
         this->x--;
-    for (int i = 0;i < SQUARE_COUNT;i++) /// loop cnt , >= 5 stg -> mijl ai 5
-        /// might be your infinite loop
-        if (boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
-                    .getTexture() != SquareTexture::empty()) {
-            if (this->x <= Board::DEFAULT_WIDTH / 2)
-                this->x++;
-            else if (this->x > Board::DEFAULT_WIDTH / 2)
-                this->x--;
-            i = -1;
-            std::cout << "Busy Waiting....\n";
+    int line,col,ok = 1,finalLin = this->y, finalCol = this->x;
+    for (int i = 0;i < SQUARE_COUNT && ok;i++) {
+        line = this->y + this->yOffsetsForRotation(this->rotation)[i];
+        col = this->x + this->xOffsetsForRotation(this->rotation)[i];
+        if (boardMatrix[line][col].getTexture() != SquareTexture::empty())
+            ok = 0;
+    }
+    if (! ok) {
+        bool placed = false;
+        int newCol = this->x;
+        while (!placed && newCol + xOffsetLeftMost > 0 && moveLeft) {
+            newCol--;
+            int i;
+            for (i = 0; i < SQUARE_COUNT; ++i) {
+                line = this->y + this->yOffsetsForRotation(this->rotation)[i];
+                col = newCol + this->xOffsetsForRotation(this->rotation)[i];
+                if (!this->contains(col, line) && boardMatrix[line][col].getTexture() != SquareTexture::empty()) {
+                    break;
+                }
+            }
+            if (i < SQUARE_COUNT) {
+                break;
+            } else if (!this->squaresHaveCollision(newCol, this->y, boardMatrix)) {
+                std::cout << "Moving left....\n";
+                placed = true;
+                finalCol = newCol;
+            }
         }
-
-    /// aplici la fel, doar ca incercam propagare la stanga complet
-    /// la fel, dreapta
-    /// daca niciuna, incerci sus jos ?
-    /// daca nici asa, nu permiti rotatia
+        while (! placed && newCol + xOffsetRightMost + 1 < Board::DEFAULT_WIDTH && moveRight) {
+            newCol++;
+            int i;
+            for (i = 0; i < SQUARE_COUNT; ++i) {
+                line = this->y + this->yOffsetsForRotation(this->rotation)[i];
+                col = newCol + this->xOffsetsForRotation(this->rotation)[i];
+                if (! this->contains(col, line) && boardMatrix[line][col].getTexture() != SquareTexture::empty()) {
+                    break;
+                }
+            }
+            if (i < SQUARE_COUNT) {
+                break;
+            }
+            else if (! this->squaresHaveCollision(newCol,this->y,boardMatrix)) {
+                std::cout << "Moving right....\n";
+                placed = true;
+                finalCol = newCol;
+            }
+        }
+        int newLine = this->y;
+        while (! placed && newLine + yOffsetMin > 0) {
+            newLine--;
+            int i;
+            for (i = 0; i < SQUARE_COUNT; ++i) {
+                line = newLine + this->yOffsetsForRotation(this->rotation)[i];
+                col = this->x + this->xOffsetsForRotation(this->rotation)[i];
+                if (! this->contains(col, line) && boardMatrix[line][col].getTexture() != SquareTexture::empty()) {
+                    break;
+                }
+            }
+            if (i < SQUARE_COUNT) {
+                break;
+            }
+            else if (! this->squaresHaveCollision(this->x,newLine,boardMatrix)) {
+                std::cout << "Moving up....\n";
+                placed = true;
+                finalLin = newLine;
+            }
+        }
+    }
+    else
+        return true;
+    if (! this->squaresHaveCollision(finalCol,finalLin,boardMatrix)) {
+        this->x = finalCol;
+        this->y = finalLin;
+        return true;
+    }
+    else
+        return false;
 }
 
-void Figure::rotateFigure(Square **& boardMatrix) noexcept(false) { // remove noexcept(false)
+void Figure::rotateFigure(Square **& boardMatrix) noexcept (false) {
+    oldRotation = this->rotation;
     this->rotation++;
-    if (this->rotation >= this->rotationCount())
+    if (this->rotation >= this->rotationCount()) {
         this->rotation = 0;
-    this->findCoordinatesToRotateAt(boardMatrix);
+    }
+    if (! this->findCoordinatesToRotateAt(boardMatrix)) {
+        this->rotation = oldRotation;
+        throw std::runtime_error("Couldn't rotate");
+    }
     auto sqTexture = this->getSquareTexture();
     for (int i = 0; i < SQUARE_COUNT; i++) {
         boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(
@@ -246,10 +288,7 @@ bool Figure::findCoordinatesToSpawnAt(Square ** & boardMatrix) noexcept {
 
                 std::chrono::duration < double >  diff = end - start;
 
-                cout << std::fixed << std::setprecision(9) << std::setw(9) << diff.count() << '\n';
-//                auto diff = (end-start).count();
-//                cout << (diff / pow(10, 9)) << '\n';
-
+//                cout << std::fixed << std::setprecision(9) << std::setw(9) << diff.count() << '\n';
                 return true;
             }
         }
@@ -300,12 +339,3 @@ Figure * Figure::Factory::spawn() const noexcept {
 
     return newFigure;
 }
-
-//void Figure::paintEvent(QPaintEvent * event) noexcept {
-//    QPainter painter (this);
-//
-//    painter.drawPixmap(2,0,this->squares[2][0].getTexture()->scaled(this->squareSize, this->squareSize));
-//    for (int i = 0;i < this->height;i++)
-//        painter.drawPixmap(i,1,this->squares[i][1].getTexture()->scaled(this->squareSize, this->squareSize));
-//    QWidget::paintEvent( event );
-//}

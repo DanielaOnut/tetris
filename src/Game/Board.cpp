@@ -77,7 +77,6 @@ void Board::moveActiveShapeToRight () noexcept {
             /// first clear then move
             try {
                 if ( this->activeFigure != nullptr ) {
-//                    this->activeFigure->clearDrawnFigures(this->squares);
                     this->activeFigure->moveFigureToRight(this->squares);
                 }
             } catch (std::exception const & e) {
@@ -94,7 +93,6 @@ void Board::moveActiveShapeToLeft () noexcept {
         connect ( p, & Game::moveLeft, [this] {
             try {
                 if ( this->activeFigure != nullptr ) {
-//                    this->activeFigure->clearDrawnFigures(this->squares);
                     this->activeFigure->moveFigureToLeft(this->squares);
                 }
             } catch (std::exception const & e) {
@@ -105,14 +103,15 @@ void Board::moveActiveShapeToLeft () noexcept {
     }
 }
 
+static bool noRotation = false;
 void Board::dropActiveShape() noexcept {
     if (this->activeFigure == nullptr) {
-        this->activeFigure = Figure::Factory().random().at(5, 2).spawn();
+        noRotation = false;
+        this->activeFigure = Figure::Factory().at(5, 2).spawn();
     }
     try {
         if (this->activeFigure != nullptr) {
             this->activeFigure->dropFigure(this->squares);
-//            this->activeFigure->drawFigure(this->squares);
         }
     } catch (std::exception const & e) {
         std::cout << e.what() << '\n';
@@ -126,9 +125,22 @@ void Board::dropActiveShape() noexcept {
 }
 
 void Board::rotateShape () noexcept {
-    if (this->activeFigure != nullptr && strcmp (this->activeFigure->toString(),"FigureSquare")) {
-        this->activeFigure->clearDrawnFigures(this->squares);
-        this->activeFigure->rotateFigure(this->squares);
-        this->repaint();
+    try {
+        if (this->activeFigure != nullptr && strcmp(this->activeFigure->toString(), "FigureSquare")) {
+            if (! noRotation)
+                this->activeFigure->clearDrawnFigures(this->squares);
+            this->activeFigure->rotateFigure(this->squares);
+        }
+    } catch (std::exception const & e) {
+        std::cout << e.what() << '\n';
+        try {
+            this->activeFigure->dropFigure(this->squares);
+        } catch (std::exception const & e) {
+            std::cout << e.what() << " from rotation" << '\n';
+            noRotation = true;
+            delete this->activeFigure;
+            this->activeFigure = nullptr;
+        }
     }
+    this->repaint();
 }

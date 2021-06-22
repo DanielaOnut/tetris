@@ -32,7 +32,7 @@ public:
     /// virtual std::list < std::pair < int, int > > findCoordinatesToSpawnAt (Square ** & boardMatrix ) noexcept = 0;
 
     virtual bool findCoordinatesToSpawnAt (Square ** & boardMatrix) noexcept;
-    virtual void findCoordinatesToRotateAt (Square ** & boardMatrix) noexcept;
+    virtual bool findCoordinatesToRotateAt (Square ** & boardMatrix) noexcept;
     virtual void dropFigure (Square ** & boardMatrix) noexcept (false);
     virtual void drawFigure (Square ** & boardMatrix) noexcept;
     void clearDrawnFigures(Square ** & boardMatrix) const noexcept;
@@ -54,13 +54,41 @@ public:
 
     bool contains ( int x, int y ) const noexcept {
         for ( int i = 0; i < SQUARE_COUNT; i++ )
-            if (
-                    this->x + this->xOffsetsForRotation(this->rotation)[i] == x &&
-                    this->y + this->yOffsetsForRotation(this->rotation)[i] == y
-            )
+            if ( this->x + this->xOffsetsForRotation(this->rotation)[i] == x &&
+                this->y + this->yOffsetsForRotation(this->rotation)[i] == y )
                 return true;
 
         return false;
+    }
+
+    bool squaresHaveCollision (int x, int y, Square ** & boardMatrix) const noexcept {
+        for (int i = 0; i < SQUARE_COUNT; ++i) {
+            int line = y + this->yOffsetsForRotation(this->rotation)[i];
+            int col = x + this->xOffsetsForRotation(this->rotation)[i];
+            if (boardMatrix[line][col].getTexture() != SquareTexture::empty())
+                return true;
+        }
+        return false;
+    }
+
+    bool movingFigureToLeftPossible (int rotation, Square ** & boardMatrix) {
+        for (int i = 0; i < SQUARE_COUNT; ++i) {
+            int line = this->y + this->yOffsetsForRotation(rotation)[i];
+            int col = this->x - 1 + this->xOffsetsForRotation(rotation)[i];
+            if (! this->contains(col, line) && boardMatrix[line][col].getTexture() != SquareTexture::empty())
+                return false;
+        }
+        return true;
+    }
+
+    bool movingFigureToRightPossible (int rotation, Square ** & boardMatrix) {
+        for (int i = 0; i < SQUARE_COUNT; ++i) {
+            int line = this->y + this->yOffsetsForRotation(rotation)[i];
+            int col = this->x + 1 + this->xOffsetsForRotation(rotation)[i];
+            if (! this->contains(col, line) && boardMatrix[line][col].getTexture() != SquareTexture::empty())
+                return false;
+        }
+        return true;
     }
 
     ~Figure () noexcept override = default;
