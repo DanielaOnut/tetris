@@ -10,6 +10,8 @@
 #include <QLayout>
 
 class Inbox : public QWidget {
+    Q_OBJECT
+
 private:
     QLayout     * generalLayout    {nullptr};
 
@@ -32,7 +34,7 @@ public:
 
 #include <QLabel>
 class InboxListItem : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 
 private:
     QLayout * generalLayout {nullptr};

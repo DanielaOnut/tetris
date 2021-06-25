@@ -14,6 +14,8 @@
  */
 
 #include <QKeyEvent>
+#include <iostream>
+
 class CurrentSettings {
 public:
     enum DisplayMode {
@@ -94,6 +96,33 @@ private:
         DisplayMode mode        {WINDOWED};
         float       brightness  {0.5f}; // [0.0f - 1.0f]
         bool        shadows     = false;
+
+        std::string toString () const noexcept {
+            return
+                "VS{resWidth=" + std::to_string(this->resolutionWidth) +
+                ";resHeight=" + std::to_string(this->resolutionHeight) +
+                ";mode=" + std::to_string((int)this->mode) +
+                ";brightness=" + std::to_string(this->brightness) +
+                ";shadows=" + std::to_string(this->shadows) + "}";
+        }
+
+        void fromString(std::string const & str) noexcept {
+            auto c = str;
+            c = c.substr(3);
+            c = c.substr(0, c.length() - 1);
+
+
+            auto p = strtok ( & c[0], ";" );
+            while ( p != nullptr ) {
+                char * optName = p;
+                char * optValue = strchr(p, '=') + 1;
+                * (optValue - 1) = 0;
+
+                std::cout << optName << " " << optValue << '\n';
+
+                p = strtok (nullptr, ";");
+            }
+        }
     };
 
     struct AudioSettings {

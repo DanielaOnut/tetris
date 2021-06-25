@@ -126,3 +126,8 @@ void Window::keyReleaseEvent(QKeyEvent *event) {
 //    std::cout << event->text().toStdString() << " released\n";
 
 }
+
+void Window::closeEvent(QCloseEvent *) {
+    std::cout << CurrentSettings::instance().video().toString() << '\n';
+    CurrentSettings::instance().video().fromString( CurrentSettings::instance().video().toString() );
+}

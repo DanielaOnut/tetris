@@ -103,6 +103,7 @@ class Figure::Factory {
     /// invocarea    parametrii    comanda
     /// fabricii
 
+private:
     int x = -1, y = -1;
     int figureType = 0; /// 0 = random, 1 - 7 figure
 
