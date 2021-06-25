@@ -162,6 +162,8 @@ bool Figure::findCoordinatesToRotateAt(Square **& boardMatrix) noexcept {
         this->x++;
     while (this->x + xOffsetRightMost >= Board::DEFAULT_WIDTH)
         this->x--;
+    while (this->y + yOffsetMin < 0)
+        this->y++;
     int line,col,ok = 1,finalLin = this->y, finalCol = this->x;
     for (int i = 0;i < SQUARE_COUNT && ok;i++) {
         line = this->y + this->yOffsetsForRotation(this->rotation)[i];
