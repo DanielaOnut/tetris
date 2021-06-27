@@ -7,6 +7,8 @@
 CurrentSettings CurrentSettings::_instance;
 CurrentSettings const CurrentSettings::_defaultInstance(true);
 
+//std::ofstream fout("SavedSettings.txt");
+
 /**
  * Explicit Initializer for Settings Defaults Instance
  */
@@ -114,3 +116,37 @@ void CurrentSettings::ControlSettings::setDropKey(Qt::Key qKey) noexcept {
     this->dropKey = CurrentSettings::getControlKeyForQKey(qKey);
 }
 
+void CurrentSettings::save() noexcept {
+    std::fstream settingsFile;
+    settingsFile.open("SavedSettings.txt", std::ios::trunc | std::ios::out); // std::ios::ate;
+//    settingsFile.seekg parcurgi fisier
+
+    settingsFile << this->video().toString() << '\n';
+    settingsFile << this->audio().toString() << '\n';
+    settingsFile << this->control().toString() << '\n';
+    settingsFile << this->general().toString() << '\n';
+
+    settingsFile.close();
+}
+
+void CurrentSettings::load() noexcept {
+    std::fstream settingsFile;
+    settingsFile.open("SavedSettings.txt", std::ios::in);
+
+    try {
+
+        std::string buffer;
+        std::getline(settingsFile, buffer); this->video().fromString(buffer);
+        std::getline(settingsFile, buffer); this->audio().fromString(buffer);
+        std::getline(settingsFile, buffer); this->control().fromString(buffer);
+        std::getline(settingsFile, buffer); this->general().fromString(buffer);
+
+    } catch (std::exception const & ignored) {
+        this->video() = CurrentSettings(true).video();
+        this->audio() = CurrentSettings(true).audio();
+        this->control() = CurrentSettings(true).control();
+        this->general() = CurrentSettings(true).general();
+    }
+
+    settingsFile.close();
+}

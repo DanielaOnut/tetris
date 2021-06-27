@@ -128,8 +128,5 @@ void Window::keyReleaseEvent(QKeyEvent *event) {
 }
 
 void Window::closeEvent(QCloseEvent *) {
-    CurrentSettings::instance().general().fromString( CurrentSettings::instance().general().toString() );
-    CurrentSettings::instance().audio().fromString( CurrentSettings::instance().audio().toString() );
-    CurrentSettings::instance().video().fromString( CurrentSettings::instance().video().toString() );
-    CurrentSettings::instance().control().fromString( CurrentSettings::instance().control().toString() );
+    CurrentSettings::instance().save();
 }

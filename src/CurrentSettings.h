@@ -16,7 +16,8 @@
 #include <QKeyEvent>
 #include <iostream>
 #include <fstream>
-static std::ofstream fout ("SavedSettings.txt");
+//static std::ofstream fout ("SavedSettings.txt");
+//extern std::ofstream fout;
 
 class CurrentSettings {
 public:
@@ -91,6 +92,9 @@ public:
         GEN_KEY(UNDEFINED, -1)
     };
 
+    void load() noexcept;
+    void save() noexcept;
+
 private:
     struct VideoSettings {
         int         resolutionWidth  = 1280;
@@ -107,7 +111,8 @@ private:
                 ";brightness=" + std::to_string(this->brightness) +
                 ";shadows=" + std::to_string(this->shadows) + "}";
         }
-        void fromString(std::string const & str) noexcept {
+
+        void fromString(std::string const & str) noexcept(false) {
             auto c = str;
             c = c.substr(3);
             c = c.substr(0, c.length() - 1);
@@ -119,7 +124,7 @@ private:
                 char * optValue = strchr(p, '=') + 1;
                 * (optValue - 1) = 0;
 
-                fout << optName << " " << optValue << '\n';
+                /// salvare date in this ( video settings )
 
                 p = strtok (nullptr, ";");
             }
@@ -149,7 +154,7 @@ private:
                 char * optValue = strchr(p, '=') + 1;
                 * (optValue - 1) = 0;
 
-                fout << optName << " " << optValue << '\n';
+//                fout << optName << " " << optValue << '\n';
 
                 p = strtok (nullptr, ";");
             }
@@ -186,7 +191,7 @@ private:
                 char * optValue = strchr(p, '=') + 1;
                 * (optValue - 1) = 0;
 
-                fout << optName << " " << optValue << '\n';
+//                fout << optName << " " << optValue << '\n';
 
                 p = strtok (nullptr, ";");
             }
@@ -214,7 +219,7 @@ private:
                 char * optValue = strchr(p, '=') + 1;
                 * (optValue - 1) = 0;
 
-                fout << optName << " " << optValue << '\n';
+//                fout << optName << " " << optValue << '\n';
 
                 p = strtok (nullptr, ";");
             }
