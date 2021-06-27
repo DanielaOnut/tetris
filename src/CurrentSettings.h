@@ -15,6 +15,8 @@
 
 #include <QKeyEvent>
 #include <iostream>
+#include <fstream>
+static std::ofstream fout ("SavedSettings.txt");
 
 class CurrentSettings {
 public:
@@ -105,6 +107,35 @@ private:
                 ";brightness=" + std::to_string(this->brightness) +
                 ";shadows=" + std::to_string(this->shadows) + "}";
         }
+        void fromString(std::string const & str) noexcept {
+            auto c = str;
+            c = c.substr(3);
+            c = c.substr(0, c.length() - 1);
+
+
+            auto p = strtok ( & c[0], ";" );
+            while ( p != nullptr ) {
+                char * optName = p;
+                char * optValue = strchr(p, '=') + 1;
+                * (optValue - 1) = 0;
+
+                fout << optName << " " << optValue << '\n';
+
+                p = strtok (nullptr, ";");
+            }
+        }
+    };
+
+    struct AudioSettings {
+        float       masterVolume    {0.5f}; // [0.0f - 1.0f]
+        float       musicVolume     {0.5f}; // [0.0f - 1.0f]
+        float       fxVolume        {0.5f}; // [0.0f - 1.0f]
+
+        std::string toString () const noexcept {
+            return "AS{masterVolume=" + std::to_string (this->masterVolume) +
+                    ";musicVolume=" + std::to_string(this->musicVolume) +
+                    ";fxVolume=" + std::to_string(this->fxVolume) + "}";
+        }
 
         void fromString(std::string const & str) noexcept {
             auto c = str;
@@ -118,17 +149,11 @@ private:
                 char * optValue = strchr(p, '=') + 1;
                 * (optValue - 1) = 0;
 
-                std::cout << optName << " " << optValue << '\n';
+                fout << optName << " " << optValue << '\n';
 
                 p = strtok (nullptr, ";");
             }
         }
-    };
-
-    struct AudioSettings {
-        float       masterVolume    {0.5f}; // [0.0f - 1.0f]
-        float       musicVolume     {0.5f}; // [0.0f - 1.0f]
-        float       fxVolume        {0.5f}; // [0.0f - 1.0f]
     };
 
     struct ControlSettings {
@@ -141,11 +166,59 @@ private:
         void setMoveLeftKey (Qt::Key qKey) noexcept;
         void setRotateKey (Qt::Key qKey) noexcept;
         void setDropKey (Qt::Key qKey) noexcept;
+
+        std::string toString () const noexcept {
+            return "CS{moveRightKey=" + std::string (CurrentSettings::controlKeyToString(this->moveRightKey)) +
+                    ";moveLeftKey=" + std::string (CurrentSettings::controlKeyToString(this->moveLeftKey)) +
+                    ";rotateKey=" + std::string (CurrentSettings::controlKeyToString(this->rotateKey)) +
+                    ";dropKey=" + std::string (CurrentSettings::controlKeyToString(this->dropKey)) + "}";
+        }
+
+        void fromString(std::string const & str) noexcept {
+            auto c = str;
+            c = c.substr(3);
+            c = c.substr(0, c.length() - 1);
+
+
+            auto p = strtok ( & c[0], ";" );
+            while ( p != nullptr ) {
+                char * optName = p;
+                char * optValue = strchr(p, '=') + 1;
+                * (optValue - 1) = 0;
+
+                fout << optName << " " << optValue << '\n';
+
+                p = strtok (nullptr, ";");
+            }
+        }
     };
 
     struct GeneralSettings {
         Difficulty  difficulty = NORMAL;
         bool        notificationsToggle = true;
+
+        std::string toString () noexcept {
+            return "GS{difficulty=" + std::to_string(this->difficulty) +
+                    ";notificationToggle=" + std::to_string(this->notificationsToggle) + "}";
+        }
+
+        void fromString(std::string const & str) noexcept {
+            auto c = str;
+            c = c.substr(3);
+            c = c.substr(0, c.length() - 1);
+
+
+            auto p = strtok ( & c[0], ";" );
+            while ( p != nullptr ) {
+                char * optName = p;
+                char * optValue = strchr(p, '=') + 1;
+                * (optValue - 1) = 0;
+
+                fout << optName << " " << optValue << '\n';
+
+                p = strtok (nullptr, ";");
+            }
+        }
     };
 
     CurrentSettings () noexcept = default;
