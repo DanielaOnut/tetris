@@ -7,6 +7,7 @@
 #include "Inbox.h"
 #include "Shop.h"
 #include "Friends.h"
+#include "CurrentSettings.h"
 
 void Menu::init () noexcept {
     this->createComponents();
@@ -154,7 +155,11 @@ void Menu::connectComponents() noexcept {
     connect( this->playButton, & QPushButton::clicked, [this] {emit this->game();} );
 
     connect ( this->tutorialButton, & QPushButton::clicked, howToPlayCallback );
-    connect ( this->exitButton, & QPushButton::clicked, [](){QApplication::exit(0);} );
+    connect ( this->exitButton, & QPushButton::clicked, [](){
+            CurrentSettings::instance().save();
+            QApplication::exit(0);
+        }
+    );
     connect ( this->settingsButton, & QPushButton::clicked, [this]() {emit this->settings();} );
 
     connect ( this->friendsButton, & QPushButton::clicked, [this](){

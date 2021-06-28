@@ -124,8 +124,16 @@ private:
                 char * optValue = strchr(p, '=') + 1;
                 * (optValue - 1) = 0;
 
-                /// salvare date in this ( video settings )
-
+                if (! strcmp(optName,"resWidth"))
+                    this->resolutionWidth = atoi (optValue);
+                if (! strcmp(optName,"resHeight"))
+                    this->resolutionHeight = atoi (optValue);
+                if (! strcmp (optName,"mode"))
+                    this->mode = static_cast<DisplayMode>(atoi(optValue));
+                if (! strcmp (optName,"brightness"))
+                    this->brightness = atof (optValue);
+                if (! strcmp (optName,"shadows"))
+                    this->shadows = atoi (optValue);
                 p = strtok (nullptr, ";");
             }
         }
@@ -154,7 +162,12 @@ private:
                 char * optValue = strchr(p, '=') + 1;
                 * (optValue - 1) = 0;
 
-//                fout << optName << " " << optValue << '\n';
+                if (! strcmp (optName,"masterVolume"))
+                    this->masterVolume = atof (optValue);
+                if (! strcmp (optName,"musicVolume"))
+                    this->musicVolume = atof (optValue);
+                if (! strcmp (optName,"fxVolume"))
+                    this->fxVolume = atof (optValue);
 
                 p = strtok (nullptr, ";");
             }
@@ -191,7 +204,14 @@ private:
                 char * optValue = strchr(p, '=') + 1;
                 * (optValue - 1) = 0;
 
-//                fout << optName << " " << optValue << '\n';
+                if (! strcmp (optName, "moveRightKey"))
+                    this->moveRightKey = CurrentSettings::stringToControlKey(optValue);
+                if (! strcmp (optName, "moveLeftKey"))
+                    this->moveLeftKey = CurrentSettings::stringToControlKey(optValue);
+                if (! strcmp (optName, "rotateKey"))
+                    this->rotateKey = CurrentSettings::stringToControlKey(optValue);
+                if (! strcmp (optName, "dropKey"))
+                    this->dropKey = CurrentSettings::stringToControlKey(optValue);
 
                 p = strtok (nullptr, ";");
             }
@@ -219,7 +239,10 @@ private:
                 char * optValue = strchr(p, '=') + 1;
                 * (optValue - 1) = 0;
 
-//                fout << optName << " " << optValue << '\n';
+                if (! strcmp (optName, "difficulty"))
+                    this->difficulty = static_cast<Difficulty>(atoi(optValue));
+                if (! strcmp (optName, "notificationToggle"))
+                    this->notificationsToggle = atoi (optValue);
 
                 p = strtok (nullptr, ";");
             }
@@ -335,6 +358,48 @@ public:
             case KEY_SPACE:         return "Spacebar";
             default:                return "Key Undefined";
         }
+    }
+
+    static ControlKey stringToControlKey (const char * str) {
+        if (strlen(str) == 1) {
+            char c = str[0];
+            if (c >= 'A' && c <= 'Z')
+                return static_cast<ControlKey>(c + 32);
+            if (c >= '0' && c <= '9')
+                return static_cast <ControlKey> (c);
+        }
+        if (! strcmp (str, "Left Arrow"))
+            return static_cast<ControlKey> (0);
+        if (! strcmp (str, "Up Arrow"))
+            return static_cast<ControlKey> (1);
+        if (! strcmp (str, "Right Arrow"))
+            return static_cast<ControlKey> (2);
+        if (! strcmp (str, "Down Arrow"))
+            return static_cast<ControlKey> (3);
+        if (! strcmp (str, "Escape"))
+            return static_cast<ControlKey> (4);
+        if (! strcmp (str, "Tab"))
+            return static_cast<ControlKey> (5);
+        if (! strcmp (str, "Backspace"))
+            return static_cast<ControlKey> (7);
+        if (! strcmp (str, "Enter"))
+            return static_cast<ControlKey> (8);
+        if (! strcmp (str, "Insert"))
+            return static_cast<ControlKey> (10);
+        if (! strcmp (str, "Delete"))
+            return static_cast<ControlKey> (11);
+        if (! strcmp (str, "Shift"))
+            return static_cast<ControlKey> (36);
+        if (! strcmp (str, "Ctrl"))
+            return static_cast<ControlKey> (37);
+        if (! strcmp (str, "Alt"))
+            return static_cast<ControlKey> (39);
+        if (! strcmp (str, "CapsLock"))
+            return static_cast<ControlKey> (40);
+        if (! strcmp (str, "Spacebar"))
+            return static_cast<ControlKey> (' ');
+        if (! strcmp (str, "Key Undefined"))
+            return static_cast<ControlKey> (-1);
     }
 };
 
