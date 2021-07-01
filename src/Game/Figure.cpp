@@ -4,6 +4,7 @@
 
 #include "Figure.h"
 #include <Board.h>
+#include <Queue.h>
 #include <QPainter>
 #include <iostream>
 

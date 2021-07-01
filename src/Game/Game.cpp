@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "Util.h"
 
 void Game::init() noexcept {
     this->createComponents();
@@ -14,14 +15,27 @@ void Game::init() noexcept {
     this->gameBoard->setVerticalMargin(5);
     this->gameBoard->setHorizontalMargin(5);
 
+    this->queue->setVerticalMargin(20);
+    this->queue->setHorizontalMargin(20);
+
     this->gameBoard->init();
     this->gameBoard->dropActiveShape();
+
+    this->queue->init();
 }
 
 void Game::createComponents() noexcept {
     this->generalLayout = new QHBoxLayout(nullptr);
+    this->figuresQueueLayout = new QVBoxLayout (nullptr);
+    this->boardLayout = new QVBoxLayout (nullptr);
+    this->dataLayout = new QVBoxLayout (nullptr);
+
+    this->quitButton = new QPushButton (this->quitButtonText, this);
 
     this->gameBoard = new Board(this);
+
+    this->queueLabel = new QLabel (this->queueLabelText, this);
+    this->queue = new Queue (this);
 
     this->shapeFallTimer = new QTimer(this);
 
@@ -33,10 +47,23 @@ void Game::createComponents() noexcept {
 void Game::alignComponents() noexcept {
     this->setLayout(this->generalLayout);
 
-    this->generalLayout->addWidget(this->gameBoard);
+    this->generalLayout->addItem(this->dataLayout);
+    this->generalLayout->addItem(this->boardLayout);
+    this->generalLayout->addItem(this->figuresQueueLayout);
 
-    this->generalLayout->setAlignment(this->gameBoard, Qt::AlignHCenter | Qt::AlignTop);
+    this->dataLayout->addWidget(this->quitButton);
 
+    this->boardLayout->addWidget(this->gameBoard);
+
+    this->figuresQueueLayout->addWidget(this->queue);
+    this->figuresQueueLayout->addWidget(this->queueLabel);
+
+    this->dataLayout->setAlignment(this->quitButton, Qt::AlignBottom | Qt::AlignLeft);
+
+    this->boardLayout->setAlignment(this->gameBoard, Qt::AlignHCenter | Qt::AlignTop);
+
+    this->figuresQueueLayout->setAlignment(this->queue, Qt::AlignLeft | Qt::AlignTop);
+    this->figuresQueueLayout->setAlignment(this->queueLabel, Qt::AlignLeft | Qt::AlignTop);
 }
 
 void Game::adjustComponents() noexcept {
@@ -45,15 +72,23 @@ void Game::adjustComponents() noexcept {
     this->moveRightSignalGenerator->setInterval(150);
     this->moveLeftSignalGenerator->setInterval(150);
     this->dropSignalGenerator->setInterval(80);
+
+    this->quitButton->setMinimumWidth(130);
+    this->quitButton->setMaximumWidth(130);
 }
 
 void Game::styleComponents() noexcept {
+    this->quitButton->setStyleSheet(Util::getStyle("ExitButton.css").c_str());
+    this->quitButton->setIcon(Util::getIcon("quitButtonIcon.png", 20, 20));
 
+    this->queueLabel->setStyleSheet(Util::getStyle("NextLabel.css").c_str());
 }
 
 #include <iostream>
 
 void Game::connectComponents() noexcept {
+    connect (this->quitButton, & QPushButton::clicked, [this] {emit this->quit();} );
+
     connect(this->shapeFallTimer, & QTimer::timeout, [this]{ this->gameBoard->dropActiveShape();});
 
     connect(this->moveRightSignalGenerator, & QTimer::timeout, [this]{
@@ -70,13 +105,31 @@ void Game::connectComponents() noexcept {
 }
 
 Game::~Game() noexcept {
-    this->generalLayout->removeWidget(this->gameBoard);
+    this->boardLayout->removeWidget(this->gameBoard);
+
+    this->figuresQueueLayout->removeWidget(this->queueLabel);
+    this->figuresQueueLayout->removeWidget(this->queue);
+
+    this->dataLayout->removeWidget(this->quitButton);
+
+    this->generalLayout->removeItem(this->figuresQueueLayout);
+    this->generalLayout->removeItem(this->boardLayout);
+    this->generalLayout->removeItem(this->dataLayout);
 
     delete this->generalLayout;
 
+    delete this->dataLayout;
+    delete this->boardLayout;
+    delete this->figuresQueueLayout;
+
+    delete this->quitButton;
     delete this->gameBoard;
+    delete this->queueLabel;
 
     delete this->shapeFallTimer;
+    delete this->moveRightSignalGenerator;
+    delete this->moveLeftSignalGenerator;
+    delete this->dropSignalGenerator;
 }
 #include <CurrentSettings.h>
 

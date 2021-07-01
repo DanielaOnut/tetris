@@ -135,8 +135,6 @@ void Board::dropActiveShape() noexcept {
     } catch (std::exception const & e) {
         std::cout << e.what() << '\n';
         this->lineIsFull();
-//            if (res != -1)
-//                this->deletingLine(res);
         delete this->activeFigure;
         this->activeFigure = nullptr;
         this->activeFigure = Figure::Factory().random().spawn();

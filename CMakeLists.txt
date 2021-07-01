@@ -62,7 +62,7 @@ add_executable(
         src/Game/FigureZ.h
         src/Game/FigureReversedZ.cpp
         src/Game/FigureReversedZ.h
-)
+        src/Game/Queue.cpp src/Game/Queue.h)
 
 
 if (NOT CMAKE_PREFIX_PATH)

@@ -9,12 +9,16 @@
 #include <Board.h>
 #include <QLayout>
 #include <QTimer>
+#include <QLabel>
+#include <QPushButton>
+#include <Queue.h>
 
 class Game : public QWidget {
     Q_OBJECT
 
     QLayout * generalLayout {nullptr};
 
+    QLayout * boardLayout {nullptr};
     Board * gameBoard { nullptr };
 
     QTimer * shapeFallTimer {nullptr};
@@ -22,6 +26,18 @@ class Game : public QWidget {
     QTimer * moveRightSignalGenerator {nullptr};
     QTimer * moveLeftSignalGenerator {nullptr};
     QTimer * dropSignalGenerator {nullptr};
+
+    QLayout * dataLayout {nullptr};
+
+    QPushButton * quitButton {nullptr};
+    const char  * quitButtonText = "Quit To Menu";
+
+    QLayout * figuresQueueLayout {nullptr};
+
+    Queue * queue {nullptr};
+
+    QLabel * queueLabel {nullptr};
+    const char * queueLabelText = "Next Figures";
 
 public:
     explicit Game ( QWidget * parent ) noexcept : QWidget(parent) { }
@@ -44,8 +60,7 @@ public:
 signals:
     void moveLeft ();
     void moveRight ();
-    void rotateLeft ();
-    void rotateRight ();
+    void quit();
 };
 
 

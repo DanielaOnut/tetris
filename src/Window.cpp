@@ -70,6 +70,8 @@ void Window::switchToGame() noexcept {
 
     auto game = dynamic_cast < Game * > ( this->activePanel );
 
+    connect (game, & Game::quit, [this] {this->switchToMenu();} );
+
     game->init();
 }
 
