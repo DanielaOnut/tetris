@@ -31,7 +31,7 @@ void Queue::init() noexcept {
 
 #include <QPainter>
 void Queue::paintEvent(QPaintEvent * event ) noexcept {
-    QPainter painter ( this );
+    QPainter painter ( this ); // iei in considerare activeFigures ->
 
     for ( int i = 0; i < this->height; i++ ) {
         for ( int j = 0; j < this->width; j++ ) {

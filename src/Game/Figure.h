@@ -35,6 +35,7 @@ public:
     virtual bool findCoordinatesToRotateAt (Square ** & boardMatrix) noexcept;
     virtual void dropFigure (Square ** & boardMatrix) noexcept (false);
     virtual void drawFigure (Square ** & boardMatrix) noexcept;
+    void drawAt ( Square ** & boardMatrix, int x, int y ) noexcept;
     void clearDrawnFigures(Square ** & boardMatrix) const noexcept;
     void moveFigureToRight (Square ** & boardMatrix) noexcept (false);
     void moveFigureToLeft (Square ** & boardMatrix) noexcept (false);

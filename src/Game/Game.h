@@ -40,6 +40,10 @@ class Game : public QWidget {
     const char * queueLabelText = "Next Figures";
 
 public:
+    Queue * getQueue () noexcept {
+        return this->queue;
+    }
+
     explicit Game ( QWidget * parent ) noexcept : QWidget(parent) { }
 
     void keyPressEvent(QKeyEvent *event) override;

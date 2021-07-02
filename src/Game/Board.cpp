@@ -137,7 +137,15 @@ void Board::dropActiveShape() noexcept {
         this->lineIsFull();
         delete this->activeFigure;
         this->activeFigure = nullptr;
-        this->activeFigure = Figure::Factory().random().spawn();
+//        this->activeFigure = Figure::Factory().random().spawn();
+
+        auto pParent = dynamic_cast < Game * > (this->parent());
+        if ( pParent != nullptr ) {
+            this->activeFigure = pParent->getQueue()->pop();
+        } else {
+            this->activeFigure = Figure::Factory().random().spawn();
+        }
+
         /// figure spawns at -1 -1, to remove pointless click, do another drop
         this->activeFigure->dropFigure(this->squares);
     }

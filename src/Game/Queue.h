@@ -25,7 +25,7 @@ private:
 
     Square ** squares {nullptr};
 
-    Figure * activeFigure {nullptr};
+    Figure * activeFigure {nullptr}; /// faci array din asta ( ca sa fie coada liniara )
 public:
     explicit Queue (QWidget * parent) noexcept : QWidget(parent) {
         if (CurrentSettings::instance().general().difficulty == CurrentSettings::EASY
@@ -46,6 +46,20 @@ public:
     }
 
     void paintEvent ( QPaintEvent * ) noexcept override;
+
+    /// iti generezi el. din coada
+    /// configurezi squares
+    void generateInitial () noexcept;
+
+    /// scoti prima, o pastrezi deoparte
+    /// shiftezi elementele
+    /// push cu inca un element
+    /// reconfigurezi squares
+    Figure * pop () noexcept;
+
+    /// goleste toate squares
+    /// 'deseneaza' (seteaza texturi ) pt. figurile din coada
+    void adjustSquares () noexcept;
 
     ~Queue () noexcept override;
 };

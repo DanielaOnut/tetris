@@ -125,7 +125,8 @@ private:
                 * (optValue - 1) = 0;
 
                 if (! strcmp(optName,"resWidth"))
-                    this->resolutionWidth = atoi (optValue);
+                    this->resolutionWidth = (int) std::strtoll ( optValue, nullptr, 10 );
+//                    this->resolutionWidth = atoi (optValue); strtol ( optValue, nullptr, 10 );
                 if (! strcmp(optName,"resHeight"))
                     this->resolutionHeight = atoi (optValue);
                 if (! strcmp (optName,"mode"))
