@@ -3,6 +3,7 @@
 //
 
 #include "Queue.h"
+#include "Figure.h"
 
 void Queue::init() noexcept {
     auto resWidth = CurrentSettings::instance().video().resolutionWidth;
@@ -23,10 +24,36 @@ void Queue::init() noexcept {
     this->setMinimumWidth( this->squareSize * this->width + this->horizontalMargin * 2 );
     this->setMinimumHeight( this->squareSize * this->height + this->verticalMargin * 2 );
 
-    this->activeFigure = Figure::Factory().random().spawn();
-    this->activeFigure->drawFigure(this->squares);
-
     this->repaint();
+}
+
+void Queue::generateInitial () noexcept {
+    this->queue.push_back(Figure::Factory().random().spawn());
+    if (CurrentSettings::instance().general().difficulty == CurrentSettings::EASY
+        || CurrentSettings::instance().general().difficulty == CurrentSettings::NORMAL) {
+        this->queue.push_back(Figure::Factory().random().spawn());
+        this->queue.push_back(Figure::Factory().random().spawn());
+    }
+    this->adjustSquares();
+}
+
+void Queue::adjustSquares() noexcept {
+    this->cleanSquares();
+    for (auto & figure : this->queue)
+        figure->drawFigureForQueue (this->squares);
+}
+
+void Queue::cleanSquares () noexcept {
+    for (int i = 0; i < this->height; ++i)
+        for (int j = 0; j < this->width; ++j)
+            this->squares[i][j].setTexture(SquareTexture::empty());
+}
+
+Figure * Queue::pop () noexcept {
+    Figure * firstFigure = this->queue.front();
+    this->queue.pop_front();
+    this->adjustSquares();
+    return firstFigure;
 }
 
 #include <QPainter>

@@ -22,6 +22,7 @@ void Game::init() noexcept {
     this->gameBoard->dropActiveShape();
 
     this->queue->init();
+    this->queue->generateInitial();
 }
 
 void Game::createComponents() noexcept {

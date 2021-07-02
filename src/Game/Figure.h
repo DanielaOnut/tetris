@@ -31,11 +31,12 @@ public:
     /// for later
     /// virtual std::list < std::pair < int, int > > findCoordinatesToSpawnAt (Square ** & boardMatrix ) noexcept = 0;
 
-    virtual bool findCoordinatesToSpawnAt (Square ** & boardMatrix) noexcept;
-    virtual bool findCoordinatesToRotateAt (Square ** & boardMatrix) noexcept;
-    virtual void dropFigure (Square ** & boardMatrix) noexcept (false);
-    virtual void drawFigure (Square ** & boardMatrix) noexcept;
-    void drawAt ( Square ** & boardMatrix, int x, int y ) noexcept;
+    bool findCoordinatesToSpawnAt (Square ** & boardMatrix) noexcept;
+    bool findCoordinatesToSpawnAtForQueue (Square ** & boardMatrix) noexcept;
+    bool findCoordinatesToRotateAt (Square ** & boardMatrix) noexcept;
+    void dropFigure (Square ** & boardMatrix) noexcept (false);
+    void drawFigure (Square ** & boardMatrix) noexcept;
+    void drawFigureForQueue ( Square ** & boardMatrix) noexcept;
     void clearDrawnFigures(Square ** & boardMatrix) const noexcept;
     void moveFigureToRight (Square ** & boardMatrix) noexcept (false);
     void moveFigureToLeft (Square ** & boardMatrix) noexcept (false);

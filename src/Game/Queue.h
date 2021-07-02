@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <Square.h>
 #include <Figure.h>
+#include <list>
 #include <CurrentSettings.h>
 
 class Queue : public QWidget {
@@ -25,7 +26,7 @@ private:
 
     Square ** squares {nullptr};
 
-    Figure * activeFigure {nullptr}; /// faci array din asta ( ca sa fie coada liniara )
+    std::list <Figure *> queue;
 public:
     explicit Queue (QWidget * parent) noexcept : QWidget(parent) {
         if (CurrentSettings::instance().general().difficulty == CurrentSettings::EASY
@@ -36,6 +37,10 @@ public:
     }
 
     void init () noexcept;
+
+    int queueHeight () const noexcept {
+        return this->height;
+    }
 
     void setVerticalMargin(int margin) noexcept {
         this->verticalMargin = margin;
@@ -60,6 +65,7 @@ public:
     /// goleste toate squares
     /// 'deseneaza' (seteaza texturi ) pt. figurile din coada
     void adjustSquares () noexcept;
+    void cleanSquares () noexcept;
 
     ~Queue () noexcept override;
 };

@@ -137,8 +137,6 @@ void Board::dropActiveShape() noexcept {
         this->lineIsFull();
         delete this->activeFigure;
         this->activeFigure = nullptr;
-//        this->activeFigure = Figure::Factory().random().spawn();
-
         auto pParent = dynamic_cast < Game * > (this->parent());
         if ( pParent != nullptr ) {
             this->activeFigure = pParent->getQueue()->pop();

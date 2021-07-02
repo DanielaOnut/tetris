@@ -21,6 +21,43 @@ void Figure::drawFigure (Square **&boardMatrix) noexcept {
     }
 }
 
+bool Figure::findCoordinatesToSpawnAtForQueue (Square ** & boardMatrix) noexcept {
+    Queue q(nullptr);
+    int height = q.queueHeight();
+    int width = Queue::DEFAULT_WIDTH;
+    int i, j, k;
+    for (i = 0; i < height; i++)
+        for (j = 0; j < width; j++) {
+            for (k = 0; k < SQUARE_COUNT; k++) {
+                int newLin = i + this->yOffsetsForRotation(this->rotation)[k];
+                int newCol = j + this->xOffsetsForRotation(this->rotation)[k];
+                if (newLin >= 0 && newLin < height && newCol >= 0 && newCol < width) {
+                    if (boardMatrix[newLin][newCol].getTexture() != SquareTexture::empty())
+                        break;
+                } else break;
+
+            }
+            if (k >= SQUARE_COUNT) {
+                this->x = j;
+                this->y = i;
+                return true;
+            }
+        }
+    return false;
+}
+
+#include <FigureI.h>
+void Figure::drawFigureForQueue (Square ** & boardMatrix) noexcept {
+    if (! strcmp (this->toString(), FigureI().toString())
+        || ! strcmp (this->toString(), "FigureL")
+        || ! strcmp (this->toString(), "FigureReversedL"))
+            this->rotation = 1;
+    auto sqTexture = this->getSquareTexture();
+    for (int i = 0; i < SQUARE_COUNT; i++)
+        boardMatrix[this->y + 1 + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
+                .setTexture(sqTexture);
+}
+
 void Figure::clearDrawnFigures (Square ** & boardMatrix) const noexcept {
     for (int i = 0;i < SQUARE_COUNT;i++)
         boardMatrix[this->y + this->yOffsetsForRotation(this->rotation)[i]][this->x + this->xOffsetsForRotation(this->rotation)[i]]
