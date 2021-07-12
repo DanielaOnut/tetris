@@ -6,20 +6,7 @@
 #include "Figure.h"
 
 void Queue::init() noexcept {
-    auto resWidth = CurrentSettings::instance().video().resolutionWidth;
-    auto resHeight = CurrentSettings::instance().video().resolutionHeight;
-
     this->squareSize = 40;
-
-    this->squares = new Square * [this->height];
-    for ( int i = 0; i < this->height; i++ ) {
-        this->squares [i] = new Square [this->width];
-    }
-
-    for ( int i = 0; i < this->height; i ++ )
-        for (int j = 0; j < this->width; j++) {
-            this->squares[i][j].setTexture(SquareTexture::empty());
-        }
 
     this->setMinimumWidth( this->squareSize * this->width + this->horizontalMargin * 2 );
     this->setMinimumHeight( this->squareSize * this->height + this->verticalMargin * 2 );
@@ -41,6 +28,7 @@ void Queue::adjustSquares() noexcept {
     this->cleanSquares();
     for (auto & figure : this->queue)
         figure->drawFigureForQueue (this->squares);
+    this->repaint();
 }
 
 void Queue::cleanSquares () noexcept {
@@ -52,6 +40,7 @@ void Queue::cleanSquares () noexcept {
 Figure * Queue::pop () noexcept {
     Figure * firstFigure = this->queue.front();
     this->queue.pop_front();
+    this->queue.push_back(Figure::Factory().random().spawn());
     this->adjustSquares();
     return firstFigure;
 }

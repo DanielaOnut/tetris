@@ -34,6 +34,14 @@ public:
             this->height = 8;
         else if (CurrentSettings::instance().general().difficulty == CurrentSettings::HARD)
             this->height = 2;
+        this->squares = new Square * [this->height];
+        for ( int i = 0; i < this->height; i++ ) {
+            this->squares [i] = new Square [this->width];
+        }
+        for ( int i = 0; i < this->height; i ++ )
+            for (int j = 0; j < this->width; j++) {
+                this->squares[i][j].setTexture(SquareTexture::empty());
+            }
     }
 
     void init () noexcept;

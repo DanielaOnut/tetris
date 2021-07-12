@@ -126,6 +126,7 @@ Game::~Game() noexcept {
     delete this->quitButton;
     delete this->gameBoard;
     delete this->queueLabel;
+    delete this->queue;
 
     delete this->shapeFallTimer;
     delete this->moveRightSignalGenerator;
