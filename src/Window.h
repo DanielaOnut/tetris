@@ -32,6 +32,8 @@ public:
     void keyReleaseEvent(QKeyEvent *event) override;
 
     void closeEvent (QCloseEvent *) override;
+
+    void resizeEvent (QResizeEvent *) override;
 };
 
 

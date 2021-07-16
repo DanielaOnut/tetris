@@ -132,3 +132,15 @@ void Window::keyReleaseEvent(QKeyEvent *event) {
 void Window::closeEvent(QCloseEvent *) {
     CurrentSettings::instance().save();
 }
+
+#include <QResizeEvent>
+void Window::resizeEvent(QResizeEvent * e) {
+    auto pGame = dynamic_cast<Game *>(this->activePanel);
+
+    if ( pGame != nullptr ) {
+//        pGame->getQueue()->resizeSquares (e->size().width(), e->size().height());
+//        pGame->getBoard()->resizeSquares (e->size().width(), e->size().height());
+    }
+
+    std::cout << "Window resized : { w = " << e->size().width() << ", h = " << e->size().height() << " }\n";
+}
