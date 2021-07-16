@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 project(Project)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_PREFIX_PATH "D:/QT/5.15.2/mingw81_64")
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -101,3 +101,10 @@ if (WIN32)
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
     endforeach (QT_LIB)
 endif ()
+
+#add_subdirectory(dependencies/kfr)
+
+#include_directories(dependencies/kfr/include)
+
+#target_link_libraries(${PROJECT_NAME} kfr kfr_dft kfr_io)
+

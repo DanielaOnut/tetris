@@ -23,6 +23,8 @@ void Game::init() noexcept {
 
     this->queue->init();
     this->queue->generateInitial();
+
+//    this->quitButton->hide(); Hide Example
 }
 
 void Game::createComponents() noexcept {

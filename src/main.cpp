@@ -12,5 +12,13 @@ int main(int argumentCount, char ** argumentVector) {
     w.init();
     w.show();
 
+/// region hiddenStuff
+
+//    int x;
+
+//    w.setWindowState(Qt::WindowFullScreen);
+
+/// endregion
+
     return QApplication::exec();
 }
