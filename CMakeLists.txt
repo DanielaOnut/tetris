@@ -102,9 +102,4 @@ if (WIN32)
     endforeach (QT_LIB)
 endif ()
 
-#add_subdirectory(dependencies/kfr)
-
-#include_directories(dependencies/kfr/include)
-
-#target_link_libraries(${PROJECT_NAME} kfr kfr_dft kfr_io)
 

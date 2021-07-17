@@ -30,9 +30,15 @@ bool Figure::findCoordinatesToSpawnAtForQueue (Square ** & boardMatrix) noexcept
         for (j = 0; j < width; j++) {
             if (boardMatrix[i][j].getTexture() != SquareTexture::empty())
                 break;
+            if (! strcmp (this->toString(), "FigureI") && boardMatrix[0][0].getTexture() == SquareTexture::empty()) {
+                i++;
+                j = 1;
+            }
             for (k = 0; k < SQUARE_COUNT; k++) {
                 int newLin = i + this->yOffsetsForRotation(this->rotation)[k];
                 int newCol = j + this->xOffsetsForRotation(this->rotation)[k];
+                if (! strcmp (this->toString(), "FigureI") && newLin == 4)
+                    break;
                 if (newLin != 2 && newLin != 5 && newLin >= 0 && newLin < height && newCol >= 0 && newCol < width) {
                     if (boardMatrix[newLin][newCol].getTexture() != SquareTexture::empty())
                         break;
@@ -50,6 +56,7 @@ bool Figure::findCoordinatesToSpawnAtForQueue (Square ** & boardMatrix) noexcept
 
 #include <FigureI.h>
 void Figure::drawFigureForQueue (Square ** & boardMatrix) noexcept {
+    std::cout << this->toString() << '\n';
     if (! strcmp (this->toString(), FigureI().toString())
         || ! strcmp (this->toString(), "FigureL")
         || ! strcmp (this->toString(), "FigureReversedL"))
