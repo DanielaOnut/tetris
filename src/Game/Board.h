@@ -36,6 +36,10 @@ public:
 
     void init () noexcept;
 
+    int getSquareSize () const noexcept {
+        return this->squareSize;
+    }
+
     void setVerticalMargin(int margin) noexcept {
         this->verticalMargin = margin;
     }
@@ -45,6 +49,7 @@ public:
     }
 
     void paintEvent ( QPaintEvent * ) noexcept override;
+    void resizeSquares (int, int) noexcept;
 
     void dropActiveShape() noexcept;
     void moveActiveShapeToRight() noexcept;

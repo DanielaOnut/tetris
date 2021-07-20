@@ -45,6 +45,18 @@ void Board::init() noexcept {
     this->repaint();
 }
 
+void Board::resizeSquares (int w, int h) noexcept {
+    this->squareSize = std::min (
+            ( w - this->horizontalMargin * 2 ) / this->width,
+            ( h - this->verticalMargin * 2 ) / this->height
+    );
+
+    this->setMinimumWidth( this->squareSize * this->width + this->horizontalMargin * 2 );
+    this->setMinimumHeight( this->squareSize * this->height + this->verticalMargin * 2 );
+
+    this->repaint();
+}
+
 Board::~Board() noexcept {
     for ( int i = 0; i < this->height; i++ )
         delete [] this->squares[i];

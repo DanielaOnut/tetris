@@ -3,10 +3,12 @@
 //
 
 #include "Queue.h"
-#include "Figure.h"
+#include "Board.h"
 
 void Queue::init() noexcept {
-    this->squareSize = 40;
+    Board b (this);
+    b.init();
+    this->squareSize = b.getSquareSize() + 5;
 
     this->setMinimumWidth( this->squareSize * this->width + this->horizontalMargin * 2 );
     this->setMinimumHeight( this->squareSize * this->height + this->verticalMargin * 2 );

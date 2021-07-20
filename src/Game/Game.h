@@ -44,6 +44,10 @@ public:
         return this->queue;
     }
 
+    Board * getBoard () noexcept {
+        return this->gameBoard;
+    }
+
     explicit Game ( QWidget * parent ) noexcept : QWidget(parent) { }
 
     void keyPressEvent(QKeyEvent *event) override;

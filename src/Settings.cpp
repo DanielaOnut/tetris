@@ -314,12 +314,16 @@ void Settings::adjustComponents() noexcept {
             this->dropDownList->setCurrentIndex(i);
     }
 
-//    if (this->width == 1920)
-//        this->dropDownList->setCurrentText("1920 x 1080");
-//    else if (this->width == 2560)
-//        this->dropDownList->setCurrentText("2560 x 1440");
-//    else if (this->width == 1280)
-//        this->dropDownList->setCurrentText("1280 x 720");
+    if (this->width == 1920 || this->width == 2560) {
+        this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
+        this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
+        this->displayModeKey = CurrentSettings::FULLSCREEN;
+    }
+    else if (this->width == 1280) {
+        this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
+        this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
+        this->displayModeKey = CurrentSettings::WINDOWED;
+    }
     this->brightnessSlider->setValue(static_cast <int> (CurrentSettings::instance().video().brightness * 100.0f));
     this->shadowsBox->setChecked(this->shadowsBoxStatus);
 
