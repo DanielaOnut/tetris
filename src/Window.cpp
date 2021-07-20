@@ -103,6 +103,10 @@ void Window::switchToSettings() noexcept {
     };
 
     connect (dynamic_cast < Settings * > (this->activePanel), & Settings::back, backRequested );
+    connect (dynamic_cast < Settings * > (this->activePanel), & Settings::resolutionChanged, [this] {
+        this->resize(CurrentSettings::instance().video().resolutionWidth,
+                         CurrentSettings::instance().video().resolutionHeight);
+    } );
 
     dynamic_cast < Settings * > (this->activePanel)->init();
 }
@@ -141,6 +145,5 @@ void Window::resizeEvent(QResizeEvent * e) {
 //        pGame->getQueue()->resizeSquares (e->size().width(), e->size().height());
 //        pGame->getBoard()->resizeSquares (e->size().width(), e->size().height());
     }
-
     std::cout << "Window resized : { w = " << e->size().width() << ", h = " << e->size().height() << " }\n";
 }

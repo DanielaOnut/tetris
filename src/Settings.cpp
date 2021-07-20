@@ -506,12 +506,14 @@ void Settings::connectComponents() noexcept {
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
         this->displayModeKey = CurrentSettings::WINDOWED;
+        this->dropDownList->setCurrentText("1280 x 720");
     });
 
     connect (this->fullscreenButton, &QPushButton::clicked, [this]() {
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
         this->displayModeKey = CurrentSettings::FULLSCREEN;
+        this->dropDownList->setCurrentText("1920 x 1080");
     });
 
     connect (this->shadowsBox, & QCheckBox::clicked, [this]() {
@@ -553,7 +555,6 @@ void Settings::connectComponents() noexcept {
         CurrentSettings::instance().general().difficulty = this->difficultyMode;
         CurrentSettings::instance().general().notificationsToggle = this->notificationsBoxStatus;
 
-        CurrentSettings::instance().video().mode = this->displayModeKey;
         CurrentSettings::instance().video().brightness = static_cast <float> (this->brightnessSlider->value()) / 100.0f;
         CurrentSettings::instance().video().shadows = this->shadowsBoxStatus;
 
@@ -566,11 +567,10 @@ void Settings::connectComponents() noexcept {
         CurrentSettings::instance().audio().masterVolume = static_cast < float > ( this->soundMasterSlider->value() ) / 100.0f;
         CurrentSettings::instance().audio().musicVolume = static_cast < float > ( this->soundMusicSlider->value() ) / 100.0f;
         CurrentSettings::instance().audio().fxVolume = static_cast < float > ( this->soundFXSlider->value() ) / 100.0f;
-
 //        std::cout << this->dropDownList->itemText(this->dropDownList->currentIndex()).toStdString() << '\n';
 //        std::cout << this->dropDownList->currentText().toStdString() << '\n';
         auto string = this->dropDownList->currentText().toStdString();
-        int number = 0; int updatedHeight = 0;
+        int number = 0;
         for (const auto i : string)
             if (i >= '0' && i <= '9')
                 number = number * 10 + (i - '0');
@@ -579,8 +579,20 @@ void Settings::connectComponents() noexcept {
                 number = 0;
             }
         this->height = number;
+        if (this->width == 1920 || this->width == 2560) {
+            this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
+            this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
+            this->displayModeKey = CurrentSettings::FULLSCREEN;
+        }
+        else if (this->width == 1280) {
+            this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
+            this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
+            this->displayModeKey = CurrentSettings::WINDOWED;
+        }
+        CurrentSettings::instance().video().mode = this->displayModeKey;
         CurrentSettings::instance().video().resolutionHeight = this->height;
         CurrentSettings::instance().video().resolutionWidth = this->width;
+        emit this->resolutionChanged();
     };
 
     connect(this->applyButton, & QPushButton::clicked, applyFunction);
@@ -591,7 +603,7 @@ void Settings::connectComponents() noexcept {
     connect(this->backButton, &QPushButton::clicked, backFunction );
     connect(this->okButton, & QPushButton::clicked, backFunction );
 
-    connect (this->resetButton, &QPushButton::clicked, applyFunction);
+//    connect (this->resetButton, &QPushButton::clicked, applyFunction);
 }
 
 

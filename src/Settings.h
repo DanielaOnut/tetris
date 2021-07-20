@@ -244,6 +244,7 @@ public:
 
 signals:
     void back();
+    void resolutionChanged();
 };
 
 #endif //PROIECT_SETTINGS_H

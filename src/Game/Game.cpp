@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "Util.h"
+#include "CurrentSettings.h"
 
 void Game::init() noexcept {
     this->createComponents();
@@ -23,8 +24,6 @@ void Game::init() noexcept {
 
     this->queue->init();
     this->queue->generateInitial();
-
-//    this->quitButton->hide(); Hide Example
 }
 
 void Game::createComponents() noexcept {
@@ -70,11 +69,21 @@ void Game::alignComponents() noexcept {
 }
 
 void Game::adjustComponents() noexcept {
-    this->shapeFallTimer->setInterval(1300);
+    this->moveRightSignalGenerator->setInterval(100);
+    this->moveLeftSignalGenerator->setInterval(100);
 
-    this->moveRightSignalGenerator->setInterval(150);
-    this->moveLeftSignalGenerator->setInterval(150);
-    this->dropSignalGenerator->setInterval(80);
+    if (CurrentSettings::instance().general().difficulty == CurrentSettings::EASY) {
+        this->shapeFallTimer->setInterval(1300);
+        this->dropSignalGenerator->setInterval(60);
+    }
+    if (CurrentSettings::instance().general().difficulty == CurrentSettings::NORMAL) {
+        this->shapeFallTimer->setInterval(650);
+        this->dropSignalGenerator->setInterval(40);
+    }
+    if (CurrentSettings::instance().general().difficulty == CurrentSettings::HARD) {
+        this->shapeFallTimer->setInterval(325);
+        this->dropSignalGenerator->setInterval(20);
+    }
 
     this->quitButton->setMinimumWidth(130);
     this->quitButton->setMaximumWidth(130);
