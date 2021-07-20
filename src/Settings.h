@@ -68,13 +68,13 @@ private:
 
     void inline setGeneralSettingsVisibility ( bool visibility ) noexcept {
         this->difficultyLabel->setVisible(visibility);
-        this->accountLabel->setVisible(visibility);
-        this->notificationsLabel->setVisible(visibility);
+        this->accountLabel->setVisible(false);
+        this->notificationsLabel->setVisible(false);
         this->easyButton->setVisible(visibility);
         this->normalButton->setVisible(visibility);
         this->hardButton->setVisible(visibility);
-        this->accountButton->setVisible(visibility);
-        this->notificationsBox->setVisible(visibility);
+        this->accountButton->setVisible(false);
+        this->notificationsBox->setVisible(false);
     }
 
     const char  * difficultyLabelText = "Difficulty";
@@ -136,13 +136,13 @@ private:
     void inline setVideoSettingsVisibility ( bool visibility ) noexcept {
         this->resolutionLabel->setVisible(visibility);
         this->displayModeLabel->setVisible(visibility);
-        this->brightnessLabel->setVisible(visibility);
-        this->shadowsLabel->setVisible(visibility);
+        this->brightnessLabel->setVisible(false);
+        this->shadowsLabel->setVisible(false);
         this->dropDownList->setVisible(visibility);
         this->windowModeButton->setVisible(visibility);
         this->fullscreenButton->setVisible(visibility);
-        this->brightnessSlider->setVisible(visibility);
-        this->shadowsBox->setVisible(visibility);
+        this->brightnessSlider->setVisible(false);
+        this->shadowsBox->setVisible(false);
     }
 
     const char  * resolutionLabelText = "Resolution";

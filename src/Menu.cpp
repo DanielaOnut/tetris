@@ -15,6 +15,9 @@ void Menu::init () noexcept {
     this->adjustComponents();
     this->styleComponents();
     this->connectComponents();
+
+    this->friendsButton->hide();
+    this->inboxButton->hide();
 }
 
 #include <iostream>
@@ -56,10 +59,10 @@ void Menu::alignComponents() noexcept {
 
     this->rightButtonsLayout->addWidget( this->coinButton );
     this->rightButtonsLayout->addWidget( this->profileButton );
-    this->rightButtonsLayout->addWidget( this->settingsButton );
 
     this->leftButtonsLayout->addWidget( this->friendsButton );
     this->leftButtonsLayout->addWidget( this->inboxButton );
+    this->leftButtonsLayout->addWidget( this->settingsButton );
     this->leftButtonsLayout->addWidget( this->shopButton );
     this->leftButtonsLayout->addWidget( this->exitButton );
 
@@ -69,8 +72,7 @@ void Menu::alignComponents() noexcept {
 
     this->generalLayout->setAlignment(this->centralButtonsLayout, Qt::AlignHCenter | Qt::AlignVCenter);
 
-    this->leftButtonsLayout->setAlignment(this->friendsButton, Qt::AlignBottom);
-    this->leftButtonsLayout->setAlignment(this->inboxButton, Qt::AlignBottom);
+    this->leftButtonsLayout->setAlignment(this->settingsButton, Qt::AlignBottom);
     this->leftButtonsLayout->setAlignment(this->shopButton, Qt::AlignLeft | Qt::AlignBottom);
 
     this->leftButtonsLayout->setAlignment(this->exitButton, Qt::AlignRight | Qt::AlignBottom);
@@ -86,13 +88,16 @@ void Menu::adjustComponents () noexcept {
 
     this->friendsButton->setMaximumWidth(100);
     this->inboxButton->setMaximumWidth(100);
-    this->shopButton->setMaximumWidth(100);
+    this->shopButton->setMaximumWidth(65);
     this->friendsButton->setMinimumWidth(100);
     this->inboxButton->setMinimumWidth(100);
-    this->shopButton->setMinimumWidth(100);
+    this->shopButton->setMinimumWidth(65);
 
     this->settingsButton->setMaximumWidth(65);
     this->settingsButton->setMinimumWidth(65);
+
+    this->coinButton->setMinimumWidth(80);
+    this->coinButton->setMaximumWidth(80);
 }
 #include <QIcon>
 void Menu::styleComponents() noexcept {
@@ -133,7 +138,7 @@ void Menu::styleComponents() noexcept {
     this->friendsButton->setIconSize(QSize (50, 50));
     this->friendsButton->setText("");
     this->shopButton->setIcon(Util::getIcon("cart.png", 80, 80));
-    this->shopButton->setIconSize(QSize (50, 50));
+    this->shopButton->setIconSize(QSize (40, 50));
     this->shopButton->setText("");
     this->inboxButton->setIcon(Util::getIcon("envelope.png", 50, 50));
     this->inboxButton->setIconSize(QSize (50, 50));
@@ -180,8 +185,7 @@ void Menu::connectComponents() noexcept {
 
             this->currentPopup = nullptr;
         } );
-    } );
-
+    } ); /// <- friends Popup
     connect ( this->inboxButton, & QPushButton::clicked, [this]() {
         delete this->currentPopup;
 
@@ -200,13 +204,13 @@ void Menu::connectComponents() noexcept {
 
             this->currentPopup = nullptr;
         } );
-    } );
+    } ); /// <- inbox Popup
     connect ( this->shopButton, & QPushButton::clicked, [this]() {
         delete this->currentPopup;
 
         this->currentPopup = new Popup(
                 this,
-                { 10, this->height() - 400 - (this->height() - this->friendsButton->y()) },
+                { 10, this->height() - 400 - (this->height() - this->shopButton->y()) },
                 { 300, 400 }
         );
 

@@ -56,7 +56,6 @@ bool Figure::findCoordinatesToSpawnAtForQueue (Square ** & boardMatrix) noexcept
 
 #include <FigureI.h>
 void Figure::drawFigureForQueue (Square ** & boardMatrix) noexcept {
-    std::cout << this->toString() << '\n';
     if (! strcmp (this->toString(), FigureI().toString())
         || ! strcmp (this->toString(), "FigureL")
         || ! strcmp (this->toString(), "FigureReversedL"))
