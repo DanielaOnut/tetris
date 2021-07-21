@@ -24,6 +24,8 @@ void Game::init() noexcept {
 
     this->queue->init();
     this->queue->generateInitial();
+
+    this->pauseLabel->setVisible(false);
 }
 
 void Game::createComponents() noexcept {
@@ -38,6 +40,7 @@ void Game::createComponents() noexcept {
 
     this->queueLabel = new QLabel (this->queueLabelText, this);
     this->queue = new Queue (this);
+    this->pauseLabel = new QLabel (this->pauseLabelText, this);
     this->pauseButton = new QPushButton (this);
 
     this->shapeFallTimer = new QTimer(this);
@@ -60,6 +63,7 @@ void Game::alignComponents() noexcept {
 
     this->figuresQueueLayout->addWidget(this->queueLabel);
     this->figuresQueueLayout->addWidget(this->queue);
+    this->figuresQueueLayout->addWidget(this->pauseLabel);
     this->figuresQueueLayout->addWidget(this->pauseButton);
 
     this->dataLayout->setAlignment(this->quitButton, Qt::AlignBottom | Qt::AlignLeft);
@@ -68,7 +72,8 @@ void Game::alignComponents() noexcept {
 
     this->figuresQueueLayout->setAlignment(this->queueLabel, Qt::AlignLeft);
     this->figuresQueueLayout->setAlignment(this->queue, Qt::AlignTop);
-    this->figuresQueueLayout->setAlignment(this->pauseButton, Qt::AlignBottom | Qt::AlignLeft);
+    this->figuresQueueLayout->setAlignment(this->pauseButton, Qt::AlignLeft);
+    this->figuresQueueLayout->setAlignment(this->pauseLabel, Qt::AlignBottom);
 }
 
 void Game::adjustComponents() noexcept {
@@ -102,6 +107,7 @@ void Game::styleComponents() noexcept {
     this->quitButton->setIcon(Util::getIcon("quitButtonIcon.png", 20, 20));
 
     this->queueLabel->setStyleSheet(Util::getStyle("NextLabel.css").c_str());
+    this->pauseLabel->setStyleSheet(Util::getStyle("PauseLabel.css").c_str());
 
     this->pauseButton->setIcon(Util::getIcon("pauseButtonIcon.png", 50, 50));
     this->pauseButton->setIconSize(QSize(50, 40));
@@ -115,10 +121,12 @@ void Game::connectComponents() noexcept {
     connect (this->pauseButton, & QPushButton::clicked, [this] {
         if (pauseButtonClikedCounter % 2 == 0) {
             pauseButtonCliked = true;
+            this->pauseLabel->setVisible(true);
             this->shapeFallTimer->stop();
         }
         else {
             pauseButtonCliked = false;
+            this->pauseLabel->setVisible(false);
             this->shapeFallTimer->start();
         }
         pauseButtonClikedCounter++;
@@ -174,7 +182,8 @@ Game::~Game() noexcept {
 void Game::keyPressEvent(QKeyEvent *event) {
 //    if ( ! event->isAutoRepeat() )
 //        std::cout << event->text().toStdString() << " pressed\n";
-
+    if (pauseButtonCliked)
+        this->pauseLabel->setStyleSheet(Util::getStyle("PauseLabelPressed.css").c_str());
     if ( ! event->isAutoRepeat() ) {
         if (    ! pauseButtonCliked &&
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
@@ -210,18 +219,20 @@ void Game::keyPressEvent(QKeyEvent *event) {
 void Game::keyReleaseEvent(QKeyEvent *event) {
 //    if ( ! event->isAutoRepeat() )
 //        std::cout << event->text().toStdString() << " released\n";
+    if (pauseButtonCliked)
+        this->pauseLabel->setStyleSheet(Util::getStyle("PauseLabel.css").c_str());
     if ( ! event->isAutoRepeat() ) {
-        if (
+        if (    ! pauseButtonCliked &&
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().moveRightKey
         )
             this->moveRightSignalGenerator->stop();
-        if (
+        if (    ! pauseButtonCliked &&
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().moveLeftKey
                 )
             this->moveLeftSignalGenerator->stop();
-        if (
+        if (    ! pauseButtonCliked &&
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().dropKey
         ) {

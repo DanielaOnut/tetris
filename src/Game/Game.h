@@ -36,9 +36,11 @@ class Game : public QWidget {
 
     Queue * queue {nullptr};
     QLabel * queueLabel {nullptr};
+    QLabel * pauseLabel {nullptr};
     QPushButton * pauseButton {nullptr};
 
     const char * queueLabelText = "Next Figures";
+    const char * pauseLabelText = "Game is on Pause";
 
 public:
     Queue * getQueue () noexcept {
