@@ -305,21 +305,26 @@ void Settings::adjustComponents() noexcept {
     this->fullscreenButton->setMinimumWidth(120);
     this->brightnessSlider->setMinimumWidth(200);
 
-    auto resToString = [](int w, int h) -> std::string {
-        return std::to_string(w) + " x " + std::to_string(h);
-    };
+//    auto resToString = [](int w, int h) -> std::string {
+//        return std::to_string(w) + " x " + std::to_string(h);
+//    };
 
-    for ( int i = 0; i < this->dropDownList->count(); i++ ) {
-        if ( this->dropDownList->itemText(i).toStdString() == resToString(this->width, this->height) )
-            this->dropDownList->setCurrentIndex(i);
-    }
+//    for ( int i = 0; i < this->dropDownList->count(); i++ ) {
+//        if ( this->dropDownList->itemText(i).toStdString() == resToString(this->width, this->height) )
+//            this->dropDownList->setCurrentIndex(i);
+//    }
 
     if (this->width == 1920 || this->width == 2560) {
+        if (this->width == 1920)
+            this->dropDownList->setCurrentText("1920 x 1080");
+        if (this->width == 2560)
+            this->dropDownList->setCurrentText("2560 x 1440");
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
         this->displayModeKey = CurrentSettings::FULLSCREEN;
     }
     else if (this->width == 1280) {
+        this->dropDownList->setCurrentText("1280 x 720");
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
         this->displayModeKey = CurrentSettings::WINDOWED;
@@ -505,7 +510,6 @@ void Settings::connectComponents() noexcept {
         this->setVideoSettingsVisibility(true);
         this->setControlsSettingsVisibility(false);
     });
-
     connect (this->windowModeButton, &QPushButton::clicked, [this]() {
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());

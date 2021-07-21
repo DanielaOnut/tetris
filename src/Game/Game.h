@@ -35,8 +35,9 @@ class Game : public QWidget {
     QLayout * figuresQueueLayout {nullptr};
 
     Queue * queue {nullptr};
-
     QLabel * queueLabel {nullptr};
+    QPushButton * pauseButton {nullptr};
+
     const char * queueLabelText = "Next Figures";
 
 public:

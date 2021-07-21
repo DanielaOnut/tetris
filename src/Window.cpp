@@ -140,7 +140,10 @@ void Window::closeEvent(QCloseEvent *) {
 #include <QResizeEvent>
 void Window::resizeEvent(QResizeEvent * e) {
     CurrentSettings::instance().video().resolutionWidth = e->size().width();
-    CurrentSettings::instance().video().resolutionHeight = e->size().height();
+    if (e->size().width() == 1280)
+        CurrentSettings::instance().video().resolutionHeight = 720;
+    else
+        CurrentSettings::instance().video().resolutionHeight = e->size().height();
 
     auto pGame = dynamic_cast<Game *>(this->activePanel);
 

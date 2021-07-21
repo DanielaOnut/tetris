@@ -3,4 +3,5 @@ QLabel {
     border-radius: 2px;
     /*padding: 1px;*/
     font-size: 19px;
+    max-height: 25px;
 }

@@ -38,6 +38,7 @@ void Game::createComponents() noexcept {
 
     this->queueLabel = new QLabel (this->queueLabelText, this);
     this->queue = new Queue (this);
+    this->pauseButton = new QPushButton (this);
 
     this->shapeFallTimer = new QTimer(this);
 
@@ -57,15 +58,17 @@ void Game::alignComponents() noexcept {
 
     this->boardLayout->addWidget(this->gameBoard);
 
-    this->figuresQueueLayout->addWidget(this->queue);
     this->figuresQueueLayout->addWidget(this->queueLabel);
+    this->figuresQueueLayout->addWidget(this->queue);
+    this->figuresQueueLayout->addWidget(this->pauseButton);
 
     this->dataLayout->setAlignment(this->quitButton, Qt::AlignBottom | Qt::AlignLeft);
 
     this->boardLayout->setAlignment(this->gameBoard, Qt::AlignHCenter | Qt::AlignTop);
 
-    this->figuresQueueLayout->setAlignment(this->queue, Qt::AlignLeft | Qt::AlignTop);
-    this->figuresQueueLayout->setAlignment(this->queueLabel, Qt::AlignLeft | Qt::AlignTop);
+    this->figuresQueueLayout->setAlignment(this->queueLabel, Qt::AlignLeft);
+    this->figuresQueueLayout->setAlignment(this->queue, Qt::AlignTop);
+    this->figuresQueueLayout->setAlignment(this->pauseButton, Qt::AlignBottom | Qt::AlignLeft);
 }
 
 void Game::adjustComponents() noexcept {
@@ -87,6 +90,11 @@ void Game::adjustComponents() noexcept {
 
     this->quitButton->setMinimumWidth(130);
     this->quitButton->setMaximumWidth(130);
+
+    this->pauseButton->setMinimumWidth(40);
+    this->pauseButton->setMaximumWidth(40);
+    this->pauseButton->setMinimumHeight(40);
+    this->pauseButton->setMaximumHeight(40);
 }
 
 void Game::styleComponents() noexcept {
@@ -94,11 +102,28 @@ void Game::styleComponents() noexcept {
     this->quitButton->setIcon(Util::getIcon("quitButtonIcon.png", 20, 20));
 
     this->queueLabel->setStyleSheet(Util::getStyle("NextLabel.css").c_str());
+
+    this->pauseButton->setIcon(Util::getIcon("pauseButtonIcon.png", 50, 50));
+    this->pauseButton->setIconSize(QSize(50, 40));
 }
 
 #include <iostream>
 
+static bool pauseButtonCliked = false;
+static int pauseButtonClikedCounter = 0;
 void Game::connectComponents() noexcept {
+    connect (this->pauseButton, & QPushButton::clicked, [this] {
+        if (pauseButtonClikedCounter % 2 == 0) {
+            pauseButtonCliked = true;
+            this->shapeFallTimer->stop();
+        }
+        else {
+            pauseButtonCliked = false;
+            this->shapeFallTimer->start();
+        }
+        pauseButtonClikedCounter++;
+    });
+
     connect (this->quitButton, & QPushButton::clicked, [this] {emit this->quit();} );
 
     connect(this->shapeFallTimer, & QTimer::timeout, [this]{ this->gameBoard->dropActiveShape();});
@@ -151,21 +176,21 @@ void Game::keyPressEvent(QKeyEvent *event) {
 //        std::cout << event->text().toStdString() << " pressed\n";
 
     if ( ! event->isAutoRepeat() ) {
-        if (
+        if (    ! pauseButtonCliked &&
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().moveRightKey
         ) {
             emit this->moveRight();
             this->moveRightSignalGenerator->start();
         }
-        if (
+        if ( ! pauseButtonCliked &&
             CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
             CurrentSettings::instance().control().moveLeftKey
         ) {
             emit this->moveLeft();
             this->moveLeftSignalGenerator->start();
         }
-        if (
+        if (    ! pauseButtonCliked &&
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().dropKey
         ) {
@@ -173,7 +198,7 @@ void Game::keyPressEvent(QKeyEvent *event) {
             this->shapeFallTimer->stop();
             this->dropSignalGenerator->start();
         }
-        if (
+        if (    ! pauseButtonCliked &&
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().rotateKey
         )
