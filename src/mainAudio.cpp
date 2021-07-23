@@ -8,7 +8,10 @@
 #include <vector>
 #include <fstream>
 #include <cstring>
+
+#if defined(__linux)
 #include <bit>
+#endif
 
 // https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
 
@@ -131,11 +134,15 @@ auto alcCallImpl(const char* filename,
 std::int32_t convert_to_int(char* buffer, std::size_t len)
 {
     std::int32_t a = 0;
+#if defined(__linux)
     if(std::endian::native == std::endian::little)
         std::memcpy(&a, buffer, len);
     else
         for(std::size_t i = 0; i < len; ++i)
             reinterpret_cast<char*>(&a)[3 - i] = buffer[i];
+#else
+    std::memcpy(& a, buffer, len);
+#endif
     return a;
 }
 
