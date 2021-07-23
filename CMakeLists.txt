@@ -13,6 +13,9 @@ set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 
 include_directories(src)
 include_directories(src/Game)
+include_directories(dependencies/openAL/include)
+
+add_subdirectory(dependencies/openAL)
 
 add_executable(
         ${PROJECT_NAME}
