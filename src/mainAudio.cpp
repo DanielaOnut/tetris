@@ -324,7 +324,7 @@ int main()
     std::int32_t sampleRate;
     std::uint8_t bitsPerSample;
     std::vector<char> soundData;
-    if(!load_wav("iamtheprotectorofthissystem.wav", channels, sampleRate, bitsPerSample, soundData.size()))
+    if(!load_wav("../resources/sounds/iamtheprotectorofthissystem.wav", channels, sampleRate, bitsPerSample, soundData.size()))
     {
         std::cerr << "ERROR: Could not load wav" << std::endl;
         return 0;
