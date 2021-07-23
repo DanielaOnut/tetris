@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 project(Project)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_PREFIX_PATH "D:/QT/5.15.2/mingw81_64")
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -102,4 +102,5 @@ if (WIN32)
     endforeach (QT_LIB)
 endif ()
 
-
+add_executable(audioTest src/mainAudio.cpp)
+target_link_libraries(audioTest openal)

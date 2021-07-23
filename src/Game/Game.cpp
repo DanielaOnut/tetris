@@ -34,14 +34,14 @@ void Game::createComponents() noexcept {
     this->boardLayout = new QVBoxLayout (nullptr);
     this->dataLayout = new QVBoxLayout (nullptr);
 
-    this->quitButton = new QPushButton (this->quitButtonText, this);
+    this->quitButton = new NoKeyButton (this->quitButtonText, this);
 
     this->gameBoard = new Board(this);
 
     this->queueLabel = new QLabel (this->queueLabelText, this);
     this->queue = new Queue (this);
     this->pauseLabel = new QLabel (this->pauseLabelText, this);
-    this->pauseButton = new QPushButton (this);
+    this->pauseButton = new NoKeyButton (this);
 
     this->shapeFallTimer = new QTimer(this);
 
@@ -123,13 +123,20 @@ void Game::connectComponents() noexcept {
             pauseButtonCliked = true;
             this->pauseLabel->setVisible(true);
             this->shapeFallTimer->stop();
+
+
+            // intrebi care taste sunt apasate ca sa le opresti timerele
+            // le dai stop, le poti salva deoparte
         }
         else {
             pauseButtonCliked = false;
             this->pauseLabel->setVisible(false);
             this->shapeFallTimer->start();
+
+            // pe cele salvate le dai restart daca au tasta lor inca apasata
         }
         pauseButtonClikedCounter++;
+        this->setFocus();
     });
 
     connect (this->quitButton, & QPushButton::clicked, [this] {emit this->quit();} );
@@ -184,22 +191,22 @@ void Game::keyPressEvent(QKeyEvent *event) {
 //        std::cout << event->text().toStdString() << " pressed\n";
     if (pauseButtonCliked)
         this->pauseLabel->setStyleSheet(Util::getStyle("PauseLabelPressed.css").c_str());
-    if ( ! event->isAutoRepeat() ) {
-        if (    ! pauseButtonCliked &&
+    else if ( ! event->isAutoRepeat() ) {
+        if (
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().moveRightKey
         ) {
             emit this->moveRight();
             this->moveRightSignalGenerator->start();
         }
-        if ( ! pauseButtonCliked &&
+        if (
             CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
             CurrentSettings::instance().control().moveLeftKey
         ) {
             emit this->moveLeft();
             this->moveLeftSignalGenerator->start();
         }
-        if (    ! pauseButtonCliked &&
+        if (
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().dropKey
         ) {
@@ -207,7 +214,7 @@ void Game::keyPressEvent(QKeyEvent *event) {
             this->shapeFallTimer->stop();
             this->dropSignalGenerator->start();
         }
-        if (    ! pauseButtonCliked &&
+        if (
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().rotateKey
         )

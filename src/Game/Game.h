@@ -74,5 +74,18 @@ signals:
     void quit();
 };
 
+class NoKeyButton : public QPushButton {
+    Q_OBJECT
+
+public:
+    explicit NoKeyButton (QWidget * parent = nullptr) noexcept : QPushButton(parent) { }
+    explicit NoKeyButton (const char * pText, QWidget * parent = nullptr) noexcept : QPushButton(pText, parent) { }
+    ~NoKeyButton () noexcept override = default;
+
+    void keyPressEvent(QKeyEvent * e) override {
+
+    }
+};
+
 
 #endif //TETRIS_GAME_H

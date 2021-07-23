@@ -1,7 +1,6 @@
 #include <iostream>
 #include <QApplication>
 #include <Window.h>
-
 #include <CurrentSettings.h>
 
 int main(int argumentCount, char ** argumentVector) {
