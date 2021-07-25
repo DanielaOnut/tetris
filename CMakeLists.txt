@@ -38,8 +38,6 @@ add_executable(
         src/Shop.h
         src/CurrentSettings.cpp
         src/CurrentSettings.h
-        src/Game/Score.cpp
-        src/Game/Score.h
         src/Friends.cpp
         src/Friends.h
         src/Game/Game.cpp

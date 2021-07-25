@@ -29,8 +29,12 @@ class Game : public QWidget {
 
     QLayout * dataLayout {nullptr};
 
+    QLabel * scoreLabel {nullptr};
     QPushButton * quitButton {nullptr};
-    const char  * quitButtonText = "Quit To Menu";
+
+    const char * quitButtonText = "Quit To Menu";
+    const char * scoreLabelText = "Score: 0";
+    int gameScore = 0;
 
     QLayout * figuresQueueLayout {nullptr};
 
@@ -47,9 +51,7 @@ public:
         return this->queue;
     }
 
-    Board * getBoard () noexcept {
-        return this->gameBoard;
-    }
+    void editScore (int x) noexcept;
 
     explicit Game ( QWidget * parent ) noexcept : QWidget(parent) { }
 

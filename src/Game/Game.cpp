@@ -34,6 +34,7 @@ void Game::createComponents() noexcept {
     this->boardLayout = new QVBoxLayout (nullptr);
     this->dataLayout = new QVBoxLayout (nullptr);
 
+    this->scoreLabel = new QLabel (this->scoreLabelText,this);
     this->quitButton = new NoKeyButton (this->quitButtonText, this);
 
     this->gameBoard = new Board(this);
@@ -57,6 +58,7 @@ void Game::alignComponents() noexcept {
     this->generalLayout->addItem(this->boardLayout);
     this->generalLayout->addItem(this->figuresQueueLayout);
 
+    this->dataLayout->addWidget(this->scoreLabel);
     this->dataLayout->addWidget(this->quitButton);
 
     this->boardLayout->addWidget(this->gameBoard);
@@ -67,6 +69,7 @@ void Game::alignComponents() noexcept {
     this->figuresQueueLayout->addWidget(this->pauseButton);
 
     this->dataLayout->setAlignment(this->quitButton, Qt::AlignBottom | Qt::AlignLeft);
+    this->dataLayout->setAlignment(this->scoreLabel, Qt::AlignTop | Qt::AlignLeft);
 
     this->boardLayout->setAlignment(this->gameBoard, Qt::AlignHCenter | Qt::AlignTop);
 
@@ -108,6 +111,7 @@ void Game::styleComponents() noexcept {
 
     this->queueLabel->setStyleSheet(Util::getStyle("NextLabel.css").c_str());
     this->pauseLabel->setStyleSheet(Util::getStyle("PauseLabel.css").c_str());
+    this->scoreLabel->setStyleSheet(Util::getStyle("ScoreLabel.css").c_str());
 
     this->pauseButton->setIcon(Util::getIcon("pauseButtonIcon.png", 50, 50));
     this->pauseButton->setIconSize(QSize(50, 40));
@@ -160,13 +164,37 @@ void Game::connectComponents() noexcept {
     this->shapeFallTimer->start();
 }
 
+void Game::editScore (int x) noexcept {
+    this->gameScore += x;
+    int res = this->gameScore, i = 0, counter = 0;
+    char scoreToString[10], uselessString[2];
+    while (res) {
+        counter++;
+        res /= 10;
+    }
+    res = this->gameScore;
+    i = counter - 1;
+    scoreToString[counter] = '\0';
+    while (res && i >= 0) {
+        char * c = itoa(res % 10, uselessString, 10);
+        scoreToString[i--] = * c;
+        res /= 10;
+    }
+    char s[18] = "Score: ";
+    strcat (s, scoreToString);
+    this->scoreLabel->setText(s);
+}
+
 Game::~Game() noexcept {
     this->boardLayout->removeWidget(this->gameBoard);
 
     this->figuresQueueLayout->removeWidget(this->queueLabel);
     this->figuresQueueLayout->removeWidget(this->queue);
+    this->figuresQueueLayout->removeWidget(this->pauseButton);
+    this->figuresQueueLayout->removeWidget(this->pauseLabel);
 
     this->dataLayout->removeWidget(this->quitButton);
+    this->dataLayout->removeWidget(this->scoreLabel);
 
     this->generalLayout->removeItem(this->figuresQueueLayout);
     this->generalLayout->removeItem(this->boardLayout);
@@ -179,6 +207,9 @@ Game::~Game() noexcept {
     delete this->figuresQueueLayout;
 
     delete this->quitButton;
+    delete this->scoreLabel;
+    delete this->pauseButton;
+    delete this->pauseLabel;
     delete this->gameBoard;
     delete this->queueLabel;
     delete this->queue;

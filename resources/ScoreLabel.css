@@ -1,0 +1,11 @@
+QLabel {
+    border-color: rgba(136, 149, 115, 0.79);
+    border-width: 2px;
+    border-radius: 3px;
+    border-style: double;
+    background-color: rgba(216, 236, 181, 0.79);
+    min-height: 35px;
+    max-width: 200px;
+    font-size: 20px;
+    color: #020101;
+}

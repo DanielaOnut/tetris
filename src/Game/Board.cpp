@@ -124,14 +124,20 @@ void Board::deletingLine(int line) noexcept {
 }
 
 void Board::lineIsFull() noexcept {
+    int fullLinesCounter = 0;
     for (int i = 0;i < this->height;i++) {
         bool isFull = true;
         for (int j = 0;j < this->width;j++)
             if (this->squares[i][j].getTexture() == SquareTexture::empty())
                 isFull = false;
-        if (isFull)
+        if (isFull) {
             this->deletingLine(i);
+            fullLinesCounter++;
+        }
     }
+    auto pParent = dynamic_cast < Game * > (this->parent());
+    if ( pParent != nullptr && fullLinesCounter)
+        pParent->editScore(100 * fullLinesCounter);
 }
 
 static bool noRotation = false;
