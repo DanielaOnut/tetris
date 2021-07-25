@@ -123,23 +123,27 @@ void Game::connectComponents() noexcept {
             pauseButtonCliked = true;
             this->pauseLabel->setVisible(true);
             this->shapeFallTimer->stop();
-
-
-            // intrebi care taste sunt apasate ca sa le opresti timerele
-            // le dai stop, le poti salva deoparte
+            if (this->moveRightSignalGenerator->isActive())
+                this->moveRightSignalGenerator->stop();
+            if (this->moveLeftSignalGenerator->isActive())
+                this->moveLeftSignalGenerator->stop();
+            if (this->dropSignalGenerator->isActive())
+                this->dropSignalGenerator->stop();
         }
         else {
             pauseButtonCliked = false;
             this->pauseLabel->setVisible(false);
             this->shapeFallTimer->start();
-
-            // pe cele salvate le dai restart daca au tasta lor inca apasata
         }
         pauseButtonClikedCounter++;
         this->setFocus();
     });
 
-    connect (this->quitButton, & QPushButton::clicked, [this] {emit this->quit();} );
+    connect (this->quitButton, & QPushButton::clicked, [this] {
+        emit this->quit();
+        pauseButtonCliked = false;
+        pauseButtonClikedCounter = 0;
+    } );
 
     connect(this->shapeFallTimer, & QTimer::timeout, [this]{ this->gameBoard->dropActiveShape();});
 
@@ -228,18 +232,18 @@ void Game::keyReleaseEvent(QKeyEvent *event) {
 //        std::cout << event->text().toStdString() << " released\n";
     if (pauseButtonCliked)
         this->pauseLabel->setStyleSheet(Util::getStyle("PauseLabel.css").c_str());
-    if ( ! event->isAutoRepeat() ) {
-        if (    ! pauseButtonCliked &&
+    else if ( ! event->isAutoRepeat() ) {
+        if (
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().moveRightKey
         )
             this->moveRightSignalGenerator->stop();
-        if (    ! pauseButtonCliked &&
+        if (
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().moveLeftKey
                 )
             this->moveLeftSignalGenerator->stop();
-        if (    ! pauseButtonCliked &&
+        if (
                 CurrentSettings::getControlKeyForQKey( static_cast < Qt::Key > (event->key()) ) ==
                 CurrentSettings::instance().control().dropKey
         ) {
