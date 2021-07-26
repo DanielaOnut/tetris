@@ -214,7 +214,7 @@ void Menu::connectComponents() noexcept {
                 { 300, 400 }
         );
 
-        auto shop = new Shop (nullptr);
+        auto shop = new Shop (this);
         shop->init();
         this->currentPopup->setContent(shop);
 
@@ -224,7 +224,13 @@ void Menu::connectComponents() noexcept {
             this->currentPopup = nullptr;
         } );
     } );
+}
 
+void Menu::editCoinsNumber (int value) noexcept {
+    this->coinsNumber -= value;
+    char string[7];
+    itoa (this->coinsNumber, string, 10);
+    this->coinButton->setText(string);
 }
 
 Menu::~Menu () noexcept {

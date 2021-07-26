@@ -11,15 +11,18 @@ void Shop::init() noexcept {
     this->alignComponents();
 //    this->adjustComponents();
 //    this->styleComponents();
-//    this->connectComponents();
-    this->addItem("Rainbow Cube", "  100");
+    this->connectComponents();
+    this->addItem("Rainbow Square", "100");
+    this->addItem("Black Square", "250");
 }
 
-void Shop::addItem(const std::string & item, const std::string & price) noexcept {
+void Shop::addItem(const std::string & item, const char * price) noexcept {
     auto container = new QListWidgetItem (this->itemsList);
     this->itemsList->addItem(container);
 
-    auto widget = new ShopListItem();
+    auto * parent = dynamic_cast <Menu *> (this->parent());
+
+    auto widget = new ShopListItem(parent);
     widget->init();
     widget->setItemName(item);
     widget->setPrice(price);
@@ -37,6 +40,10 @@ void Shop::createComponents() noexcept {
 void Shop::alignComponents() noexcept {
     this->setLayout(this->generalLayout);
     this->generalLayout->addWidget(this->itemsList);
+}
+
+void Shop::connectComponents () noexcept {
+//    connect (dynamic_cast <ShopListItem *> )
 }
 
 Shop::~Shop () noexcept {

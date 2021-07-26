@@ -11,6 +11,7 @@
 #include <QWidget>
 #include <QListWidget>
 #include <QLabel>
+#include <iostream>
 #include "Util.h"
 
 class Shop : public QWidget {
@@ -25,10 +26,10 @@ public:
 
     void createComponents () noexcept;
     void alignComponents () noexcept;
-    void addItem ( std::string const &, std::string const & ) noexcept;
+    void addItem ( std::string const &, char const * ) noexcept;
 //    void adjustComponents() noexcept;
 //    void styleComponents () noexcept;
-//    void connectComponents () noexcept;
+    void connectComponents () noexcept;
 
     ~Shop () noexcept;
 };
@@ -39,9 +40,9 @@ Q_OBJECT
 private:
     QLayout * generalLayout {nullptr};
     QLabel  * itemNameLabel {nullptr};
-    QLabel  * priceLabel  {nullptr};
 
     QPushButton  * coinButton   {nullptr};
+    int itemPrice = 0;
 
 public:
     explicit ShopListItem ( QWidget * pParent = nullptr ) noexcept : QWidget(nullptr) { }
@@ -58,7 +59,6 @@ public:
         this->generalLayout = new QHBoxLayout (nullptr);
 
         this->itemNameLabel = new QLabel (this);
-        this->priceLabel = new QLabel (this);
         this->coinButton = new QPushButton (this);
     }
 
@@ -66,18 +66,16 @@ public:
         this->setLayout(this->generalLayout);
 
         this->generalLayout->addWidget(this->itemNameLabel);
-        this->generalLayout->addWidget(this->priceLabel);
         this->generalLayout->addWidget(this->coinButton);
 
         this->itemNameLabel->setAlignment(Qt::AlignLeft);
-        this->priceLabel->setAlignment(Qt::AlignRight);
         this->generalLayout->setAlignment(Qt::AlignTop);
     }
 
     void adjustComponents () {
-        this->coinButton->setMaximumWidth(20);
-        this->coinButton->setMinimumWidth(20);
-        this->coinButton->setFixedHeight(20);
+        this->coinButton->setMaximumWidth(60);
+        this->coinButton->setMinimumWidth(60);
+        this->coinButton->setFixedHeight(30);
     }
 
     void styleComponents () {
@@ -92,21 +90,30 @@ public:
     }
 
     void connectComponents () {
-
+        connect (this->coinButton, & QPushButton::clicked, [this] {
+            auto * parent = dynamic_cast <Menu *> (this->parent());
+            if (parent != nullptr) {
+                std::cout << "Menu is parent" << '\n';
+                parent->editCoinsNumber(this->itemPrice);
+            }
+        });
     }
 
     void setItemName ( std::string const & name ) noexcept {
         this->itemNameLabel->setText(name.c_str());
     }
 
-    void setPrice ( std::string const & price ) noexcept {
-        this->priceLabel->setText(price.c_str());
+    void setPrice ( char const * price ) noexcept {
+        this->coinButton->setText(price);
+        this->itemPrice = atoi (price);
     }
 
     void setButton () noexcept {
         this->coinButton->setIcon(Util::getIcon("coin.png", 20, 20));
         this->coinButton->setIconSize(QSize (20, 20));
     }
+signals:
+    void itemPuchased ();
 };
 
 #endif //PROIECT_INBOX_H

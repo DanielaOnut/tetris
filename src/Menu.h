@@ -44,7 +44,8 @@ private:
     QPushButton     * profileButton         = nullptr;
     QPushButton     * settingsButton        = nullptr;
 
-    const char      * coinButtonText        = "300";
+    const char      * coinButtonText        = "500";
+    int coinsNumber = 500;
     const char      * profileButtonText     = "PH_P";
     const char      * settingsButtonText    = "PH_S";
 
@@ -68,6 +69,7 @@ public:
 
     void init () noexcept;
 //    auto init () noexcept -> void;
+    void editCoinsNumber (int) noexcept;
 
     void createComponents () noexcept;
     void alignComponents () noexcept;
