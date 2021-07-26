@@ -166,10 +166,10 @@ void Game::connectComponents() noexcept {
 
 void Game::editScore (int x) noexcept {
     this->gameScore += x;
-    int res = this->gameScore;
-    char scoreToString[17] = "Score: ";
-    itoa (res, scoreToString + 7, 10);
-    this->scoreLabel->setText(scoreToString);
+//    int res = this->gameScore;
+//    char scoreToString[17] = "Score: ";
+//    itoa (res, scoreToString + 7, 10);
+    this->scoreLabel->setText(QString::number(this->gameScore, 10));
 }
 
 Game::~Game() noexcept {

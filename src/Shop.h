@@ -14,7 +14,11 @@
 #include <iostream>
 #include "Util.h"
 
+class ShopListItem;
+
 class Shop : public QWidget {
+    Q_OBJECT
+
 private:
     QLayout     * generalLayout    {nullptr};
 
@@ -31,11 +35,14 @@ public:
 //    void styleComponents () noexcept;
     void connectComponents () noexcept;
 
-    ~Shop () noexcept;
+    ~Shop () noexcept override;
+
+signals:
+    void itemPurchased (ShopListItem *);
 };
 
 class ShopListItem : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 
 private:
     QLayout * generalLayout {nullptr};
@@ -45,7 +52,7 @@ private:
     int itemPrice = 0;
 
 public:
-    explicit ShopListItem ( QWidget * pParent = nullptr ) noexcept : QWidget(nullptr) { }
+    explicit ShopListItem ( QWidget * pParent = nullptr ) noexcept : QWidget(pParent) { }
 
     void init () {
         this->createComponents();
@@ -56,7 +63,7 @@ public:
     }
 
     void createComponents () {
-        this->generalLayout = new QHBoxLayout (nullptr);
+        this->generalLayout = new QHBoxLayout ();
 
         this->itemNameLabel = new QLabel (this);
         this->coinButton = new QPushButton (this);
@@ -68,8 +75,10 @@ public:
         this->generalLayout->addWidget(this->itemNameLabel);
         this->generalLayout->addWidget(this->coinButton);
 
-        this->itemNameLabel->setAlignment(Qt::AlignLeft);
+        this->generalLayout->setAlignment(this->itemNameLabel, Qt::AlignLeft);
         this->generalLayout->setAlignment(Qt::AlignTop);
+
+//        this->coinButton->raise();
     }
 
     void adjustComponents () {
@@ -79,28 +88,42 @@ public:
     }
 
     void styleComponents () {
-        this->coinButton->setStyleSheet ("QPushButton {\n"
-                                         "    border-color: #96a2c3;\n"
-                                         "    background-color: #f1f1f1;\n"
-                                         "    border-width: 2px;\n"
-                                         "    border-radius: 3px;\n"
-                                         "    border-style: outset;\n"
-                                         "    margin: 3px;\n"
-                                         "}");
+//        this->coinButton->setStyleSheet ("QPushButton{\n"
+//                                         "    border-color: #96a2c3;\n"
+//                                         "    background-color: #f1f1f1;\n"
+//                                         "    border-width: 2px;\n"
+//                                         "    border-radius: 3px;\n"
+//                                         "    border-style: outset;\n"
+//                                         "    margin: 3px;\n"
+//                                         "};"
+//                                         ""
+//                                         "QPushButton:pressed{\n"
+//                                         "    border-color: #96a2c3;\n"
+//                                         "    background-color: #eeeeee;\n"
+//                                         "    border-width: 2px;\n"
+//                                         "    border-radius: 3px;\n"
+//                                         "    border-style: inset;\n"
+//                                         "    margin: 3px\n"
+//                                         "};");
     }
 
     void connectComponents () {
         connect (this->coinButton, & QPushButton::clicked, [this] {
-            auto * parent = dynamic_cast <Menu *> (this->parent());
-            if (parent != nullptr) {
-                std::cout << "Menu is parent" << '\n';
-                parent->editCoinsNumber(this->itemPrice);
-            }
+            emit this->itemPurchased(this);
+//            auto * parent = dynamic_cast <Menu *> (this->parent());
+//            if (parent != nullptr) {
+//                std::cout << "Menu is parent" << '\n';
+//                parent->editCoinsNumber(this->itemPrice);
+//            }
         });
     }
 
     void setItemName ( std::string const & name ) noexcept {
         this->itemNameLabel->setText(name.c_str());
+    }
+
+    int getItemPrice() const {
+        return itemPrice;
     }
 
     void setPrice ( char const * price ) noexcept {
@@ -113,7 +136,7 @@ public:
         this->coinButton->setIconSize(QSize (20, 20));
     }
 signals:
-    void itemPuchased ();
+    void itemPurchased (ShopListItem *);
 };
 
 #endif //PROIECT_INBOX_H

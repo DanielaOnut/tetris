@@ -218,7 +218,17 @@ void Menu::connectComponents() noexcept {
         shop->init();
         this->currentPopup->setContent(shop);
 
+        connect(shop, & Shop::itemPurchased, [this](ShopListItem * pItem){
+            if ( pItem->getItemPrice() < this->coinsNumber ) {
+                this->editCoinsNumber( this->coinsNumber - pItem->getItemPrice() );
+
+                /// implement pItem as purchased item logic
+            }
+        });
+
         connect ( this->currentPopup, & Popup::close, [this]() {
+            this->currentPopup->disconnect();
+
             delete this->currentPopup;
 
             this->currentPopup = nullptr;
@@ -226,11 +236,14 @@ void Menu::connectComponents() noexcept {
     } );
 }
 
+#include <cstdlib>
+
 void Menu::editCoinsNumber (int value) noexcept {
     this->coinsNumber -= value;
-    char string[7];
-    itoa (this->coinsNumber, string, 10);
-    this->coinButton->setText(string);
+//    char string[7];
+//    itoa (this->coinsNumber, string, 10);
+//    this->coinButton->setText(string);
+    this->coinButton->setText(QString::number(this->coinsNumber, 10));
 }
 
 Menu::~Menu () noexcept {

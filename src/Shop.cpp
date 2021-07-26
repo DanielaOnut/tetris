@@ -17,21 +17,44 @@ void Shop::init() noexcept {
 }
 
 void Shop::addItem(const std::string & item, const char * price) noexcept {
+//    auto container = new QListWidgetItem (this->itemsList);
+//    this->itemsList->addItem(container);
+
+//    auto * parent = dynamic_cast <Menu *> (this->parent());
+
     auto container = new QListWidgetItem (this->itemsList);
-    this->itemsList->addItem(container);
 
-    auto * parent = dynamic_cast <Menu *> (this->parent());
+    auto pItem =  new ShopListItem(this);
 
-    auto widget = new ShopListItem(parent);
-    widget->init();
-    widget->setItemName(item);
-    widget->setPrice(price);
-    widget->setButton();
+    pItem->init();
+    pItem->setItemName( item );
+    pItem->setPrice(price);
+    pItem->setButton();
 
-    container->setSizeHint(widget->sizeHint());
-    this->itemsList->setItemWidget(container, widget);
+    container->setSizeHint(pItem->sizeHint());
+
+    this->itemsList->setItemWidget(container, pItem);
+
+//
+//
+
+//    auto widget = new ShopListItem(this);
+//    widget->init();
+//    widget->setItemName(item);
+//    widget->setPrice(price);
+//    widget->setButton();
+
+//    this->itemsList->setItemWidget(container, widget);
+//    this->itemsList->addItem(container);
+
+
+
+    connect ( pItem, & ShopListItem::itemPurchased, [this](ShopListItem * pShopItem){
+        emit this->itemPurchased (pShopItem);
+    } );
 }
 
+QPushButton * pButton;
 void Shop::createComponents() noexcept {
     this->generalLayout = new QVBoxLayout (nullptr);
     this->itemsList = new QListWidget (this);
@@ -40,10 +63,16 @@ void Shop::createComponents() noexcept {
 void Shop::alignComponents() noexcept {
     this->setLayout(this->generalLayout);
     this->generalLayout->addWidget(this->itemsList);
+
+    this->itemsList->setSelectionMode(QAbstractItemView::NoSelection);
+    this->itemsList->setSelectionBehavior(QAbstractItemView::SelectItems);
+    this->itemsList->setSelectionRectVisible(false);
 }
 
 void Shop::connectComponents () noexcept {
 //    connect (dynamic_cast <ShopListItem *> )
+
+
 }
 
 Shop::~Shop () noexcept {
