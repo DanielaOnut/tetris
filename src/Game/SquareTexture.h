@@ -18,6 +18,7 @@ private:
     static QPixmap * yellowSquareTexture;
     static QPixmap * greenSquareTexture;
     static QPixmap * orangeSquareTexture;
+    static QPixmap * whiteSquareTexture;
 
 public:
 
@@ -26,6 +27,12 @@ public:
             SquareTexture::emptySquareTexture = new QPixmap(Util::getPixmap("emptySquare.png"));
 
         return SquareTexture::emptySquareTexture;
+    }
+
+    static QPixmap * white () noexcept {
+        if ( SquareTexture::whiteSquareTexture == nullptr )
+            SquareTexture::whiteSquareTexture = new QPixmap(Util::getPixmap("whiteSquare.png"));
+        return SquareTexture::whiteSquareTexture;
     }
 
     static QPixmap * blue () noexcept {

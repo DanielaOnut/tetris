@@ -12,3 +12,4 @@ QPixmap * SquareTexture::purpleSquareTexture = nullptr;
 QPixmap * SquareTexture::yellowSquareTexture = nullptr;
 QPixmap * SquareTexture::greenSquareTexture = nullptr;
 QPixmap * SquareTexture::orangeSquareTexture = nullptr;
+QPixmap * SquareTexture::whiteSquareTexture = nullptr;

@@ -14,14 +14,10 @@ void Shop::init() noexcept {
     this->connectComponents();
     this->addItem("Rainbow Square", "100");
     this->addItem("Black Square", "250");
+    this->addItem("White Square", "80");
 }
 
 void Shop::addItem(const std::string & item, const char * price) noexcept {
-//    auto container = new QListWidgetItem (this->itemsList);
-//    this->itemsList->addItem(container);
-
-//    auto * parent = dynamic_cast <Menu *> (this->parent());
-
     auto container = new QListWidgetItem (this->itemsList);
 
     auto pItem =  new ShopListItem(this);
@@ -35,23 +31,15 @@ void Shop::addItem(const std::string & item, const char * price) noexcept {
 
     this->itemsList->setItemWidget(container, pItem);
 
-//
-//
-
-//    auto widget = new ShopListItem(this);
-//    widget->init();
-//    widget->setItemName(item);
-//    widget->setPrice(price);
-//    widget->setButton();
-
-//    this->itemsList->setItemWidget(container, widget);
-//    this->itemsList->addItem(container);
-
-
-
     connect ( pItem, & ShopListItem::itemPurchased, [this](ShopListItem * pShopItem){
         emit this->itemPurchased (pShopItem);
     } );
+    connect ( pItem, & ShopListItem::itemEquipped, [this] {
+        emit this->itemEquipped();
+    });
+    connect ( pItem, & ShopListItem::itemUnequipped, [this] {
+        emit this->itemUnequipped();
+    });
 }
 
 QPushButton * pButton;
@@ -70,8 +58,6 @@ void Shop::alignComponents() noexcept {
 }
 
 void Shop::connectComponents () noexcept {
-//    connect (dynamic_cast <ShopListItem *> )
-
 
 }
 

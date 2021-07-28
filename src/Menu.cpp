@@ -211,7 +211,7 @@ void Menu::connectComponents() noexcept {
         this->currentPopup = new Popup(
                 this,
                 { 10, this->height() - 400 - (this->height() - this->shopButton->y()) },
-                { 300, 400 }
+                { 310, 400 }
         );
 
         auto shop = new Shop (this);
@@ -220,9 +220,9 @@ void Menu::connectComponents() noexcept {
 
         connect(shop, & Shop::itemPurchased, [this](ShopListItem * pItem){
             if ( pItem->getItemPrice() < this->coinsNumber ) {
-                this->editCoinsNumber( this->coinsNumber - pItem->getItemPrice() );
+                this->editCoinsNumber( pItem->getItemPrice() );
 
-                /// implement pItem as purchased item logic
+                pItem->createEquipButton();
             }
         });
 
