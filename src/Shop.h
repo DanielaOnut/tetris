@@ -54,6 +54,8 @@ private:
     QPushButton  * coinButton   {nullptr};
     int itemPrice = 0;
 
+    /// SquareTexture::TextureType textureType = SquareTexture::TextureType::STANDARD;
+
 public:
     explicit ShopListItem ( QWidget * pParent = nullptr ) noexcept : QWidget(pParent) { }
 
@@ -64,6 +66,8 @@ public:
         this->styleComponents();
         this->connectComponents();
     }
+
+    /// setter pt textureType
 
     void createComponents () {
         this->generalLayout = new QHBoxLayout ();
@@ -116,6 +120,7 @@ public:
                 this->coinButton->setMaximumWidth(80);
 
 //                SquareTexture::switchToTexture(SquareTexture::TextureType::WHICH_TYPE);
+//                SquareTexture::switchToTexture(this->textureType);
 
                 emit this->itemEquipped();
             }

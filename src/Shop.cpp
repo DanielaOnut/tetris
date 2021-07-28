@@ -15,8 +15,10 @@ void Shop::init() noexcept {
     this->addItem("Rainbow Square", "100"); /// in loc de toate figure types - rainbow - background alb
     this->addItem("Black Square", "250"); /// in loc de figure I  - negre + background gri
     this->addItem("White Square", "80"); /// - albe + background gri
+//    this->addItem("White Square", "80", SquareTexture::TextureType::WHITE); /// - albe + background gri
 }
 
+//void Shop::addItem(const std::string & item, const char * price, SquareTexture::TextureType type) noexcept {
 void Shop::addItem(const std::string & item, const char * price) noexcept {
     auto container = new QListWidgetItem (this->itemsList);
 
@@ -26,6 +28,9 @@ void Shop::addItem(const std::string & item, const char * price) noexcept {
     pItem->setItemName( item );
     pItem->setPrice(price);
     pItem->setButton();
+//    pItem->setTextureType(type);
+
+    ///
 
     container->setSizeHint(pItem->sizeHint());
 
