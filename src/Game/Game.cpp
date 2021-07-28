@@ -166,7 +166,12 @@ void Game::connectComponents() noexcept {
 
 void Game::editScore (int x) noexcept {
     this->gameScore += x;
-    this->scoreLabel->setText ( ( std::string ("Score: ") + std::to_string(this->gameScore) ).c_str() );
+
+    char str[30];
+    std::sprintf(str, "Score: %d", this->gameScore);
+    this->scoreLabel->setText (str);
+
+//    this->scoreLabel->setText ( ( std::string ("Score: ") + std::to_string(this->gameScore) ).c_str() );
 //    this->scoreLabel->setText ( QString ("Score: ") + QString::number ( this->gameScore, 10 ) );
 }
 
