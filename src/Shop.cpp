@@ -12,9 +12,9 @@ void Shop::init() noexcept {
 //    this->adjustComponents();
 //    this->styleComponents();
     this->connectComponents();
-    this->addItem("Rainbow Square", "100");
-    this->addItem("Black Square", "250");
-    this->addItem("White Square", "80");
+    this->addItem("Rainbow Square", "100"); /// in loc de toate figure types - rainbow - background alb
+    this->addItem("Black Square", "250"); /// in loc de figure I  - negre + background gri
+    this->addItem("White Square", "80"); /// - albe + background gri
 }
 
 void Shop::addItem(const std::string & item, const char * price) noexcept {

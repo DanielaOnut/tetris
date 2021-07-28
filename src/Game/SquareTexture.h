@@ -9,6 +9,16 @@
 #include <Util.h>
 
 class SquareTexture {
+public:
+    enum TextureType {
+        STANDARD,
+        RAINBOW,
+        WHITE,
+        BLACK
+        /// add other types here
+    };
+
+    static void switchToTexture (TextureType) noexcept;
 private:
     static QPixmap * emptySquareTexture;
     static QPixmap * blueSquareTexture;
@@ -19,6 +29,10 @@ private:
     static QPixmap * greenSquareTexture;
     static QPixmap * orangeSquareTexture;
     static QPixmap * whiteSquareTexture;
+
+    static TextureType activeTextureType;
+
+    static void reloadFigureTextures () noexcept;
 
 public:
 

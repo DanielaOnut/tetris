@@ -13,6 +13,7 @@
 #include <QLabel>
 #include <iostream>
 #include "Util.h"
+#include <Game/SquareTexture.h>
 
 class ShopListItem;
 
@@ -105,11 +106,17 @@ public:
             if (this->coinButton->text().contains("Equipped")) {
                 this->coinButton->setText("Unequipped");
                 this->coinButton->setMaximumWidth(100);
+
+                SquareTexture::switchToTexture(SquareTexture::TextureType::STANDARD);
+
                 emit this->itemUnequipped();
             }
             else if (this->coinButton->text().contains("Equip")) {
                 this->coinButton->setText("Equipped");
                 this->coinButton->setMaximumWidth(80);
+
+//                SquareTexture::switchToTexture(SquareTexture::TextureType::WHICH_TYPE);
+
                 emit this->itemEquipped();
             }
             else if (this->coinButton->text().contains("Unequipped")) {
