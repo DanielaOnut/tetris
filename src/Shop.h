@@ -14,6 +14,8 @@
 #include <iostream>
 #include "Util.h"
 #include <Game/SquareTexture.h>
+#include <fstream>
+#include <list>
 
 class ShopListItem;
 
@@ -24,6 +26,7 @@ private:
     QLayout     * generalLayout    {nullptr};
 
     QListWidget * itemsList       {nullptr};
+    std::list <ShopListItem *> purchasedItems;
 public:
     Shop (QWidget * ) noexcept;
 
@@ -31,10 +34,25 @@ public:
 
     void createComponents () noexcept;
     void alignComponents () noexcept;
-    void addItem ( std::string const &, char const * ) noexcept;
+    void addItem ( std::string const &, char const * , SquareTexture::TextureType) noexcept;
 //    void adjustComponents() noexcept;
 //    void styleComponents () noexcept;
     void connectComponents () noexcept;
+
+    static void saveCoinsNumber (const int coins) noexcept {
+        std::fstream itemsFile;
+        itemsFile.open ("PurchasedItems.txt", std::ios::trunc | std::ios::out);
+        itemsFile << coins << '\n';
+    }
+
+    void savePurchasedItem (const std::string itemName) noexcept {
+        std::fstream itemsFile;
+        itemsFile.open("PurchasedItems.txt", std::ios_base::app);
+        itemsFile << itemName.c_str() << '\n';
+        itemsFile.close();
+    }
+
+    bool verifyIfItemIsPurchased (const char *) noexcept;
 
     ~Shop () noexcept override;
 
@@ -54,7 +72,7 @@ private:
     QPushButton  * coinButton   {nullptr};
     int itemPrice = 0;
 
-    /// SquareTexture::TextureType textureType = SquareTexture::TextureType::STANDARD;
+    SquareTexture::TextureType textureType = SquareTexture::TextureType::STANDARD;
 
 public:
     explicit ShopListItem ( QWidget * pParent = nullptr ) noexcept : QWidget(pParent) { }
@@ -67,7 +85,9 @@ public:
         this->connectComponents();
     }
 
-    /// setter pt textureType
+    void setTextureType (SquareTexture::TextureType texture) noexcept {
+        this->textureType = texture;
+    }
 
     void createComponents () {
         this->generalLayout = new QHBoxLayout ();
@@ -110,24 +130,17 @@ public:
             if (this->coinButton->text().contains("Equipped")) {
                 this->coinButton->setText("Unequipped");
                 this->coinButton->setMaximumWidth(100);
-
                 SquareTexture::switchToTexture(SquareTexture::TextureType::STANDARD);
-
-                emit this->itemUnequipped();
             }
             else if (this->coinButton->text().contains("Equip")) {
                 this->coinButton->setText("Equipped");
                 this->coinButton->setMaximumWidth(80);
-
-//                SquareTexture::switchToTexture(SquareTexture::TextureType::WHICH_TYPE);
-//                SquareTexture::switchToTexture(this->textureType);
-
-                emit this->itemEquipped();
+                SquareTexture::switchToTexture(this->textureType);
             }
             else if (this->coinButton->text().contains("Unequipped")) {
                 this->coinButton->setText("Equipped");
                 this->coinButton->setMaximumWidth(80);
-                emit this->itemEquipped();
+                SquareTexture::switchToTexture(this->textureType);
             }
             else
                 emit this->itemPurchased(this);
@@ -151,6 +164,10 @@ public:
         return itemPrice;
     }
 
+    std::string getItemName () const {
+        return this->itemNameLabel->text().toStdString();
+    }
+
     void setPrice ( char const * price ) noexcept {
         this->coinButton->setText(price);
         this->itemPrice = atoi (price);
@@ -162,8 +179,6 @@ public:
     }
 signals:
     void itemPurchased (ShopListItem *);
-    void itemEquipped();
-    void itemUnequipped();
 };
 
 #endif //PROIECT_INBOX_H

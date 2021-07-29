@@ -77,6 +77,8 @@ public:
     void styleComponents () noexcept;
     void connectComponents () noexcept;
 
+    static std::string loadCoinsNumber () noexcept;
+
     ~Menu () noexcept override;
 
 signals:
@@ -84,6 +86,7 @@ signals:
     // NU se defineste - numai in QT
     void settings ();
     void game ();
+    void savePurchasedItems();
 
 public slots:
 //    void onPlayClick () noexcept;

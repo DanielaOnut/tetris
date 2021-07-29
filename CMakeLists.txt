@@ -16,7 +16,7 @@ include_directories(src/Game)
 include_directories(dependencies/openAL/include)
 
 add_subdirectory(dependencies/openAL)
-
+find_package(OpenAL)
 add_executable(
         ${PROJECT_NAME}
         src/main.cpp

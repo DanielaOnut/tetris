@@ -134,7 +134,6 @@ void CurrentSettings::load() noexcept {
     settingsFile.open("SavedSettings.txt", std::ios::in);
 
     try {
-
         std::string buffer;
         std::getline(settingsFile, buffer); this->video().fromString(buffer);
         std::getline(settingsFile, buffer); this->audio().fromString(buffer);

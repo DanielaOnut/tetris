@@ -12,14 +12,13 @@ void Shop::init() noexcept {
 //    this->adjustComponents();
 //    this->styleComponents();
     this->connectComponents();
-    this->addItem("Rainbow Square", "100"); /// in loc de toate figure types - rainbow - background alb
-    this->addItem("Black Square", "250"); /// in loc de figure I  - negre + background gri
-    this->addItem("White Square", "80"); /// - albe + background gri
-//    this->addItem("White Square", "80", SquareTexture::TextureType::WHITE); /// - albe + background gri
+    this->addItem("Rainbow Square", "200", SquareTexture::TextureType::RAINBOW);
+    this->addItem("Black Square", "150", SquareTexture::TextureType::BLACK);
+    this->addItem("White Square", "80", SquareTexture::TextureType::WHITE);
+    this->addItem("Brown Square", "75", SquareTexture::TextureType::BROWN);
 }
 
-//void Shop::addItem(const std::string & item, const char * price, SquareTexture::TextureType type) noexcept {
-void Shop::addItem(const std::string & item, const char * price) noexcept {
+void Shop::addItem(const std::string & item, const char * price, SquareTexture::TextureType type) noexcept {
     auto container = new QListWidgetItem (this->itemsList);
 
     auto pItem =  new ShopListItem(this);
@@ -28,26 +27,23 @@ void Shop::addItem(const std::string & item, const char * price) noexcept {
     pItem->setItemName( item );
     pItem->setPrice(price);
     pItem->setButton();
-//    pItem->setTextureType(type);
+    pItem->setTextureType(type);
 
-    ///
+    if (this->verifyIfItemIsPurchased(item.c_str())) {
+        this->purchasedItems.push_back(pItem);
+        pItem->createEquipButton();
+    }
 
     container->setSizeHint(pItem->sizeHint());
 
     this->itemsList->setItemWidget(container, pItem);
 
     connect ( pItem, & ShopListItem::itemPurchased, [this](ShopListItem * pShopItem){
+        this->purchasedItems.push_back(pShopItem);
         emit this->itemPurchased (pShopItem);
     } );
-    connect ( pItem, & ShopListItem::itemEquipped, [this] {
-        emit this->itemEquipped();
-    });
-    connect ( pItem, & ShopListItem::itemUnequipped, [this] {
-        emit this->itemUnequipped();
-    });
 }
 
-QPushButton * pButton;
 void Shop::createComponents() noexcept {
     this->generalLayout = new QVBoxLayout (nullptr);
     this->itemsList = new QListWidget (this);
@@ -63,7 +59,26 @@ void Shop::alignComponents() noexcept {
 }
 
 void Shop::connectComponents () noexcept {
+    auto * pParent = dynamic_cast <Menu *> (this->parent());
+    if (pParent != nullptr)
+        connect (pParent, & Menu::savePurchasedItems, [this] {
+           for (auto i : this->purchasedItems)
+               this->savePurchasedItem(i->getItemName());
+        });
+}
 
+bool Shop::verifyIfItemIsPurchased(const char * name) noexcept {
+    std::fstream itemsFile;
+    itemsFile.open("PurchasedItems.txt", std::ios::in);
+    std::string buffer;
+    std::getline (itemsFile, buffer);
+    while (buffer.c_str()[0]) {
+//        std::cout << buffer.c_str() << '\n';
+        if (! strcmp (buffer.c_str(), name))
+            return true;
+        std::getline (itemsFile, buffer);
+    }
+    return false;
 }
 
 Shop::~Shop () noexcept {

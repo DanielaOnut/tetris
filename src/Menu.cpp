@@ -31,7 +31,9 @@ void Menu::createComponents () noexcept {
 
     this->rightButtonsLayout = new QHBoxLayout (nullptr);
 
-    this->coinButton = new QPushButton (this->coinButtonText, this);
+    const char * number = this->loadCoinsNumber().c_str();
+    this->coinButton = new QPushButton (number, this);
+    this->coinsNumber = atoi(number);
     this->profileButton = new QPushButton (this->profileButtonText, this);
     this->settingsButton = new QPushButton (this->settingsButtonText, this);
 
@@ -154,18 +156,30 @@ void Menu::styleComponents() noexcept {
 #include <Shop.h>
 void Menu::connectComponents() noexcept {
     auto howToPlayCallback = [this] () noexcept -> void {
+        Shop::saveCoinsNumber(this->coinsNumber);
+        emit this->savePurchasedItems();
         emit this->howToPlay();
     };
 
-    connect( this->playButton, & QPushButton::clicked, [this] {emit this->game();} );
+    connect( this->playButton, & QPushButton::clicked, [this] {
+        Shop::saveCoinsNumber(this->coinsNumber);
+        emit this->savePurchasedItems();
+        emit this->game();
+    } );
 
     connect ( this->tutorialButton, & QPushButton::clicked, howToPlayCallback );
-    connect ( this->exitButton, & QPushButton::clicked, [](){
+    connect ( this->exitButton, & QPushButton::clicked, [this](){
             CurrentSettings::instance().save();
+            Shop::saveCoinsNumber(this->coinsNumber);
+        emit this->savePurchasedItems();
             QApplication::exit(0);
         }
     );
-    connect ( this->settingsButton, & QPushButton::clicked, [this]() {emit this->settings();} );
+    connect ( this->settingsButton, & QPushButton::clicked, [this]() {
+        Shop::saveCoinsNumber(this->coinsNumber);
+        emit this->savePurchasedItems();
+        emit this->settings();
+    } );
 
     connect ( this->friendsButton, & QPushButton::clicked, [this](){
         delete this->currentPopup;
@@ -244,6 +258,14 @@ void Menu::editCoinsNumber (int value) noexcept {
 //    itoa (this->coinsNumber, string, 10);
 //    this->coinButton->setText(string);
     this->coinButton->setText(QString::number(this->coinsNumber, 10));
+}
+
+std::string Menu::loadCoinsNumber() noexcept {
+    std::fstream coinsFile;
+    coinsFile.open("PurchasedItems.txt", std::ios::in);
+    std::string number;
+    std::getline (coinsFile, number);
+    return number;
 }
 
 Menu::~Menu () noexcept {

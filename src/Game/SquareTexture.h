@@ -14,8 +14,8 @@ public:
         STANDARD,
         RAINBOW,
         WHITE,
-        BLACK
-        /// add other types here
+        BLACK,
+        BROWN
     };
 
     static void switchToTexture (TextureType) noexcept;
@@ -29,6 +29,9 @@ private:
     static QPixmap * greenSquareTexture;
     static QPixmap * orangeSquareTexture;
     static QPixmap * whiteSquareTexture;
+    static QPixmap * blackSquareTexture;
+    static QPixmap * rainbowSquareTexture;
+    static QPixmap * brownSquareTexture;
 
     static TextureType activeTextureType;
 
