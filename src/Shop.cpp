@@ -62,8 +62,8 @@ void Shop::connectComponents () noexcept {
     auto * pParent = dynamic_cast <Menu *> (this->parent());
     if (pParent != nullptr)
         connect (pParent, & Menu::savePurchasedItems, [this] {
-           for (auto i : this->purchasedItems)
-               this->savePurchasedItem(i->getItemName());
+            for (auto i : this->purchasedItems)
+                this->savePurchasedItem(i->getItemName());
         });
 }
 

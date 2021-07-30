@@ -44,8 +44,8 @@ private:
     QPushButton     * profileButton         = nullptr;
     QPushButton     * settingsButton        = nullptr;
 
-    const char      * coinButtonText        = "500";
-    int coinsNumber = 500;
+    const char      * coinButtonText        = "0";
+    int coinsNumber = 0;
     const char      * profileButtonText     = "PH_P";
     const char      * settingsButtonText    = "PH_S";
 
@@ -64,6 +64,8 @@ private:
 
     Popup           * currentPopup          = nullptr;
 
+    bool gameScoreEdited = false;
+    int gameScore = 0;
 public:
     explicit Menu ( QWidget * parent ) noexcept : QWidget(parent) { }
 
@@ -78,6 +80,13 @@ public:
     void connectComponents () noexcept;
 
     static std::string loadCoinsNumber () noexcept;
+    int getCoinsNumber () const {
+        return this->coinsNumber;
+    }
+
+    void setGameScore (int score) {
+        this->gameScore = score;
+    }
 
     ~Menu () noexcept override;
 

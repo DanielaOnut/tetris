@@ -24,10 +24,10 @@ void Window::init () noexcept {
 
     this->setLayout( this->mainLayout );
 
-    this->switchToMenu();
+    this->switchToMenu(0); // gameScore is 0 at the begging
 }
 
-void Window::switchToMenu() noexcept {
+void Window::switchToMenu(int gameScore) noexcept {
     if ( this->activePanel != nullptr ) { //aveam ceva inainte
          this->mainLayout->removeWidget(this->activePanel);
          delete this->activePanel;
@@ -39,6 +39,9 @@ void Window::switchToMenu() noexcept {
     connect ( menu, & Menu::howToPlay, [this]{this->switchToTutorial();} );
     connect ( menu, & Menu::settings, [this]{this->switchToSettings();} );
     connect ( menu, & Menu::game, [this]{ this->switchToGame(); } );
+
+    if (gameScore)
+        menu->setGameScore(gameScore);
 
     menu->init();
 
@@ -70,7 +73,9 @@ void Window::switchToGame() noexcept {
 
     auto game = dynamic_cast < Game * > ( this->activePanel );
 
-    connect (game, & Game::quit, [this] {this->switchToMenu();} );
+    connect (game, & Game::quit, [this] (int score) {
+        this->switchToMenu(score);
+    } );
 
     game->init();
 }
@@ -83,7 +88,7 @@ void Window::switchToTutorial() noexcept {
     this->mainLayout->addWidget(this->activePanel);
 
     auto backRequested = [this] () {
-        this->switchToMenu ();
+        this->switchToMenu (0);
     };
 
     connect ( dynamic_cast < Tutorial * > ( this->activePanel ), & Tutorial::back, backRequested );
@@ -99,7 +104,7 @@ void Window::switchToSettings() noexcept {
     this->mainLayout->addWidget( this->activePanel );
 
     auto backRequested = [this] () {
-        this->switchToMenu ();
+        this->switchToMenu (0);
     };
 
     connect (dynamic_cast < Settings * > (this->activePanel), & Settings::back, backRequested );

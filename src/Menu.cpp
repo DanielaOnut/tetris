@@ -31,9 +31,14 @@ void Menu::createComponents () noexcept {
 
     this->rightButtonsLayout = new QHBoxLayout (nullptr);
 
-    const char * number = this->loadCoinsNumber().c_str();
-    this->coinButton = new QPushButton (number, this);
+    const char *number = this->loadCoinsNumber().c_str();
+    this->coinButton = new QPushButton(number, this);
     this->coinsNumber = atoi(number);
+    if (this->gameScore) {
+        delete this->coinButton;
+        this->coinsNumber += this->gameScore / 10;
+        this->coinButton = new QPushButton (std::to_string(this->coinsNumber).c_str(), this);
+    }
     this->profileButton = new QPushButton (this->profileButtonText, this);
     this->settingsButton = new QPushButton (this->settingsButtonText, this);
 

@@ -144,7 +144,7 @@ void Game::connectComponents() noexcept {
     });
 
     connect (this->quitButton, & QPushButton::clicked, [this] {
-        emit this->quit();
+        emit this->quit(this->gameScore);
         pauseButtonCliked = false;
         pauseButtonClikedCounter = 0;
     } );

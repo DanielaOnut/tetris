@@ -22,7 +22,7 @@ public:
     void init () noexcept;
 
     void switchToTutorial () noexcept;
-    void switchToMenu () noexcept;
+    void switchToMenu (int) noexcept;
     void switchToSettings () noexcept;
     void switchToGame() noexcept;
 

@@ -73,7 +73,7 @@ public:
 signals:
     void moveLeft ();
     void moveRight ();
-    void quit();
+    void quit(int);
 };
 
 class NoKeyButton : public QPushButton {
