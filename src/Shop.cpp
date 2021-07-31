@@ -11,8 +11,8 @@ void Shop::init() noexcept {
     this->alignComponents();
 //    this->adjustComponents();
 //    this->styleComponents();
-    this->connectComponents();
-    this->addItem("Rainbow Square", "200", SquareTexture::TextureType::RAINBOW);
+//    this->connectComponents();
+    this->addItem("Rainbow  Square", "200", SquareTexture::TextureType::RAINBOW);
     this->addItem("Black Square", "150", SquareTexture::TextureType::BLACK);
     this->addItem("White Square", "80", SquareTexture::TextureType::WHITE);
     this->addItem("Brown Square", "75", SquareTexture::TextureType::BROWN);
@@ -38,8 +38,11 @@ void Shop::addItem(const std::string & item, const char * price, SquareTexture::
 
     this->itemsList->setItemWidget(container, pItem);
 
-    connect ( pItem, & ShopListItem::itemPurchased, [this](ShopListItem * pShopItem){
-        this->purchasedItems.push_back(pShopItem);
+    auto * pParent = dynamic_cast <Menu *> (this->parent());
+    connect ( pItem, & ShopListItem::itemPurchased, [this, pParent](ShopListItem * pShopItem){
+        if (pParent != nullptr)
+            if (pShopItem->getItemPrice() <= pParent->getCoinsNumber())
+                this->purchasedItems.push_back(pShopItem);
         emit this->itemPurchased (pShopItem);
     } );
 }
@@ -58,14 +61,7 @@ void Shop::alignComponents() noexcept {
     this->itemsList->setSelectionRectVisible(false);
 }
 
-void Shop::connectComponents () noexcept {
-    auto * pParent = dynamic_cast <Menu *> (this->parent());
-    if (pParent != nullptr)
-        connect (pParent, & Menu::savePurchasedItems, [this] {
-            for (auto i : this->purchasedItems)
-                this->savePurchasedItem(i->getItemName());
-        });
-}
+void Shop::connectComponents () noexcept { }
 
 bool Shop::verifyIfItemIsPurchased(const char * name) noexcept {
     std::fstream itemsFile;
@@ -73,7 +69,6 @@ bool Shop::verifyIfItemIsPurchased(const char * name) noexcept {
     std::string buffer;
     std::getline (itemsFile, buffer);
     while (buffer.c_str()[0]) {
-//        std::cout << buffer.c_str() << '\n';
         if (! strcmp (buffer.c_str(), name))
             return true;
         std::getline (itemsFile, buffer);

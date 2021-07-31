@@ -39,17 +39,8 @@ public:
 //    void styleComponents () noexcept;
     void connectComponents () noexcept;
 
-    static void saveCoinsNumber (const int coins) noexcept {
-        std::fstream itemsFile;
-        itemsFile.open ("PurchasedItems.txt", std::ios::trunc | std::ios::out);
-        itemsFile << coins << '\n';
-    }
-
-    void savePurchasedItem (const std::string itemName) noexcept {
-        std::fstream itemsFile;
-        itemsFile.open("PurchasedItems.txt", std::ios_base::app);
-        itemsFile << itemName.c_str() << '\n';
-        itemsFile.close();
+    std::list <ShopListItem *> getPurchasedItemList () const noexcept {
+        return this->purchasedItems;
     }
 
     bool verifyIfItemIsPurchased (const char *) noexcept;
@@ -58,8 +49,6 @@ public:
 
 signals:
     void itemPurchased (ShopListItem *);
-    void itemEquipped();
-    void itemUnequipped();
 };
 
 class ShopListItem : public QWidget {

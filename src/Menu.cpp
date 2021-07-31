@@ -31,13 +31,19 @@ void Menu::createComponents () noexcept {
 
     this->rightButtonsLayout = new QHBoxLayout (nullptr);
 
-    const char *number = this->loadCoinsNumber().c_str();
+    const char * number = this->loadCoinsNumber().c_str();
     this->coinButton = new QPushButton(number, this);
     this->coinsNumber = atoi(number);
     if (this->gameScore) {
         delete this->coinButton;
         this->coinsNumber += this->gameScore / 10;
         this->coinButton = new QPushButton (std::to_string(this->coinsNumber).c_str(), this);
+        /// saving current coins number in file
+        std::fstream itemsFile;
+        itemsFile.open ("PurchasedItems.txt");
+        itemsFile.seekg(std::ios_base::beg);
+        itemsFile << std::to_string (this->coinsNumber);
+        itemsFile.close();
     }
     this->profileButton = new QPushButton (this->profileButtonText, this);
     this->settingsButton = new QPushButton (this->settingsButtonText, this);
@@ -156,35 +162,33 @@ void Menu::styleComponents() noexcept {
     this->exitButton->setText("");
 }
 
+#include <list>
+void saveData (const int coinsNumber, const std::list <ShopListItem *> purchasedItems) noexcept {
+    std::fstream itemsFile;
+    itemsFile.open ("PurchasedItems.txt", std::ios::trunc | std::ios::out);
+    itemsFile << coinsNumber << '\n';
+    for (auto i : purchasedItems)
+        itemsFile << i->getItemName() << '\n';
+    itemsFile.close();
+}
+
 #include <QApplication>
 #include <Settings.h>
 #include <Shop.h>
 void Menu::connectComponents() noexcept {
     auto howToPlayCallback = [this] () noexcept -> void {
-        Shop::saveCoinsNumber(this->coinsNumber);
-        emit this->savePurchasedItems();
         emit this->howToPlay();
     };
 
-    connect( this->playButton, & QPushButton::clicked, [this] {
-        Shop::saveCoinsNumber(this->coinsNumber);
-        emit this->savePurchasedItems();
-        emit this->game();
-    } );
+    connect( this->playButton, & QPushButton::clicked, [this] { emit this->game(); } );
 
     connect ( this->tutorialButton, & QPushButton::clicked, howToPlayCallback );
     connect ( this->exitButton, & QPushButton::clicked, [this](){
             CurrentSettings::instance().save();
-            Shop::saveCoinsNumber(this->coinsNumber);
-        emit this->savePurchasedItems();
             QApplication::exit(0);
         }
     );
-    connect ( this->settingsButton, & QPushButton::clicked, [this]() {
-        Shop::saveCoinsNumber(this->coinsNumber);
-        emit this->savePurchasedItems();
-        emit this->settings();
-    } );
+    connect ( this->settingsButton, & QPushButton::clicked, [this]() { emit this->settings();} );
 
     connect ( this->friendsButton, & QPushButton::clicked, [this](){
         delete this->currentPopup;
@@ -237,11 +241,12 @@ void Menu::connectComponents() noexcept {
         shop->init();
         this->currentPopup->setContent(shop);
 
-        connect(shop, & Shop::itemPurchased, [this](ShopListItem * pItem){
+        connect(shop, & Shop::itemPurchased, [this, shop](ShopListItem * pItem){
             if ( pItem->getItemPrice() < this->coinsNumber ) {
                 this->editCoinsNumber( pItem->getItemPrice() );
 
                 pItem->createEquipButton();
+                saveData (this->coinsNumber, shop->getPurchasedItemList());
             }
         });
 

@@ -95,7 +95,6 @@ signals:
     // NU se defineste - numai in QT
     void settings ();
     void game ();
-    void savePurchasedItems();
 
 public slots:
 //    void onPlayClick () noexcept;
