@@ -20,6 +20,50 @@ void Menu::init () noexcept {
     this->inboxButton->hide();
 }
 
+#include <list>
+void saveData (const int coinsNumber, const std::list <ShopListItem *> purchasedItems) noexcept {
+    std::fstream itemsFile;
+    itemsFile.open ("PurchasedItems.txt", std::ios::trunc | std::ios::out);
+    itemsFile << coinsNumber << '\n';
+    itemsFile << purchasedItems.size() << '\n';
+    for (auto i : purchasedItems)
+        itemsFile << i->getItemName() << '\n';
+    itemsFile.close();
+}
+
+#include <sstream>
+std::list <ShopListItem *> isDataInFile () {
+    std::list <ShopListItem *> list;
+    std::fstream itemsFile;
+    itemsFile.open ("PurchasedItems.txt", std::ios::in);
+    try {
+        std::string buffer;
+        std::getline(itemsFile, buffer);
+        auto item = new ShopListItem ();
+        std::getline(itemsFile, buffer);
+        std::stringstream num;
+        num << buffer;
+        int itemsNumber;
+        num >> itemsNumber;
+        // num = std::strtol (buffer.c_str(), nullptr, 10);
+        while (itemsNumber--) {
+            std::getline(itemsFile, buffer);
+            if (buffer.c_str() != nullptr) {
+                item->setItemName(buffer);
+                list.push_back(item);
+            }
+        }
+        itemsFile.close();
+        return list;
+    }
+    catch (std::exception const & e) {
+        itemsFile << 150 << '\n';
+        itemsFile << 0 << '\n';
+        itemsFile.close();
+        return list;
+    }
+}
+
 #include <iostream>
 void Menu::createComponents () noexcept {
     this->generalLayout = new QVBoxLayout ( nullptr );
@@ -33,17 +77,23 @@ void Menu::createComponents () noexcept {
 
     const char * number = this->loadCoinsNumber().c_str();
     this->coinButton = new QPushButton(number, this);
-    this->coinsNumber = atoi(number);
+    this->coinsNumber = std::strtol(number, nullptr, 10);
+
+    static std::list <ShopListItem *> emptyList;
+    std::list <ShopListItem *> items = isDataInFile();
+    if (this->coinsNumber == 0) {
+        this->coinsNumber = 150;
+        this->coinButton->setText(std::to_string (this->coinsNumber).c_str());
+        if (! items.empty())
+            saveData (this->coinsNumber,items);
+    }
     if (this->gameScore) {
         delete this->coinButton;
         this->coinsNumber += this->gameScore / 10;
         this->coinButton = new QPushButton (std::to_string(this->coinsNumber).c_str(), this);
         /// saving current coins number in file
-        std::fstream itemsFile;
-        itemsFile.open ("PurchasedItems.txt");
-        itemsFile.seekg(std::ios_base::beg);
-        itemsFile << std::to_string (this->coinsNumber);
-        itemsFile.close();
+        if (! items.empty())
+            saveData (this->coinsNumber, items);
     }
     this->profileButton = new QPushButton (this->profileButtonText, this);
     this->settingsButton = new QPushButton (this->settingsButtonText, this);
@@ -160,16 +210,6 @@ void Menu::styleComponents() noexcept {
     this->exitButton->setIcon(Util::getIcon("exit.png", 100, 100));
     this->exitButton->setIconSize(QSize (50, 50));
     this->exitButton->setText("");
-}
-
-#include <list>
-void saveData (const int coinsNumber, const std::list <ShopListItem *> purchasedItems) noexcept {
-    std::fstream itemsFile;
-    itemsFile.open ("PurchasedItems.txt", std::ios::trunc | std::ios::out);
-    itemsFile << coinsNumber << '\n';
-    for (auto i : purchasedItems)
-        itemsFile << i->getItemName() << '\n';
-    itemsFile.close();
 }
 
 #include <QApplication>

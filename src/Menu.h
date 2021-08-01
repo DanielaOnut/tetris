@@ -20,6 +20,9 @@
  *
  *
  */
+
+class ShopListItem;
+
 class Menu : public QWidget {
     Q_OBJECT
 
