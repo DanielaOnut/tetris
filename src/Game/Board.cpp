@@ -169,7 +169,13 @@ void Board::dropActiveShape() noexcept {
         }
 
         /// figure spawns at -1 -1, to remove pointless click, do another drop
-        this->activeFigure->dropFigure(this->squares);
+        try {
+            this->activeFigure->dropFigure(this->squares);
+        }
+        catch (std::exception const & e) {
+            std::cout << e.what() << '\n';
+            exit (0);
+        }
     }
     this->repaint();
 }

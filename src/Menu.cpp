@@ -80,10 +80,9 @@ void Menu::createComponents () noexcept {
     this->coinButton = new QPushButton(number, this);
     this->coinsNumber = std::strtol(number, nullptr, 10);
 
-    static std::list <ShopListItem *> emptyList;
     std::list <ShopListItem *> items = isDataInFile();
     if (this->coinsNumber == 0) {
-        this->coinsNumber = 150;
+        this->coinsNumber = 50;
         this->coinButton->setText(std::to_string (this->coinsNumber).c_str());
         if (! items.empty())
             saveData (this->coinsNumber,items);

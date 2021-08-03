@@ -35,6 +35,9 @@ void Game::createComponents() noexcept {
     this->dataLayout = new QVBoxLayout (nullptr);
 
     this->scoreLabel = new QLabel (this->scoreLabelText,this);
+    std::string timeText;
+    timeText.append("Time played: ").append(std::to_string(this->timePassed)).append(" s");
+    this->timeLabel = new QLabel (timeText.c_str(), this);
     this->quitButton = new NoKeyButton (this->quitButtonText, this);
 
     this->gameBoard = new Board(this);
@@ -61,6 +64,7 @@ void Game::alignComponents() noexcept {
     this->generalLayout->addItem(this->figuresQueueLayout);
 
     this->dataLayout->addWidget(this->scoreLabel);
+    this->dataLayout->addWidget(this->timeLabel);
     this->dataLayout->addWidget(this->quitButton);
 
     this->boardLayout->addWidget(this->gameBoard);
@@ -71,7 +75,9 @@ void Game::alignComponents() noexcept {
     this->figuresQueueLayout->addWidget(this->pauseButton);
 
     this->dataLayout->setAlignment(this->quitButton, Qt::AlignBottom | Qt::AlignLeft);
-    this->dataLayout->setAlignment(this->scoreLabel, Qt::AlignTop | Qt::AlignLeft);
+    this->dataLayout->setAlignment(this->scoreLabel, Qt::AlignLeft);
+    this->dataLayout->setAlignment(this->timeLabel, Qt::AlignTop | Qt::AlignLeft);
+    this->dataLayout->setSpacing (7);
 
     this->boardLayout->setAlignment(this->gameBoard, Qt::AlignHCenter | Qt::AlignTop);
 
@@ -84,6 +90,7 @@ void Game::alignComponents() noexcept {
 void Game::adjustComponents() noexcept {
     this->moveRightSignalGenerator->setInterval(100);
     this->moveLeftSignalGenerator->setInterval(100);
+    this->pIncTimer->setInterval(1000);
 
     if (CurrentSettings::instance().general().difficulty == CurrentSettings::EASY) {
         this->shapeFallTimer->setInterval(1300);
@@ -114,6 +121,7 @@ void Game::styleComponents() noexcept {
     this->queueLabel->setStyleSheet(Util::getStyle("NextLabel.css").c_str());
     this->pauseLabel->setStyleSheet(Util::getStyle("PauseLabel.css").c_str());
     this->scoreLabel->setStyleSheet(Util::getStyle("ScoreLabel.css").c_str());
+    this->timeLabel->setStyleSheet(Util::getStyle("TimeLabel.css").c_str());
 
     this->pauseButton->setIcon(Util::getIcon("pauseButtonIcon.png", 50, 50));
     this->pauseButton->setIconSize(QSize(50, 40));
@@ -137,9 +145,31 @@ void Game::connectComponents() noexcept {
 
     QObject::connect( this->pIncTimer, & QTimer::timeout, [this] {
         this->timePassed++;
-        /// update label here
+        std::string timeText;
+        if (! this->gamePlayedForMinutes && ! this->gamePlayedForHours) {
+            if (this->timePassed <= 59)
+                timeText.append("Time played: ").append(std::to_string(this->timePassed)).append(" s");
+            else if (this->timePassed > 59) {
+                this->gamePlayedForMinutes = true;
+                this->pIncTimer->setInterval(60000);
+                this->timePassed = 1;
+                timeText.append("Time played: ").append(std::to_string(this->timePassed)).append(" min");
+            }
+        }
+        else if (! this->gamePlayedForHours) {
+            if (this->timePassed <= 59)
+                timeText.append("Time played: ").append(std::to_string(this->timePassed)).append(" mins");
+            else if (this->timePassed > 59) {
+                this->gamePlayedForHours = true;
+                this->pIncTimer->setInterval(3600000);
+                this->timePassed = 1;
+                timeText.append("Time played: ").append(std::to_string(this->timePassed)).append(" h");
+            }
+        }
+        else
+            timeText.append("Time played: ").append(std::to_string(this->timePassed)).append(" h");
+        this->timeLabel->setText(timeText.c_str());
     } );
-    this->pIncTimer->setInterval(1000);
     this->pIncTimer->start();
 
     connect (this->pauseButton, & QPushButton::clicked, [this] {
@@ -205,6 +235,7 @@ Game::~Game() noexcept {
 
     this->dataLayout->removeWidget(this->quitButton);
     this->dataLayout->removeWidget(this->scoreLabel);
+    this->dataLayout->removeWidget(this->timeLabel);
 
     this->generalLayout->removeItem(this->figuresQueueLayout);
     this->generalLayout->removeItem(this->boardLayout);
@@ -218,6 +249,7 @@ Game::~Game() noexcept {
 
     delete this->quitButton;
     delete this->scoreLabel;
+    delete this->timeLabel;
     delete this->pauseButton;
     delete this->pauseLabel;
     delete this->gameBoard;
@@ -228,6 +260,7 @@ Game::~Game() noexcept {
     delete this->moveRightSignalGenerator;
     delete this->moveLeftSignalGenerator;
     delete this->dropSignalGenerator;
+    delete this->pIncTimer;
 }
 #include <CurrentSettings.h>
 

@@ -31,6 +31,7 @@ class Game : public QWidget {
     QLayout * dataLayout {nullptr};
 
     QLabel * scoreLabel {nullptr};
+    QLabel * timeLabel {nullptr};
     QPushButton * quitButton {nullptr};
 
     const char * quitButtonText = "Quit To Menu";
@@ -46,6 +47,8 @@ class Game : public QWidget {
 
     QTimer * pIncTimer { nullptr };
     int timePassed {0};
+    bool gamePlayedForMinutes = false;
+    bool gamePlayedForHours = false;
 
     const char * queueLabelText = "Next Figures";
     const char * pauseLabelText = "Game is on Pause";
