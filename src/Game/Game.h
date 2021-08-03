@@ -12,6 +12,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <Queue.h>
+#include <QTimer>
 
 class Game : public QWidget {
     Q_OBJECT
@@ -42,6 +43,9 @@ class Game : public QWidget {
     QLabel * queueLabel {nullptr};
     QLabel * pauseLabel {nullptr};
     QPushButton * pauseButton {nullptr};
+
+    QTimer * pIncTimer { nullptr };
+    int timePassed {0};
 
     const char * queueLabelText = "Next Figures";
     const char * pauseLabelText = "Game is on Pause";

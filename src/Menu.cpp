@@ -40,6 +40,7 @@ std::list <ShopListItem *> isDataInFile () {
         std::string buffer;
         std::getline(itemsFile, buffer);
         auto item = new ShopListItem ();
+        item->createComponents();
         std::getline(itemsFile, buffer);
         std::stringstream num;
         num << buffer;

@@ -49,6 +49,8 @@ void Game::createComponents() noexcept {
     this->moveRightSignalGenerator = new QTimer(this);
     this->moveLeftSignalGenerator = new QTimer(this);
     this->dropSignalGenerator = new QTimer(this);
+
+    this->pIncTimer = new QTimer(this);
 }
 
 void Game::alignComponents() noexcept {
@@ -121,7 +123,25 @@ void Game::styleComponents() noexcept {
 
 static bool pauseButtonCliked = false;
 static int pauseButtonClikedCounter = 0;
+
+#include <chrono>
+#include <ctime>
+
 void Game::connectComponents() noexcept {
+//    auto time = std::chrono::high_resolution_clock::now();
+//    std::chrono::
+//    auto minutes = std::chrono::duration(time - std::ratio < 60, 1 >());
+//    auto sec = time(nullptr);
+//    auto timeInfo = localtime(& sec);
+//    timeInfo.
+
+    QObject::connect( this->pIncTimer, & QTimer::timeout, [this] {
+        this->timePassed++;
+        /// update label here
+    } );
+    this->pIncTimer->setInterval(1000);
+    this->pIncTimer->start();
+
     connect (this->pauseButton, & QPushButton::clicked, [this] {
         if (pauseButtonClikedCounter % 2 == 0) {
             pauseButtonCliked = true;
