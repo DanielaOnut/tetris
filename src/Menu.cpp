@@ -18,6 +18,7 @@ void Menu::init () noexcept {
 
     this->friendsButton->hide();
     this->inboxButton->hide();
+    this->profileButton->hide();
 }
 
 #include <list>
@@ -58,7 +59,7 @@ std::list <ShopListItem *> isDataInFile () {
         return list;
     }
     catch (std::exception const & e) {
-        itemsFile << 150 << '\n';
+        itemsFile << 50 << '\n';
         itemsFile << 0 << '\n';
         itemsFile.close();
         return list;
@@ -92,8 +93,7 @@ void Menu::createComponents () noexcept {
         this->coinsNumber += this->gameScore / 10;
         this->coinButton = new QPushButton (std::to_string(this->coinsNumber).c_str(), this);
         /// saving current coins number in file
-        if (! items.empty())
-            saveData (this->coinsNumber, items);
+        saveData (this->coinsNumber, items);
     }
     this->profileButton = new QPushButton (this->profileButtonText, this);
     this->settingsButton = new QPushButton (this->settingsButtonText, this);
@@ -142,10 +142,10 @@ void Menu::alignComponents() noexcept {
 }
 
 void Menu::adjustComponents () noexcept {
-    this->playButton->setFixedHeight(35);
-    this->statisticsButton->setFixedHeight(35);
-    this->tutorialButton->setFixedHeight(35);
-    this->playButton->setMinimumWidth(100);
+    this->playButton->setFixedHeight(60);
+    this->statisticsButton->setFixedHeight(60);
+    this->tutorialButton->setFixedHeight(60);
+    this->playButton->setMinimumWidth(160);
     this->statisticsButton->setMinimumWidth(100);
     this->tutorialButton->setMinimumWidth(100);
 
@@ -229,6 +229,7 @@ void Menu::connectComponents() noexcept {
         }
     );
     connect ( this->settingsButton, & QPushButton::clicked, [this]() { emit this->settings();} );
+    connect ( this->statisticsButton, & QPushButton::clicked, [this] { emit this->statistics(); } );
 
     connect ( this->friendsButton, & QPushButton::clicked, [this](){
         delete this->currentPopup;

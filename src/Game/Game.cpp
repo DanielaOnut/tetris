@@ -194,6 +194,7 @@ void Game::connectComponents() noexcept {
     });
 
     connect (this->quitButton, & QPushButton::clicked, [this] {
+        this->saveData();
         emit this->quit(this->gameScore);
         pauseButtonCliked = false;
         pauseButtonClikedCounter = 0;
@@ -223,6 +224,123 @@ void Game::editScore (int x) noexcept {
 
 //    this->scoreLabel->setText ( ( std::string ("Score: ") + std::to_string(this->gameScore) ).c_str() );
 //    this->scoreLabel->setText ( QString ("Score: ") + QString::number ( this->gameScore, 10 ) );
+}
+
+std::list <std::string> Game::isDataInFile () noexcept {
+    std::list <std::string> list;
+    std::fstream dataFile;
+    dataFile.open("StatisticsData.txt", std::ios::in);
+    try {
+        std::string buffer = "empty";
+        int dataNumber = 4;
+        while (dataNumber--) {
+            std::getline (dataFile, buffer);
+            if (buffer != "empty")
+                list.push_back(buffer);
+        }
+        dataFile.close();
+        return list;
+    }
+    catch (std::exception const & e) {
+        dataFile.close();
+        return list;
+    }
+}
+
+std::pair <int, std::string> timeConvertor (std::string const & string) noexcept {
+    std::pair <int, std::string> pair;
+    char * timeValue = const_cast <char *> (string.c_str());
+    char * timeUnit = strchr (string.c_str(), ' ') + 1;
+    * (timeUnit - 1) = 0;
+    pair.first = std::strtol (timeValue, nullptr, 10);
+    pair.second = timeUnit;
+    return pair;
+}
+
+void Game::saveData() noexcept {
+    auto dataList = Game::isDataInFile();
+    std::fstream dataFile;
+    dataFile.open ("StatisticsData.txt", std::ios::trunc | std::ios::out);
+    if (dataList.empty()) {
+        std::cout << "list is empty\n";
+        dataFile << this->gameScore << '\n';
+        dataFile << '-' << '\n';
+        std::string timePlayed, timeLabelText;
+        timeLabelText = this->timeLabel->text().toStdString();
+        timePlayed = strstr (timeLabelText.c_str(), ": ") + 2;
+        dataFile << timePlayed << '\n';
+        dataFile << this->gameScore / 10;
+        dataFile.close();
+    }
+    else  {
+        std::cout << "list is not empty\n";
+        std::string buffer;
+        buffer = dataList.front();
+        int fileBestGameScore = std::strtol (buffer.c_str(), nullptr, 10);
+        bool bestScoreUpdated = false;
+        if (this->gameScore > fileBestGameScore) {
+            bestScoreUpdated = true;
+            dataFile << this->gameScore << '\n';
+        }
+        else
+            dataFile << buffer.c_str() << '\n';
+        dataList.pop_front();
+        buffer = dataList.front();
+        if (buffer.c_str()[0] == '-' && ! bestScoreUpdated)
+            dataFile << this->gameScore << '\n';
+        else {
+            int fileWorstGameScore = std::strtol (buffer.c_str(), nullptr, 10);
+            if (this->gameScore < fileWorstGameScore)
+                dataFile << this->gameScore << '\n';
+            else
+                dataFile << buffer << '\n';
+        }
+        dataList.pop_front();
+        buffer = dataList.front();
+        std::string currentTimePlayed;
+        currentTimePlayed = strstr (this->timeLabel->text().toStdString().c_str(), ": ") + 2;
+        // extracting time values from string
+        auto timePlayedInFile = timeConvertor(buffer);
+        auto timePlayedInGame = timeConvertor(currentTimePlayed);
+        // if time unit is the same
+        if (! strcmp (timePlayedInFile.second.c_str(), timePlayedInGame.second.c_str())) {
+            if (timePlayedInGame.first > timePlayedInFile.first)
+                dataFile << timePlayedInGame.first << ' ' << timePlayedInGame.second << '\n';
+            else
+                dataFile << timePlayedInFile.first << ' ' << timePlayedInFile.second << '\n';
+        }
+        else { // time unit is different
+            bool dataWasWitten = false;
+            if (timePlayedInGame.second == "mins" && timePlayedInFile.second == "min") {
+                dataFile << timePlayedInGame.first << ' ' << timePlayedInGame.second << '\n';
+                dataWasWitten = true;
+            }
+            if ((timePlayedInGame.second == "min" || timePlayedInGame.second == "mins")
+            && timePlayedInFile.second == "s"){
+                dataFile << timePlayedInGame.first << ' ' << timePlayedInGame.second << '\n';
+                dataWasWitten = true;
+            }
+            if (timePlayedInGame.second == "h"
+            && (timePlayedInGame.second == "min" || timePlayedInGame.second == "mins")){
+                dataFile << timePlayedInGame.first << ' ' << timePlayedInGame.second << '\n';
+                dataWasWitten = true;
+            }
+            if (timePlayedInGame.second == "h" && timePlayedInFile.second == "s") {
+                dataFile << timePlayedInGame.first << ' ' << timePlayedInGame.second << '\n';
+                dataWasWitten = true;
+            }
+            if (! dataWasWitten)
+                dataFile << timePlayedInFile.first << ' ' << timePlayedInFile.second << '\n';
+        }
+        dataList.pop_front();
+        buffer = dataList.front();
+        int coinsInFile = std::strtol (buffer.c_str(), nullptr, 10);
+        if (this->gameScore / 10 > coinsInFile)
+            dataFile << this->gameScore / 10;
+        else
+            dataFile << buffer.c_str();
+        dataFile.close();
+    }
 }
 
 Game::~Game() noexcept {

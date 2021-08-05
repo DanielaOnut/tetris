@@ -5,6 +5,7 @@
 #include "Window.h"
 #include "Tutorial.h"
 #include "Settings.h"
+#include "Statistics.h"
 #include <Menu.h>
 #include <iostream>
 
@@ -39,6 +40,7 @@ void Window::switchToMenu(int gameScore) noexcept {
     connect ( menu, & Menu::howToPlay, [this]{this->switchToTutorial();} );
     connect ( menu, & Menu::settings, [this]{this->switchToSettings();} );
     connect ( menu, & Menu::game, [this]{ this->switchToGame(); } );
+    connect ( menu, & Menu::statistics, [this]{ this->switchToStatistics(); } );
 
     if (gameScore)
         menu->setGameScore(gameScore);
@@ -60,6 +62,20 @@ void Window::switchToMenu(int gameScore) noexcept {
 //    connect ( menu, & Menu::game, [this] { this->switchToGame(); } );
 //
 //    menu->init();
+}
+
+void Window::switchToStatistics() noexcept {
+    this->mainLayout->removeWidget(this->activePanel);
+    delete this->activePanel;
+
+    this->activePanel = new Statistics (nullptr);
+    this->mainLayout->addWidget(this->activePanel);
+
+    auto statistics = dynamic_cast <Statistics *> (this->activePanel);
+
+    connect (statistics, & Statistics::back, [this] { this->switchToMenu(0); });
+
+    statistics->init();
 }
 
 #include <Game.h>

@@ -13,6 +13,7 @@
 #include <QPushButton>
 #include <Queue.h>
 #include <QTimer>
+#include <list>
 
 class Game : public QWidget {
     Q_OBJECT
@@ -59,6 +60,8 @@ public:
     }
 
     void editScore (int x) noexcept;
+    void saveData () noexcept;
+    static std::list <std::string> isDataInFile () noexcept;
 
     explicit Game ( QWidget * parent ) noexcept : QWidget(parent) { }
 

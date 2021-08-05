@@ -244,7 +244,7 @@ void Settings::adjustComponents() noexcept {
     this->backButton->setMinimumWidth(100);
     this->applyButton->setMinimumWidth(100);
     this->okButton->setMinimumWidth(100);
-    this->resetButton->setMinimumWidth(150);
+    this->resetButton->setMinimumWidth(180);
 
     this->generalButton->setMinimumWidth(200);
     this->soundButton->setMinimumWidth(200);

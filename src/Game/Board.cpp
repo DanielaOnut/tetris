@@ -138,11 +138,11 @@ void Board::lineIsFull() noexcept {
     auto pParent = dynamic_cast < Game * > (this->parent());
     if ( pParent != nullptr && fullLinesCounter) {
         if (CurrentSettings::instance().general().difficulty == CurrentSettings::EASY)
-            pParent->editScore(50 * fullLinesCounter / 2);
+            pParent->editScore(15 * fullLinesCounter);
         if (CurrentSettings::instance().general().difficulty == CurrentSettings::NORMAL)
-            pParent->editScore(80 * fullLinesCounter);
+            pParent->editScore(20 * fullLinesCounter);
         if (CurrentSettings::instance().general().difficulty == CurrentSettings::HARD)
-            pParent->editScore(130 * fullLinesCounter);
+            pParent->editScore(30 * fullLinesCounter);
     }
 }
 

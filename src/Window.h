@@ -25,6 +25,7 @@ public:
     void switchToMenu (int) noexcept;
     void switchToSettings () noexcept;
     void switchToGame() noexcept;
+    void switchToStatistics() noexcept;
 
     ~Window () noexcept override;
 
