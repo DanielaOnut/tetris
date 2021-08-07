@@ -24,14 +24,19 @@ void Shop::addItem(const std::string & item, const char * price, SquareTexture::
     auto pItem =  new ShopListItem(this);
 
     pItem->init();
-    pItem->setItemName( item );
+    pItem->setItemName( item.c_str() );
     pItem->setPrice(price);
     pItem->setButton();
     pItem->setTextureType(type);
 
-    if (this->verifyIfItemIsPurchased(item.c_str())) {
+    std::string res = this->verifyIfItemIsPurchased(item.c_str());
+    if (res == "purchased") {
         this->purchasedItems.push_back(pItem);
         pItem->createEquipButton();
+    }
+    else if (res == "purchased and equipped") {
+        this->purchasedItems.push_back(pItem);
+        pItem->createEquippedButton();
     }
 
     container->setSizeHint(pItem->sizeHint());
@@ -45,6 +50,16 @@ void Shop::addItem(const std::string & item, const char * price, SquareTexture::
                 this->purchasedItems.push_back(pShopItem);
         emit this->itemPurchased (pShopItem);
     } );
+
+    connect ( pItem, & ShopListItem::itemEquipped, [this](){
+        emit this->itemEquipped();
+    } );
+
+    connect ( pItem, & ShopListItem::unequipOtherItems, [this, pItem] {
+        for (auto & item : this->purchasedItems)
+            if (item != pItem)
+                item->createEquipButton();
+    });
 }
 
 void Shop::createComponents() noexcept {
@@ -63,17 +78,20 @@ void Shop::alignComponents() noexcept {
 
 void Shop::connectComponents () noexcept { }
 
-bool Shop::verifyIfItemIsPurchased(const char * name) noexcept {
+std::string Shop::verifyIfItemIsPurchased(const char * name) noexcept {
     std::fstream itemsFile;
     itemsFile.open("PurchasedItems.txt", std::ios::in);
     std::string buffer;
     std::getline (itemsFile, buffer);
     while (buffer.c_str()[0]) {
-        if (! strcmp (buffer.c_str(), name))
-            return true;
+        if (strstr (buffer.c_str(), name)) {
+            if (strstr (buffer.c_str(), "Equipped"))
+                return "purchased and equipped";
+            return "purchased";
+        }
         std::getline (itemsFile, buffer);
     }
-    return false;
+    return "not purchased";
 }
 
 Shop::~Shop () noexcept {

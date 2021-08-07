@@ -22,13 +22,18 @@ void Menu::init () noexcept {
 }
 
 #include <list>
-void saveData (const int coinsNumber, const std::list <ShopListItem *> purchasedItems) noexcept {
+void saveData (const int coinsNumber, const std::list <ShopListItem *> & purchasedItems) noexcept {
     std::fstream itemsFile;
     itemsFile.open ("PurchasedItems.txt", std::ios::trunc | std::ios::out);
     itemsFile << coinsNumber << '\n';
     itemsFile << purchasedItems.size() << '\n';
-    for (auto i : purchasedItems)
-        itemsFile << i->getItemName() << '\n';
+    for (auto i : purchasedItems) {
+//        std::cout << i->getItemName() << ' ' << i->isItemEquipped() << '\n';
+        if (i->isItemEquipped())
+            itemsFile << i->getItemName() << ": Equipped" << '\n';
+        else
+            itemsFile << i->getItemName() << '\n';
+    }
     itemsFile.close();
 }
 
@@ -40,8 +45,6 @@ std::list <ShopListItem *> isDataInFile () {
     try {
         std::string buffer;
         std::getline(itemsFile, buffer);
-        auto item = new ShopListItem ();
-        item->createComponents();
         std::getline(itemsFile, buffer);
         std::stringstream num;
         num << buffer;
@@ -49,9 +52,17 @@ std::list <ShopListItem *> isDataInFile () {
         num >> itemsNumber;
         // num = std::strtol (buffer.c_str(), nullptr, 10);
         while (itemsNumber--) {
+            auto item = new ShopListItem ();
+            item->createComponents();
             std::getline(itemsFile, buffer);
             if (buffer.c_str() != nullptr) {
-                item->setItemName(buffer);
+                char * p = const_cast <char *> (buffer.c_str());
+                char * s = strchr (p, ':');
+                if (s) {
+                    * s = 0;
+                    item->createEquippedButton();
+                }
+                item->setItemName(p);
                 list.push_back(item);
             }
         }
@@ -83,7 +94,6 @@ void Menu::createComponents () noexcept {
 
     std::list <ShopListItem *> items = isDataInFile();
     if (this->coinsNumber == 0) {
-        this->coinsNumber = 50;
         this->coinButton->setText(std::to_string (this->coinsNumber).c_str());
         if (! items.empty())
             saveData (this->coinsNumber,items);
@@ -291,7 +301,13 @@ void Menu::connectComponents() noexcept {
             }
         });
 
-        connect ( this->currentPopup, & Popup::close, [this]() {
+        connect(shop, & Shop::itemEquipped, [this, shop] {
+            saveData(this->coinsNumber, shop->getPurchasedItemList());
+        });
+
+        connect ( this->currentPopup, & Popup::close, [this, shop]() {
+            saveData(this->coinsNumber, shop->getPurchasedItemList());
+
             this->currentPopup->disconnect();
 
             delete this->currentPopup;

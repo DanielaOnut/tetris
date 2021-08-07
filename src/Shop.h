@@ -43,12 +43,13 @@ public:
         return this->purchasedItems;
     }
 
-    bool verifyIfItemIsPurchased (const char *) noexcept;
+    std::string verifyIfItemIsPurchased (const char *) noexcept;
 
     ~Shop () noexcept override;
 
 signals:
     void itemPurchased (ShopListItem *);
+    void itemEquipped ();
 };
 
 class ShopListItem : public QWidget {
@@ -63,6 +64,7 @@ private:
 
     SquareTexture::TextureType textureType = SquareTexture::TextureType::STANDARD;
 
+    bool itemIsEquipped = false;
 public:
     explicit ShopListItem ( QWidget * pParent = nullptr ) noexcept : QWidget(pParent) { }
 
@@ -120,33 +122,57 @@ public:
                 this->coinButton->setText("Unequipped");
                 this->coinButton->setMaximumWidth(100);
                 SquareTexture::switchToTexture(SquareTexture::TextureType::STANDARD);
+                this->itemIsEquipped = false;
+                this->createEquipButton();
             }
             else if (this->coinButton->text().contains("Equip")) {
                 this->coinButton->setText("Equipped");
                 this->coinButton->setMaximumWidth(80);
                 SquareTexture::switchToTexture(this->textureType);
+                this->itemIsEquipped = true;
+                emit this->itemEquipped();
+                emit this->unequipOtherItems();
             }
             else if (this->coinButton->text().contains("Unequipped")) {
                 this->coinButton->setText("Equipped");
                 this->coinButton->setMaximumWidth(80);
                 SquareTexture::switchToTexture(this->textureType);
+                this->itemIsEquipped = true;
+                emit this->itemEquipped();
+                emit this->unequipOtherItems();
             }
             else
                 emit this->itemPurchased(this);
         });
     }
 
+    bool isItemEquipped () const noexcept {
+        return this->itemIsEquipped;
+    }
+
     void createEquipButton () {
         delete this->coinButton;
         this->coinButton = new QPushButton ("Equip", this);
         this->generalLayout->addWidget(this->coinButton);
+        this->itemIsEquipped = false;
         this->adjustComponents();
         this->styleComponents();
         this->connectComponents();
     }
 
-    void setItemName ( std::string const & name ) noexcept {
-        this->itemNameLabel->setText(name.c_str());
+    void createEquippedButton () {
+        delete this->coinButton;
+        this->coinButton = new QPushButton ("Equipped", this);
+        this->generalLayout->addWidget(this->coinButton);
+        this->coinButton->setMaximumWidth(80);
+        SquareTexture::switchToTexture(this->textureType);
+        this->itemIsEquipped = true;
+        this->styleComponents();
+        this->connectComponents();
+    }
+
+    void setItemName ( const char * name ) noexcept {
+        this->itemNameLabel->setText(name);
     }
 
     int getItemPrice() const {
@@ -168,6 +194,8 @@ public:
     }
 signals:
     void itemPurchased (ShopListItem *);
+    void itemEquipped ();
+    void unequipOtherItems ();
 };
 
 #endif //PROIECT_INBOX_H
