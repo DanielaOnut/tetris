@@ -227,19 +227,31 @@ void Menu::styleComponents() noexcept {
 #include <Shop.h>
 void Menu::connectComponents() noexcept {
     auto howToPlayCallback = [this] () noexcept -> void {
+        /// this next line saves current purchased items list
+        saveData (this->coinsNumber, isDataInFile());
         emit this->howToPlay();
     };
 
-    connect( this->playButton, & QPushButton::clicked, [this] { emit this->game(); } );
+    connect( this->playButton, & QPushButton::clicked, [this] {
+        saveData (this->coinsNumber, isDataInFile());
+        emit this->game();
+    } );
 
     connect ( this->tutorialButton, & QPushButton::clicked, howToPlayCallback );
     connect ( this->exitButton, & QPushButton::clicked, [this](){
             CurrentSettings::instance().save();
+            saveData (this->coinsNumber, isDataInFile());
             QApplication::exit(0);
         }
     );
-    connect ( this->settingsButton, & QPushButton::clicked, [this]() { emit this->settings();} );
-    connect ( this->statisticsButton, & QPushButton::clicked, [this] { emit this->statistics(); } );
+    connect ( this->settingsButton, & QPushButton::clicked, [this]() {
+        saveData (this->coinsNumber, isDataInFile());
+        emit this->settings();
+    } );
+    connect ( this->statisticsButton, & QPushButton::clicked, [this] {
+        saveData (this->coinsNumber, isDataInFile());
+        emit this->statistics();
+    } );
 
     connect ( this->friendsButton, & QPushButton::clicked, [this](){
         delete this->currentPopup;

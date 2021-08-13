@@ -3,8 +3,21 @@
 //
 
 #include "Game.h"
+#include "Shop.h"
 #include "Util.h"
 #include "CurrentSettings.h"
+
+SquareTexture::TextureType findEquippedItem () {
+    if (Shop::verifyIfItemIsPurchased("Rainbow Square") == "purchased and equipped")
+        return SquareTexture::TextureType::RAINBOW;
+    if (Shop::verifyIfItemIsPurchased("Black Square") == "purchased and equipped")
+        return SquareTexture::TextureType::BLACK;
+    if (Shop::verifyIfItemIsPurchased("White Square") == "purchased and equipped")
+        return SquareTexture::TextureType::WHITE;
+    if (Shop::verifyIfItemIsPurchased("Brown Square") == "purchased and equipped")
+        return SquareTexture::TextureType::BROWN;
+    return SquareTexture::TextureType::STANDARD;
+}
 
 void Game::init() noexcept {
     this->createComponents();
@@ -19,6 +32,8 @@ void Game::init() noexcept {
     this->queue->setVerticalMargin(20);
     this->queue->setHorizontalMargin(20);
 
+    SquareTexture::TextureType equippedItemTex = findEquippedItem();
+    SquareTexture::switchToTexture(equippedItemTex);
     this->gameBoard->init();
     this->gameBoard->dropActiveShape();
 
@@ -262,7 +277,6 @@ void Game::saveData() noexcept {
     std::fstream dataFile;
     dataFile.open ("StatisticsData.txt", std::ios::trunc | std::ios::out);
     if (dataList.empty()) {
-        std::cout << "list is empty\n";
         dataFile << this->gameScore << '\n';
         dataFile << '-' << '\n';
         std::string timePlayed, timeLabelText;
@@ -273,7 +287,6 @@ void Game::saveData() noexcept {
         dataFile.close();
     }
     else  {
-        std::cout << "list is not empty\n";
         std::string buffer;
         buffer = dataList.front();
         int fileBestGameScore = std::strtol (buffer.c_str(), nullptr, 10);

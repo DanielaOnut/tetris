@@ -12,7 +12,7 @@ void Shop::init() noexcept {
 //    this->adjustComponents();
 //    this->styleComponents();
 //    this->connectComponents();
-    this->addItem("Rainbow  Square", "200", SquareTexture::TextureType::RAINBOW);
+    this->addItem("Rainbow Square", "200", SquareTexture::TextureType::RAINBOW);
     this->addItem("Black Square", "150", SquareTexture::TextureType::BLACK);
     this->addItem("White Square", "80", SquareTexture::TextureType::WHITE);
     this->addItem("Brown Square", "75", SquareTexture::TextureType::BROWN);
@@ -29,7 +29,7 @@ void Shop::addItem(const std::string & item, const char * price, SquareTexture::
     pItem->setButton();
     pItem->setTextureType(type);
 
-    std::string res = this->verifyIfItemIsPurchased(item.c_str());
+    std::string res = Shop::verifyIfItemIsPurchased(item.c_str());
     if (res == "purchased") {
         this->purchasedItems.push_back(pItem);
         pItem->createEquipButton();
@@ -51,15 +51,12 @@ void Shop::addItem(const std::string & item, const char * price, SquareTexture::
         emit this->itemPurchased (pShopItem);
     } );
 
-    connect ( pItem, & ShopListItem::itemEquipped, [this](){
-        emit this->itemEquipped();
-    } );
-
-    connect ( pItem, & ShopListItem::unequipOtherItems, [this, pItem] {
+    connect ( pItem, & ShopListItem::itemEquipped, [this, pItem](){
         for (auto & item : this->purchasedItems)
             if (item != pItem)
                 item->createEquipButton();
-    });
+        emit this->itemEquipped();
+    } );
 }
 
 void Shop::createComponents() noexcept {

@@ -43,7 +43,7 @@ public:
         return this->purchasedItems;
     }
 
-    std::string verifyIfItemIsPurchased (const char *) noexcept;
+    static std::string verifyIfItemIsPurchased (const char *) noexcept;
 
     ~Shop () noexcept override;
 
@@ -119,11 +119,10 @@ public:
     void connectComponents () {
         connect (this->coinButton, & QPushButton::clicked, [this] {
             if (this->coinButton->text().contains("Equipped")) {
-                this->coinButton->setText("Unequipped");
-                this->coinButton->setMaximumWidth(100);
                 SquareTexture::switchToTexture(SquareTexture::TextureType::STANDARD);
                 this->itemIsEquipped = false;
                 this->createEquipButton();
+                emit this->itemEquipped();
             }
             else if (this->coinButton->text().contains("Equip")) {
                 this->coinButton->setText("Equipped");
@@ -131,15 +130,6 @@ public:
                 SquareTexture::switchToTexture(this->textureType);
                 this->itemIsEquipped = true;
                 emit this->itemEquipped();
-                emit this->unequipOtherItems();
-            }
-            else if (this->coinButton->text().contains("Unequipped")) {
-                this->coinButton->setText("Equipped");
-                this->coinButton->setMaximumWidth(80);
-                SquareTexture::switchToTexture(this->textureType);
-                this->itemIsEquipped = true;
-                emit this->itemEquipped();
-                emit this->unequipOtherItems();
             }
             else
                 emit this->itemPurchased(this);
@@ -195,7 +185,6 @@ public:
 signals:
     void itemPurchased (ShopListItem *);
     void itemEquipped ();
-    void unequipOtherItems ();
 };
 
 #endif //PROIECT_INBOX_H
