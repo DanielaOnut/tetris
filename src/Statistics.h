@@ -15,6 +15,8 @@ class Statistics : public QWidget {
 private:
     QLayout * generalLayout {nullptr};
 
+    QLayout * labelsLayout {nullptr};
+
     QLayout * bestScoreLayout {nullptr};
     QLabel  * bestScoreTitleLabel {nullptr};
     QLabel  * bestScoreLabel {nullptr};

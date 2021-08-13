@@ -16,22 +16,24 @@ void Statistics::init() noexcept {
 }
 
 void Statistics::createComponents() noexcept {
-    this->generalLayout = new QHBoxLayout (nullptr);
+    this->generalLayout = new QVBoxLayout (nullptr);
+
+    this->labelsLayout = new QHBoxLayout (nullptr);
 
     this->bestScoreLayout = new QVBoxLayout (nullptr);
-    this->bestScoreTitleLabel = new QLabel (" Best Score Ever", this);
+    this->bestScoreTitleLabel = new QLabel ("Best Score Ever", this);
     this->bestScoreLabel = new QLabel ("0",this);
 
     this->worstScoreLayout = new QVBoxLayout (nullptr);
-    this->worstScoreTitleLabel = new QLabel (" Worst Score Ever", this);
+    this->worstScoreTitleLabel = new QLabel ("Worst Score Ever", this);
     this->worstScoreLabel = new QLabel ("-",this);
 
     this->mostTimePlayedLayout = new QVBoxLayout (nullptr);
-    this->mostTimePlayedTitleLabel = new QLabel (" Most Time Played", this);
+    this->mostTimePlayedTitleLabel = new QLabel ("Most Time Played", this);
     this->mostTimePlayedLabel = new QLabel ("-",this);
 
     this->coinsEarnedLayout = new QVBoxLayout (nullptr);
-    this->coinsEarnedTitleLabel = new QLabel (" Most Coins Earned", this);
+    this->coinsEarnedTitleLabel = new QLabel ("Most Coins Earned", this);
     this->coinsEarnedLabel = new QLabel ("-",this);
 
 //    this->backButtonLayout = new QHBoxLayout (nullptr);
@@ -60,12 +62,12 @@ void Statistics::loadDataFromFile() noexcept {
 
 void Statistics::alignComponents() noexcept {
     this->setLayout(this->generalLayout);
+    this->generalLayout->addItem(this->labelsLayout);
 
-    this->generalLayout->addWidget(this->backButton);
-    this->generalLayout->addItem(this->bestScoreLayout);
-    this->generalLayout->addItem(this->worstScoreLayout);
-    this->generalLayout->addItem(this->mostTimePlayedLayout);
-    this->generalLayout->addItem(this->coinsEarnedLayout);
+    this->labelsLayout->addItem(this->bestScoreLayout);
+    this->labelsLayout->addItem(this->worstScoreLayout);
+    this->labelsLayout->addItem(this->mostTimePlayedLayout);
+    this->labelsLayout->addItem(this->coinsEarnedLayout);
 
     this->bestScoreLayout->addWidget(this->bestScoreTitleLabel);
     this->bestScoreLayout->addWidget(this->bestScoreLabel);
@@ -79,17 +81,28 @@ void Statistics::alignComponents() noexcept {
     this->coinsEarnedLayout->addWidget(this->coinsEarnedTitleLabel);
     this->coinsEarnedLayout->addWidget(this->coinsEarnedLabel);
 
+    this->generalLayout->addWidget(this->backButton);
+
 //    this->backButtonLayout->addWidget(this->backButton);
-    this->generalLayout->setAlignment(this->backButton, Qt::AlignBottom | Qt::AlignLeft);
-    this->generalLayout->setAlignment(this->bestScoreLayout, Qt::AlignVCenter);
-    this->generalLayout->setAlignment(this->worstScoreLayout, Qt::AlignVCenter);
-    this->generalLayout->setAlignment(this->mostTimePlayedLayout, Qt::AlignVCenter);
-    this->generalLayout->setAlignment(this->coinsEarnedLayout, Qt::AlignVCenter);
+    this->labelsLayout->setAlignment(this->bestScoreLayout, Qt::AlignVCenter);
+    this->labelsLayout->setAlignment(this->worstScoreLayout, Qt::AlignVCenter);
+    this->labelsLayout->setAlignment(this->mostTimePlayedLayout, Qt::AlignVCenter);
+    this->labelsLayout->setAlignment(this->coinsEarnedLayout, Qt::AlignVCenter);
+
+    this->bestScoreLayout->setAlignment(this->bestScoreTitleLabel, Qt::AlignCenter);
+    this->worstScoreLayout->setAlignment(this->worstScoreTitleLabel, Qt::AlignCenter);
+    this->mostTimePlayedLayout->setAlignment(this->mostTimePlayedTitleLabel, Qt::AlignCenter);
+    this->coinsEarnedLayout->setAlignment(this->coinsEarnedTitleLabel, Qt::AlignCenter);
 
     this->bestScoreLayout->setAlignment(this->bestScoreLabel, Qt::AlignCenter);
     this->worstScoreLayout->setAlignment(this->worstScoreLabel, Qt::AlignCenter);
     this->mostTimePlayedLayout->setAlignment(this->mostTimePlayedLabel, Qt::AlignCenter);
     this->coinsEarnedLayout->setAlignment(this->coinsEarnedLabel, Qt::AlignCenter);
+
+    this->bestScoreLayout->setSpacing(7);
+    this->worstScoreLayout->setSpacing(7);
+    this->mostTimePlayedLayout->setSpacing(7);
+    this->coinsEarnedLayout->setSpacing(7);
 }
 
 void Statistics::adjustComponents() noexcept {
@@ -105,6 +118,7 @@ void Statistics::styleComponents() noexcept {
                                              "    border-style: double;\n"
                                              "    background-color: rgb(255, 255, 255);\n"
                                              "    min-height: 45px;\n"
+                                             "    text-align: center;\n"
                                              "    font-size: 30px;\n"
                                              "    color: rgb(0, 51, 116);\n"
                                              "}");
@@ -115,6 +129,7 @@ void Statistics::styleComponents() noexcept {
                                               "    border-style: double;\n"
                                               "    background-color: rgb(255, 255, 255);\n"
                                               "    min-height: 45px;\n"
+                                              "    text-align: center;\n"
                                               "    font-size: 30px;\n"
                                               "    color: rgb(116, 0, 0);\n"
                                               "}");
@@ -125,6 +140,7 @@ void Statistics::styleComponents() noexcept {
                                                   "    border-style: double;\n"
                                                   "    background-color: rgb(255, 255, 255);\n"
                                                   "    min-height: 45px;\n"
+                                                  "    text-align: center;\n"
                                                   "    font-size: 30px;\n"
                                                   "    color: rgb(0, 80, 25);\n"
                                                   "}");
@@ -135,21 +151,26 @@ void Statistics::styleComponents() noexcept {
                                                "    border-style: double;\n"
                                                "    background-color: rgb(255, 255, 255);\n"
                                                "    min-height: 45px;\n"
+                                               "    text-align: center;\n"
                                                "    font-size: 30px;\n"
                                                "    color: rgb(116, 102, 0);\n"
                                                "}");
 
     this->bestScoreLabel->setStyleSheet("QLabel {\n"
                                              "    font-size: 20px;\n"
+                                             "    font-family: \"Lucida Console\", \"Courier New\", monospace;\n"
                                              "}");
     this->worstScoreLabel->setStyleSheet("QLabel {\n"
                                         "    font-size: 20px;\n"
+                                        "    font-family: \"Lucida Console\", \"Courier New\", monospace;\n"
                                         "}");
     this->mostTimePlayedLabel->setStyleSheet("QLabel {\n"
                                         "    font-size: 20px;\n"
+                                        "    font-family: \"Lucida Console\", \"Courier New\", monospace;\n"
                                         "}");
     this->coinsEarnedLabel->setStyleSheet("QLabel {\n"
                                         "    font-size: 20px;\n"
+                                        "    font-family: \"Lucida Console\", \"Courier New\", monospace;\n"
                                         "}");
 
     this->backButton->setStyleSheet(Util::getStyle("GeneralButton.css").c_str());
@@ -174,13 +195,17 @@ Statistics::~Statistics() noexcept {
    this->bestScoreLayout->removeWidget(this->bestScoreTitleLabel);
    this->bestScoreLayout->removeWidget(this->bestScoreLabel);
 
-   this->generalLayout->removeItem(this->coinsEarnedLayout);
-   this->generalLayout->removeItem(this->mostTimePlayedLayout);
-   this->generalLayout->removeItem(this->worstScoreLayout);
-   this->generalLayout->removeItem(this->bestScoreLayout);
+   this->labelsLayout->removeItem(this->coinsEarnedLayout);
+   this->labelsLayout->removeItem(this->mostTimePlayedLayout);
+   this->labelsLayout->removeItem(this->worstScoreLayout);
+   this->labelsLayout->removeItem(this->bestScoreLayout);
+
    this->generalLayout->removeWidget(this->backButton);
+   this->generalLayout->removeItem(this->labelsLayout);
 
    delete this->generalLayout;
+
+   delete this->labelsLayout;
 
    delete this->bestScoreLayout;
    delete this->bestScoreTitleLabel;
