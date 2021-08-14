@@ -9,6 +9,8 @@
 #include <QPushButton>
 #include <QLayout>
 
+class GameOver;
+
 class Window : public QWidget {
     Q_OBJECT
 
@@ -26,6 +28,7 @@ public:
     void switchToSettings () noexcept;
     void switchToGame() noexcept;
     void switchToStatistics() noexcept;
+    void switchToGameOver(int) noexcept;
 
     ~Window () noexcept override;
 

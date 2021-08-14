@@ -182,6 +182,16 @@ public:
         this->coinButton->setIcon(Util::getIcon("coin.png", 20, 20));
         this->coinButton->setIconSize(QSize (20, 20));
     }
+
+    ~ShopListItem() noexcept override {
+        this->generalLayout->removeWidget(this->itemNameLabel);
+        this->generalLayout->removeWidget(this->coinButton);
+
+        delete this->generalLayout;
+
+        delete this->itemNameLabel;
+        delete this->coinButton;
+    }
 signals:
     void itemPurchased (ShopListItem *);
     void itemEquipped ();

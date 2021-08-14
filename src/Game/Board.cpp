@@ -148,6 +148,7 @@ void Board::lineIsFull() noexcept {
 
 static bool noRotation = false;
 void Board::dropActiveShape() noexcept {
+    bool gameIsOver = false;
     if (this->activeFigure == nullptr) {
         noRotation = false;
         this->activeFigure = Figure::Factory().at(5, 2).spawn();
@@ -173,11 +174,12 @@ void Board::dropActiveShape() noexcept {
             this->activeFigure->dropFigure(this->squares);
         }
         catch (std::exception const & e) {
-            std::cout << e.what() << '\n';
-            exit (0);
+            pParent->setGameOverWindow();
+            gameIsOver = true;
         }
     }
-    this->repaint();
+    if (! gameIsOver)
+        this->repaint();
 }
 
 void Board::rotateShape () noexcept {

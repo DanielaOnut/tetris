@@ -92,8 +92,27 @@ void Window::switchToGame() noexcept {
     connect (game, & Game::quit, [this] (int score) {
         this->switchToMenu(score);
     } );
+    connect (game, & Game::gameOverSignal, [this] (int score) {
+        this->switchToGameOver(score);
+    });
 
     game->init();
+}
+
+void Window::switchToGameOver(int score) noexcept {
+    this->mainLayout->removeWidget(this->activePanel);
+    delete this->activePanel;
+
+    this->activePanel = new GameOver (this);
+    this->mainLayout->addWidget(this->activePanel);
+
+    auto gameOver = dynamic_cast < GameOver * > ( this->activePanel );
+
+    connect (gameOver, & GameOver::back, [this, score] {
+        this->switchToMenu(score);
+    } );
+
+    gameOver->init();
 }
 
 void Window::switchToTutorial() noexcept {

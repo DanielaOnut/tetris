@@ -46,7 +46,7 @@ void Game::init() noexcept {
 void Game::createComponents() noexcept {
     this->generalLayout = new QHBoxLayout(nullptr);
     this->figuresQueueLayout = new QVBoxLayout (nullptr);
-    this->boardLayout = new QVBoxLayout (nullptr);
+    this->boardLayout = new QHBoxLayout (nullptr);
     this->dataLayout = new QVBoxLayout (nullptr);
 
     this->scoreLabel = new QLabel (this->scoreLabelText,this);
@@ -228,6 +228,10 @@ void Game::connectComponents() noexcept {
     connect(this->dropSignalGenerator, & QTimer::timeout, [this] { this->gameBoard->dropActiveShape();});
 
     this->shapeFallTimer->start();
+}
+
+void Game::setGameOverWindow() noexcept {
+    emit this->gameOverSignal(this->gameScore);
 }
 
 void Game::editScore (int x) noexcept {
