@@ -15,7 +15,9 @@ public:
         RAINBOW,
         WHITE,
         BLACK,
-        BROWN
+        BROWN,
+        BEIGE,
+        LIME
     };
 
     static void switchToTexture (TextureType) noexcept;
@@ -32,6 +34,8 @@ private:
     static QPixmap * blackSquareTexture;
     static QPixmap * rainbowSquareTexture;
     static QPixmap * brownSquareTexture;
+    static QPixmap * beigeSquareTexture;
+    static QPixmap * limeSquareTexture;
 
     static TextureType activeTextureType;
 
