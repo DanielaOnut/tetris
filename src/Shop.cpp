@@ -13,11 +13,12 @@ void Shop::init() noexcept {
 //    this->styleComponents();
 //    this->connectComponents();
     this->addItem("Rainbow Square", "200", SquareTexture::TextureType::RAINBOW);
+    this->addItem("Retro Square", "220", SquareTexture::TextureType::RETRO);
     this->addItem("Black Square", "150", SquareTexture::TextureType::BLACK);
     this->addItem("White Square", "80", SquareTexture::TextureType::WHITE);
     this->addItem("Brown Square", "75", SquareTexture::TextureType::BROWN);
-    this->addItem("Beige Square", "75", SquareTexture::TextureType::BEIGE);
-    this->addItem("Lime Square", "75", SquareTexture::TextureType::LIME);
+    this->addItem("Beige Square", "90", SquareTexture::TextureType::BEIGE);
+    this->addItem("Lime Square", "85", SquareTexture::TextureType::LIME);
 }
 
 void Shop::addItem(const std::string & item, const char * price, SquareTexture::TextureType type) noexcept {

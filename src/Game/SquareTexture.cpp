@@ -18,6 +18,7 @@ QPixmap * SquareTexture::rainbowSquareTexture = nullptr;
 QPixmap * SquareTexture::brownSquareTexture = nullptr;
 QPixmap * SquareTexture::beigeSquareTexture = nullptr;
 QPixmap * SquareTexture::limeSquareTexture = nullptr;
+QPixmap * SquareTexture::retroSquareTexture = nullptr;
 
 SquareTexture::TextureType SquareTexture::activeTextureType = STANDARD;
 
@@ -42,6 +43,7 @@ void SquareTexture::reloadFigureTextures() noexcept {
     delete SquareTexture::brownSquareTexture;
     delete SquareTexture::beigeSquareTexture;
     delete SquareTexture::limeSquareTexture;
+    delete SquareTexture::retroSquareTexture;
 
     switch (SquareTexture::activeTextureType) {
         case STANDARD:
@@ -52,6 +54,7 @@ void SquareTexture::reloadFigureTextures() noexcept {
             SquareTexture::brownSquareTexture = new QPixmap(Util::getPixmap("brownSquare.png"));
             SquareTexture::beigeSquareTexture = new QPixmap(Util::getPixmap("beigeSquare.png"));
             SquareTexture::limeSquareTexture = new QPixmap(Util::getPixmap("limeSquare.png"));
+            SquareTexture::retroSquareTexture = new QPixmap(Util::getPixmap("vintageSquare.png"));
             SquareTexture::blueSquareTexture = new QPixmap (Util::getPixmap("blueSquare.png"));
             SquareTexture::lightblueSquareTexture = new QPixmap (Util::getPixmap("lightblueSquare.png"));
             SquareTexture::redSquareTexture = new QPixmap (Util::getPixmap("redSquare.png"));
@@ -60,6 +63,23 @@ void SquareTexture::reloadFigureTextures() noexcept {
             SquareTexture::greenSquareTexture = new QPixmap (Util::getPixmap("greenSquare.png"));
             SquareTexture::orangeSquareTexture = new QPixmap (Util::getPixmap("orangeSquare.png"));
             break;
+        case RETRO:
+            SquareTexture::emptySquareTexture = new QPixmap(Util::getPixmap("vintageBoardSquare.png"));
+            SquareTexture::whiteSquareTexture = new QPixmap(Util::getPixmap("whiteSquare.png"));
+            SquareTexture::rainbowSquareTexture = new QPixmap(Util::getPixmap("rainbowSquare.png"));
+            SquareTexture::blackSquareTexture = new QPixmap(Util::getPixmap("blackSquare.png"));
+            SquareTexture::brownSquareTexture = new QPixmap(Util::getPixmap("brownSquare.png"));
+            SquareTexture::beigeSquareTexture = new QPixmap(Util::getPixmap("beigeSquare.png"));
+            SquareTexture::limeSquareTexture = new QPixmap(Util::getPixmap("limeSquare.png"));
+            SquareTexture::retroSquareTexture = new QPixmap(Util::getPixmap("vintageSquare.png"));
+            SquareTexture::blueSquareTexture = new QPixmap (Util::getPixmap("vintageSquare.png"));
+            SquareTexture::lightblueSquareTexture = new QPixmap (Util::getPixmap("vintageSquare.png"));
+            SquareTexture::redSquareTexture = new QPixmap (Util::getPixmap("vintageSquare.png"));
+            SquareTexture::purpleSquareTexture = new QPixmap (Util::getPixmap("vintageSquare.png"));
+            SquareTexture::yellowSquareTexture = new QPixmap (Util::getPixmap("vintageSquare.png"));
+            SquareTexture::greenSquareTexture = new QPixmap (Util::getPixmap("vintageSquare.png"));
+            SquareTexture::orangeSquareTexture = new QPixmap (Util::getPixmap("vintageSquare.png"));
+            break;
         case BLACK:
             SquareTexture::emptySquareTexture = new QPixmap(Util::getPixmap("emptySquare.png"));
             SquareTexture::whiteSquareTexture = new QPixmap(Util::getPixmap("whiteSquare.png"));
@@ -67,6 +87,7 @@ void SquareTexture::reloadFigureTextures() noexcept {
             SquareTexture::brownSquareTexture = new QPixmap(Util::getPixmap("brownSquare.png"));
             SquareTexture::beigeSquareTexture = new QPixmap(Util::getPixmap("beigeSquare.png"));
             SquareTexture::limeSquareTexture = new QPixmap(Util::getPixmap("limeSquare.png"));
+            SquareTexture::retroSquareTexture = new QPixmap(Util::getPixmap("vintageSquare.png"));
             SquareTexture::blackSquareTexture = new QPixmap(Util::getPixmap("blackSquare.png"));
             SquareTexture::blueSquareTexture = new QPixmap (Util::getPixmap("blackSquare.png"));
             SquareTexture::lightblueSquareTexture = new QPixmap (Util::getPixmap("blackSquare.png"));
@@ -84,6 +105,7 @@ void SquareTexture::reloadFigureTextures() noexcept {
             SquareTexture::blackSquareTexture = new QPixmap(Util::getPixmap("blackSquare.png"));
             SquareTexture::beigeSquareTexture = new QPixmap(Util::getPixmap("beigeSquare.png"));
             SquareTexture::limeSquareTexture = new QPixmap(Util::getPixmap("limeSquare.png"));
+            SquareTexture::retroSquareTexture = new QPixmap(Util::getPixmap("vintageSquare.png"));
             SquareTexture::blueSquareTexture = new QPixmap (Util::getPixmap("whiteSquare.png"));
             SquareTexture::lightblueSquareTexture = new QPixmap (Util::getPixmap("whiteSquare.png"));
             SquareTexture::redSquareTexture = new QPixmap (Util::getPixmap("whiteSquare.png"));
@@ -100,6 +122,7 @@ void SquareTexture::reloadFigureTextures() noexcept {
             SquareTexture::blackSquareTexture = new QPixmap(Util::getPixmap("blackSquare.png"));
             SquareTexture::beigeSquareTexture = new QPixmap(Util::getPixmap("beigeSquare.png"));
             SquareTexture::limeSquareTexture = new QPixmap(Util::getPixmap("limeSquare.png"));
+            SquareTexture::retroSquareTexture = new QPixmap(Util::getPixmap("vintageSquare.png"));
             SquareTexture::blueSquareTexture = new QPixmap (Util::getPixmap("rainbowSquare.png"));
             SquareTexture::lightblueSquareTexture = new QPixmap (Util::getPixmap("rainbowSquare.png"));
             SquareTexture::redSquareTexture = new QPixmap (Util::getPixmap("rainbowSquare.png"));
@@ -116,6 +139,7 @@ void SquareTexture::reloadFigureTextures() noexcept {
             SquareTexture::blackSquareTexture = new QPixmap(Util::getPixmap("blackSquare.png"));
             SquareTexture::beigeSquareTexture = new QPixmap(Util::getPixmap("beigeSquare.png"));
             SquareTexture::limeSquareTexture = new QPixmap(Util::getPixmap("limeSquare.png"));
+            SquareTexture::retroSquareTexture = new QPixmap(Util::getPixmap("vintageSquare.png"));
             SquareTexture::blueSquareTexture = new QPixmap (Util::getPixmap("brownSquare.png"));
             SquareTexture::lightblueSquareTexture = new QPixmap (Util::getPixmap("brownSquare.png"));
             SquareTexture::redSquareTexture = new QPixmap (Util::getPixmap("brownSquare.png"));
@@ -132,6 +156,7 @@ void SquareTexture::reloadFigureTextures() noexcept {
             SquareTexture::blackSquareTexture = new QPixmap(Util::getPixmap("blackSquare.png"));
             SquareTexture::beigeSquareTexture = new QPixmap(Util::getPixmap("beigeSquare.png"));
             SquareTexture::limeSquareTexture = new QPixmap(Util::getPixmap("limeSquare.png"));
+            SquareTexture::retroSquareTexture = new QPixmap(Util::getPixmap("vintageSquare.png"));
             SquareTexture::blueSquareTexture = new QPixmap (Util::getPixmap("beigeSquare.png"));
             SquareTexture::lightblueSquareTexture = new QPixmap (Util::getPixmap("beigeSquare.png"));
             SquareTexture::redSquareTexture = new QPixmap (Util::getPixmap("beigeSquare.png"));
@@ -148,6 +173,7 @@ void SquareTexture::reloadFigureTextures() noexcept {
             SquareTexture::blackSquareTexture = new QPixmap(Util::getPixmap("blackSquare.png"));
             SquareTexture::beigeSquareTexture = new QPixmap(Util::getPixmap("beigeSquare.png"));
             SquareTexture::limeSquareTexture = new QPixmap(Util::getPixmap("limeSquare.png"));
+            SquareTexture::retroSquareTexture = new QPixmap(Util::getPixmap("vintageSquare.png"));
             SquareTexture::blueSquareTexture = new QPixmap (Util::getPixmap("limeSquare.png"));
             SquareTexture::lightblueSquareTexture = new QPixmap (Util::getPixmap("limeSquare.png"));
             SquareTexture::redSquareTexture = new QPixmap (Util::getPixmap("limeSquare.png"));

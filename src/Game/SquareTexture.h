@@ -12,6 +12,7 @@ class SquareTexture {
 public:
     enum TextureType {
         STANDARD,
+        RETRO,
         RAINBOW,
         WHITE,
         BLACK,
@@ -36,6 +37,7 @@ private:
     static QPixmap * brownSquareTexture;
     static QPixmap * beigeSquareTexture;
     static QPixmap * limeSquareTexture;
+    static QPixmap * retroSquareTexture;
 
     static TextureType activeTextureType;
 

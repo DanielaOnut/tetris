@@ -297,7 +297,7 @@ void Menu::connectComponents() noexcept {
         this->currentPopup = new Popup(
                 this,
                 { 10, this->height() - 400 - (this->height() - this->shopButton->y()) },
-                { 310, 400 }
+                { 330, 400 }
         );
 
         auto shop = new Shop (this);

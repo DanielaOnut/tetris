@@ -10,12 +10,18 @@
 SquareTexture::TextureType findEquippedItem () {
     if (Shop::verifyIfItemIsPurchased("Rainbow Square") == "purchased and equipped")
         return SquareTexture::TextureType::RAINBOW;
+    if (Shop::verifyIfItemIsPurchased("Retro Square") == "purchased and equipped")
+        return SquareTexture::TextureType::RETRO;
     if (Shop::verifyIfItemIsPurchased("Black Square") == "purchased and equipped")
         return SquareTexture::TextureType::BLACK;
     if (Shop::verifyIfItemIsPurchased("White Square") == "purchased and equipped")
         return SquareTexture::TextureType::WHITE;
     if (Shop::verifyIfItemIsPurchased("Brown Square") == "purchased and equipped")
         return SquareTexture::TextureType::BROWN;
+    if (Shop::verifyIfItemIsPurchased("Beige Square") == "purchased and equipped")
+        return SquareTexture::TextureType::BEIGE;
+    if (Shop::verifyIfItemIsPurchased("Lime Square") == "purchased and equipped")
+        return SquareTexture::TextureType::LIME;
     return SquareTexture::TextureType::STANDARD;
 }
 
