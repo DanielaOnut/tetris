@@ -12,7 +12,7 @@ void Shop::init() noexcept {
 //    this->adjustComponents();
 //    this->styleComponents();
 //    this->connectComponents();
-    this->addItem("Rainbow Square", "200", SquareTexture::TextureType::RAINBOW);
+    this->addItem("Original Square", "0", SquareTexture::TextureType::STANDARD);
     this->addItem("Retro Square", "220", SquareTexture::TextureType::RETRO);
     this->addItem("Black Square", "150", SquareTexture::TextureType::BLACK);
     this->addItem("White Square", "80", SquareTexture::TextureType::WHITE);

@@ -69,6 +69,7 @@ void Settings::createComponents () noexcept {
     this->resolutions.push_front("1920 x 1080");
 //    this->resolutions << "1280 x 720" << "2560 x 1440" << "1920 x 1080";
     this->dropDownList = new QComboBox (this);
+    this->resolution = new QLabel (this);
     this->windowModeButton = new QPushButton (this->windowModeButtonText, this);
     this->fullscreenButton = new QPushButton (this->fullscreenButtonText, this);
     this->brightnessSlider = new QSlider (Qt::Horizontal, this);
@@ -153,7 +154,8 @@ void Settings::alignComponents() noexcept {
     this->videoSettingsLayout->addItem( this->videoSettingsLabel );
     this->videoSettingsLayout->addItem( this->videoActionsLayout );
 
-    this->videoActionsLayout->addWidget( this->dropDownList );
+//    this->videoActionsLayout->addWidget( this->dropDownList );
+    this->videoActionsLayout->addWidget( this->resolution );
     this->dropDownList->addItems( this->resolutions );
     this->dropDownList->setMaxCount(3);
 
@@ -314,17 +316,19 @@ void Settings::adjustComponents() noexcept {
 //            this->dropDownList->setCurrentIndex(i);
 //    }
 
-    if (this->width == 1920 || this->width == 2560) {
-        if (this->width == 1920)
-            this->dropDownList->setCurrentText("1920 x 1080");
+    if (this->width >= 1920 && this->width <= 2560) {
+        if (this->width >= 1920)
+            this->resolution->setText("1920 x 1080");
         if (this->width == 2560)
-            this->dropDownList->setCurrentText("2560 x 1440");
+            this->resolution->setText("2560 x 1440");
+        this->resolution->setMaximumWidth(110);
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
         this->displayModeKey = CurrentSettings::FULLSCREEN;
     }
-    else if (this->width == 1280) {
-        this->dropDownList->setCurrentText("1280 x 720");
+    else if (this->width <= 1280 || this->width >= 1280) {
+        this->resolution->setText("1280 x 720");
+        this->resolution->setMaximumWidth(100);
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
         this->displayModeKey = CurrentSettings::WINDOWED;
@@ -397,6 +401,8 @@ void Settings::styleComponents() noexcept {
     this->soundMusicSlider->setStyleSheet(slidersStyle.c_str());
     this->soundFXSlider->setStyleSheet(slidersStyle.c_str());
 
+    this->resolution->setStyleSheet(Util::getStyle("resolutionLabel.css").c_str());
+
     if (this->displayModeKey == CurrentSettings::FULLSCREEN) {
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->windowModeButton->setStyleSheet(displayButtonsStyle.c_str());
@@ -434,9 +440,9 @@ void Settings::connectComponents() noexcept {
         }
 
         switch ( CurrentSettings::defaults().video().resolutionWidth ) {
-            case 1280: this->dropDownList->setCurrentText("1280 x 720"); break;
-            case 2560: this->dropDownList->setCurrentText("2560 x 1440"); break;
-            case 1920: this->dropDownList->setCurrentText("1920 x 1080"); break;
+            case 1280: this->resolution->setText("1280 x 720"); break;
+            case 2560: this->resolution->setText("2560 x 1440"); break;
+            case 1920: this->resolution->setText("1920 x 1080"); break;
         }
         this->displayModeKey = CurrentSettings::defaults().video().mode;
         switch ( this->displayModeKey ) {
@@ -514,14 +520,22 @@ void Settings::connectComponents() noexcept {
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
         this->displayModeKey = CurrentSettings::WINDOWED;
-        this->dropDownList->setCurrentText("1280 x 720");
+        this->resolution->setText("1280 x 720");
+        this->resolution->setMaximumWidth(100);
+        CurrentSettings::instance().video().resolutionHeight = 720;
+        CurrentSettings::instance().video().resolutionWidth = 1280;
+        emit this->resolutionChanged();
     });
 
     connect (this->fullscreenButton, &QPushButton::clicked, [this]() {
         this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
         this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
         this->displayModeKey = CurrentSettings::FULLSCREEN;
-        this->dropDownList->setCurrentText("1920 x 1080");
+        this->resolution->setText("1920 x 1080");
+        this->resolution->setMaximumWidth(110);
+        CurrentSettings::instance().video().resolutionHeight = 1080;
+        CurrentSettings::instance().video().resolutionWidth = 1920;
+        emit this->resolutionChanged();
     });
 
     connect (this->shadowsBox, & QCheckBox::clicked, [this]() {
@@ -577,7 +591,7 @@ void Settings::connectComponents() noexcept {
         CurrentSettings::instance().audio().fxVolume = static_cast < float > ( this->soundFXSlider->value() ) / 100.0f;
 //        std::cout << this->dropDownList->itemText(this->dropDownList->currentIndex()).toStdString() << '\n';
 //        std::cout << this->dropDownList->currentText().toStdString() << '\n';
-        auto string = this->dropDownList->currentText().toStdString();
+        auto string = this->resolution->text().toStdString();
         int number = 0;
         for (const auto i : string)
             if (i >= '0' && i <= '9')
@@ -587,20 +601,20 @@ void Settings::connectComponents() noexcept {
                 number = 0;
             }
         this->height = number;
-        if (this->width == 1920 || this->width == 2560) {
+        if (this->width >= 1920 && this->width <= 2560) {
             this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
             this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
             this->displayModeKey = CurrentSettings::FULLSCREEN;
         }
-        else if (this->width == 1280) {
+        else if (this->width <= 1280 || this->width >= 1280) {
             this->windowModeButton->setStyleSheet(Util::getStyle("DisplayModeButtonPressed.css").c_str());
             this->fullscreenButton->setStyleSheet(Util::getStyle("DisplayModeButtons.css").c_str());
             this->displayModeKey = CurrentSettings::WINDOWED;
         }
         CurrentSettings::instance().video().mode = this->displayModeKey;
-        CurrentSettings::instance().video().resolutionHeight = this->height;
-        CurrentSettings::instance().video().resolutionWidth = this->width;
-        emit this->resolutionChanged();
+//        CurrentSettings::instance().video().resolutionHeight = this->height;
+//        CurrentSettings::instance().video().resolutionWidth = this->width;
+//        emit this->resolutionChanged();
     };
 
     connect(this->applyButton, & QPushButton::clicked, applyFunction);
@@ -779,7 +793,8 @@ Settings::~Settings() noexcept {
     this->videoSettingsLabel->removeWidget(this->brightnessLabel);
     this->videoSettingsLabel->removeWidget(this->shadowsLabel);
 
-    this->videoActionsLayout->removeWidget(this->dropDownList);
+//    this->videoActionsLayout->removeWidget(this->dropDownList);
+    this->videoActionsLayout->removeWidget(this->resolution);
     this->displayModeButtons->removeWidget(this->windowModeButton);
     this->displayModeButtons->removeWidget(this->fullscreenButton);
     this->videoActionsLayout->removeWidget(this->brightnessSlider);
@@ -861,7 +876,8 @@ Settings::~Settings() noexcept {
     delete this->brightnessLabel;
     delete this->shadowsLabel;
 
-    delete this->dropDownList;
+//    delete this->dropDownList;
+    delete this->resolution;
     delete this->windowModeButton;
     delete this->fullscreenButton;
     delete this->brightnessSlider;

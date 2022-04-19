@@ -1,5 +1,5 @@
 //
-// Created by loghin on 16.04.2021.
+// Created on 16.04.2021.
 //
 
 #include "Game.h"
@@ -8,8 +8,8 @@
 #include "CurrentSettings.h"
 
 SquareTexture::TextureType findEquippedItem () {
-    if (Shop::verifyIfItemIsPurchased("Rainbow Square") == "purchased and equipped")
-        return SquareTexture::TextureType::RAINBOW;
+    if (Shop::verifyIfItemIsPurchased("Original Square") == "purchased and equipped")
+        return SquareTexture::TextureType::STANDARD;
     if (Shop::verifyIfItemIsPurchased("Retro Square") == "purchased and equipped")
         return SquareTexture::TextureType::RETRO;
     if (Shop::verifyIfItemIsPurchased("Black Square") == "purchased and equipped")
@@ -115,7 +115,7 @@ void Game::adjustComponents() noexcept {
 
     if (CurrentSettings::instance().general().difficulty == CurrentSettings::EASY) {
         this->shapeFallTimer->setInterval(1300);
-        this->dropSignalGenerator->setInterval(60);
+        this->dropSignalGenerator->setInterval(50);
     }
     if (CurrentSettings::instance().general().difficulty == CurrentSettings::NORMAL) {
         this->shapeFallTimer->setInterval(650);
@@ -165,7 +165,8 @@ void Game::connectComponents() noexcept {
 //    timeInfo.
 
     QObject::connect( this->pIncTimer, & QTimer::timeout, [this] {
-        this->timePassed++;
+        if (this->shapeFallTimer->isActive())
+            this->timePassed++;
         std::string timeText;
         if (! this->gamePlayedForMinutes && ! this->gamePlayedForHours) {
             if (this->timePassed <= 59)

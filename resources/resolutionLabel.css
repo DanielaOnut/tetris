@@ -1,0 +1,18 @@
+QLabel {
+    border-color: #223b42;
+    background-color: #ffffff;
+    border-width: 1px;
+    border-radius: 3px;
+    border-style: outset;
+    margin: 1px;
+    color: #11283a;
+    font-style: unset;
+    font-size: large;
+    text-align: right;
+    text-indent: 5px;
+}
+
+QLabel:hover {
+    border-style: solid;
+    background-color: #ffffff;
+}

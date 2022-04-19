@@ -128,6 +128,7 @@ private:
 
     QStringList   resolutions      { nullptr };
     QComboBox   * dropDownList     { nullptr };
+    QLabel      * resolution  { nullptr };
     QPushButton * windowModeButton { nullptr };
     QPushButton * fullscreenButton { nullptr };
     QSlider     * brightnessSlider  { nullptr };
@@ -138,7 +139,8 @@ private:
         this->displayModeLabel->setVisible(visibility);
         this->brightnessLabel->setVisible(false);
         this->shadowsLabel->setVisible(false);
-        this->dropDownList->setVisible(visibility);
+        this->dropDownList->setVisible(false);
+        this->resolution->setVisible(visibility);
         this->windowModeButton->setVisible(visibility);
         this->fullscreenButton->setVisible(visibility);
         this->brightnessSlider->setVisible(false);

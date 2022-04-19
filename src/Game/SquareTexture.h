@@ -1,5 +1,5 @@
 //
-// Created by loghin on 16.04.2021.
+// Created on 16.04.2021.
 //
 
 #ifndef TETRIS_SQUARETEXTURE_H

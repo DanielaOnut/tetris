@@ -1,5 +1,5 @@
 //
-// Created by loghin on 03.04.2021.
+// Created on 03.04.2021.
 //
 
 #include "CurrentSettings.h"

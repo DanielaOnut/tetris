@@ -1,5 +1,5 @@
 //
-// Created by loghin on 03.04.2021.
+// Created on 03.04.2021.
 //
 
 #ifndef TETRIS_CURRENTSETTINGS_H
@@ -7,11 +7,6 @@
 
 #define GEN_KEY(_key, _value) KEY_ ## _key = _value
 
-/**
- * Todo : Celelalte butoane -done-
- * Todo : Attempt to integrate audio settings
- * Todo : Prepare Questions from this class
- */
 
 #include <QKeyEvent>
 #include <iostream>

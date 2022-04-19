@@ -1,5 +1,5 @@
 //
-// Created by loghin on 16.04.2021.
+// Created on 16.04.2021.
 //
 
 #include "Board.h"
@@ -24,7 +24,7 @@ void Board::init() noexcept {
 
     this->squareSize = std::min (
             ( resWidth - this->horizontalMargin * 2 ) / this->width,
-            ( resHeight - this->verticalMargin * 2 ) / this->height
+            ( resHeight - 52 - this->verticalMargin * 2 ) / this->height
     );
 
 //    std::cout << this->squareSize << '\n';
@@ -169,7 +169,6 @@ void Board::dropActiveShape() noexcept {
             this->activeFigure = Figure::Factory().random().spawn();
         }
 
-        /// figure spawns at -1 -1, to remove pointless click, do another drop
         try {
             this->activeFigure->dropFigure(this->squares);
         }

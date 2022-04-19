@@ -1,5 +1,5 @@
 //
-// Created by loghin on 30.01.2021.
+// Created on 30.01.2021.
 //
 
 #include "Menu.h"

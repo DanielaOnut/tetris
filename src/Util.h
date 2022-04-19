@@ -1,5 +1,5 @@
 //
-// Created by loghin on 05.03.2021.
+// Created on 05.03.2021.
 //
 
 #ifndef TETRIS_UTIL_H

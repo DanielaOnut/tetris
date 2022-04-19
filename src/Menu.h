@@ -1,5 +1,5 @@
 //
-// Created by loghin on 30.01.2021.
+// Created on 30.01.2021.
 //
 
 #ifndef TETRIS_MENU_H
@@ -13,10 +13,7 @@
 
 /**
  *
- *  todo 4:    designs : statistics
  *
- * todo 3 :
- *      Look up ALL destructors for any mem. leak -done-
  *
  *
  */
